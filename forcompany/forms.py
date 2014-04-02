@@ -212,9 +212,9 @@ class CompanyInfoForm(forms.models.ModelForm):
                 'placeholder': '',
                 'class': 'form-control',
             }),
-            'teacher_image': forms.fields.ClearableFileInput( attrs={
-                'class': '',
-            }),
+            # 'teacher_image': forms.fields.ClearableFileInput( attrs={
+                # 'class': '',
+            # }),
             'teacher_name': forms.fields.TextInput( attrs={
                 'placeholder': '',
                 'class': 'form-control',
