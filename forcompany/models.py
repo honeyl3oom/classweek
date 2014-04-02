@@ -23,7 +23,7 @@ class CompanyInfo(models.Model):
     class6_price = models.TextField()
 
     # teacher_image = models.ImageField(upload_to = 'pic_folder/')
-    teacher_image = models.ImageField(upload_to = 'pic_folder/', default = '../static/no.jpg')
+    # teacher_image = models.ImageField(upload_to = 'pic_folder/', default = '../static/no.jpg')
     teacher_name = models.TextField()
     teacher_career = models.TextField()
 
