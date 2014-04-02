@@ -11,7 +11,15 @@
     </div>
 {% endmacro %}
 
-
+{% block headers %}
+<script type="text/javascript">
+    $( document ).ready(function() {
+        $('#btn-submit').click( function() {
+            alert('test')
+        });
+    });
+</script>
+{% endblock %}
 {% block contents %}
 
 <h1 class="text-center">기본 정보</h1>
@@ -89,12 +97,167 @@
 
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
-        <form class="form-horizontal" role="form">
-            {% usemacro horizontal_form "수업시간" form.curriculum1_time %}
-            {% usemacro horizontal_form "준비물" form.curriculum1_preparation_material %}
-            {% usemacro horizontal_form "수업 내용" form.curriculum1_class_description %}
-            {% usemacro horizontal_form "상세 수업 내용" form.curriculum1_class_detail_description %}
-        </form>
+        <div class="panel-group" id="accordion">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                            Curriculum1
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <form class="form-horizontal" role="form">
+                            {% usemacro horizontal_form "수업시간" form.curriculum1_time %}
+                            {% usemacro horizontal_form "준비물" form.curriculum1_preparation_material %}
+                            {% usemacro horizontal_form "수업 내용" form.curriculum1_class_description %}
+                            {% usemacro horizontal_form "상세 수업 내용" form.curriculum1_class_detail_description %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+                            Curriculum2
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseTwo" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <form class="form-horizontal" role="form">
+                            {% usemacro horizontal_form "수업시간" form.curriculum2_time %}
+                            {% usemacro horizontal_form "준비물" form.curriculum2_preparation_material %}
+                            {% usemacro horizontal_form "수업 내용" form.curriculum2_class_description %}
+                            {% usemacro horizontal_form "상세 수업 내용" form.curriculum2_class_detail_description %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                            Curriculum3
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseThree" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <form class="form-horizontal" role="form">
+                            {% usemacro horizontal_form "수업시간" form.curriculum3_time %}
+                            {% usemacro horizontal_form "준비물" form.curriculum3_preparation_material %}
+                            {% usemacro horizontal_form "수업 내용" form.curriculum3_class_description %}
+                            {% usemacro horizontal_form "상세 수업 내용" form.curriculum3_class_detail_description %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">
+                            Curriculum4
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseFour" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <form class="form-horizontal" role="form">
+                            {% usemacro horizontal_form "수업시간" form.curriculum4_time %}
+                            {% usemacro horizontal_form "준비물" form.curriculum4_preparation_material %}
+                            {% usemacro horizontal_form "수업 내용" form.curriculum4_class_description %}
+                            {% usemacro horizontal_form "상세 수업 내용" form.curriculum4_class_detail_description %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive">
+                            Curriculum5
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseFive" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <form class="form-horizontal" role="form">
+                            {% usemacro horizontal_form "수업시간" form.curriculum5_time %}
+                            {% usemacro horizontal_form "준비물" form.curriculum5_preparation_material %}
+                            {% usemacro horizontal_form "수업 내용" form.curriculum5_class_description %}
+                            {% usemacro horizontal_form "상세 수업 내용" form.curriculum5_class_detail_description %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseSix">
+                            Curriculum6
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseSix" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <form class="form-horizontal" role="form">
+                            {% usemacro horizontal_form "수업시간" form.curriculum6_time %}
+                            {% usemacro horizontal_form "준비물" form.curriculum6_preparation_material %}
+                            {% usemacro horizontal_form "수업 내용" form.curriculum6_class_description %}
+                            {% usemacro horizontal_form "상세 수업 내용" form.curriculum6_class_detail_description %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseSeven">
+                            Curriculum7
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseSeven" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <form class="form-horizontal" role="form">
+                            {% usemacro horizontal_form "수업시간" form.curriculum7_time %}
+                            {% usemacro horizontal_form "준비물" form.curriculum7_preparation_material %}
+                            {% usemacro horizontal_form "수업 내용" form.curriculum7_class_description %}
+                            {% usemacro horizontal_form "상세 수업 내용" form.curriculum7_class_detail_description %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseEight">
+                            Curriculum8
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseEight" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <form class="form-horizontal" role="form">
+                            {% usemacro horizontal_form "수업시간" form.curriculum8_time %}
+                            {% usemacro horizontal_form "준비물" form.curriculum8_preparation_material %}
+                            {% usemacro horizontal_form "수업 내용" form.curriculum8_class_description %}
+                            {% usemacro horizontal_form "상세 수업 내용" form.curriculum8_class_detail_description %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -106,6 +269,15 @@
             {{ form.refund_info }}
         </form>
     </div>
+</div>
+
+<br/>
+
+<div class="row">
+<div class="text-center">
+    <button id='btn-submit' type="button" class="btn btn-primary btn-lg">저장하기
+    </button>
+</div>
 </div>
 
 {% endblock %}
