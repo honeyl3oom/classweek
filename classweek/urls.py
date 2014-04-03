@@ -5,6 +5,7 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('',
     url(r'^forcompany/', include('forcompany.urls')),
+    url(r'^user/', include('user.urls')),
     # url(r'^$', 'classweek.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 

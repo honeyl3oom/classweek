@@ -58,7 +58,7 @@ def _update_static_files(source_folder):
     ))
 
 def _update_database(source_folder):
-    run('cd %s && ../virtualenv/bin/python manage.py syncdb' % (source_folder,))
+    run('cd %s && ../virtualenv/bin/python manage.py syncdb --noinput' % (source_folder,))
     # one-off fake database migration. remove me before next deploy
     # run('cd %s && ../virtualenv/bin/python manage.py migrate lists --fake 0001' % (
         # source_folder,
