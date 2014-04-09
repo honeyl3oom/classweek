@@ -19,10 +19,12 @@ from forcompany.forms import CompanyInfoForm
 RESPONSE_STR_SUCCESS = 'success'
 RESPONSE_STR_FAIL = 'fail'
 
+ERROR_PASSWORD_CONFIRM_NOT_IDENTICAL = 'password confirm not identical'
+
 # input : username, email, password
 # @require_http_methods(["GET", "POST"])
 
-def makeJsonResponse( isSuccess, error_message ):
+def _makeJsonResponse( isSuccess, error_message ):
     data = {}
     if isSuccess:
         data['result'] = RESPONSE_STR_SUCCESS
@@ -31,35 +33,48 @@ def makeJsonResponse( isSuccess, error_message ):
     data['error_message'] = error_message
     return data
 
-@csrf_exempt
-def registration(request):
-    try:
-        user = User.objects.create_user( request.POST['username'] , request.POST['email'], request.POST['password'] )
-        response_data = makeJsonResponse( True, None )
-    except Exception, e:
-        response_data = makeJsonResponse( False, repr(e) )
+def _login( request, email, password ):
 
-    return HttpResponse( json.dumps(response_data), content_type="application/json")
+    error = None
 
-@csrf_exempt
-def login_view(request):
-    # username = request.POST['username']
-    username = "parkjuram"
-    # password = request.POST['password']
-    password = "123"
-    user = authenticate(username=username, password=password)
-
+    user = authenticate( username=email, password=password)
     if user is not None:
         if user.is_active:
             login( request, user )
-            return HttpResponse( json.dumps( makeJsonResponse(True, None)), content_type="application/json")
-            # redirect to a success page.
+        else:
+            error = 'not actived'
+    else:
+        error = 'authenticate fail'
 
-    return HttpResponse( json.dumps( makeJsonResponse(False, None)), content_type="application/json")
-    #     else:
-    #         # Return a 'disabled account' error message
-    # else:
-    #     # Return an 'invalid login' error message.
+    return error
+
+def _registration( email, password, password_confirm ):
+    error = None
+    if password == password_confirm:
+        try:
+            user = User.objects.create_user( email, email, password )
+        except Exception, e:
+            error = repr(e)
+    else:
+        error = ERROR_PASSWORD_CONFIRM_NOT_IDENTICAL
+
+    return error
+
+@csrf_exempt
+def login_or_registration( request ):
+    email = request.POST['email']
+    password = request.POST['password']
+    password_confirm = request.POST.get('password_confirm', None)
+
+    if password_confirm is None:
+        error = _login( request, email, password )
+    else:
+        error = _registration( email, password, password_confirm )
+
+    if error is None:
+        return HttpResponse( json.dumps( _makeJsonResponse( True, None ) ), content_type="application/json" )
+    else:
+        return HttpResponse( json.dumps( _makeJsonResponse( False, error ) ), content_type="application/json" )
 
 @csrf_exempt
 @login_required
