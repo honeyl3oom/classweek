@@ -25,13 +25,13 @@ ERROR_PASSWORD_CONFIRM_NOT_IDENTICAL = 'password confirm not identical'
 # @require_http_methods(["GET", "POST"])
 
 def _makeJsonResponse( isSuccess, error_message ):
-    data = {}
+    return_value = {}
     if isSuccess:
-        data['result'] = RESPONSE_STR_SUCCESS
+        return_value['result'] = RESPONSE_STR_SUCCESS
     else:
-        data['result'] = RESPONSE_STR_FAIL
-    data['error_message'] = error_message
-    return data
+        return_value['result'] = RESPONSE_STR_FAIL
+    return_value['error_message'] = error_message
+    return return_value
 
 def _login( request, email, password ):
 
@@ -60,29 +60,39 @@ def _registration( email, password, password_confirm ):
 
     return error
 
-@csrf_exempt
-def login_or_registration( request ):
-    email = request.POST['email']
-    password = request.POST['password']
-    password_confirm = request.POST.get('password_confirm', None)
-
-    if password_confirm is None:
-        error = _login( request, email, password )
-    else:
-        error = _registration( email, password, password_confirm )
-
+def _HttpJsonResponse( error ):
     if error is None:
         return HttpResponse( json.dumps( _makeJsonResponse( True, None ) ), content_type="application/json" )
     else:
         return HttpResponse( json.dumps( _makeJsonResponse( False, error ) ), content_type="application/json" )
 
 @csrf_exempt
-@login_required
-def login_test(request):
-    print request.user
-    return HttpResponse( request.user.username )
+def login_view( request ):
+    email = request.POST['email']
+    password = request.POST['password']
+
+    error = _login( request, email, password )
+
+    return _HttpJsonResponse( error )
+
+@csrf_exempt
+def registration_view( request ):
+    email = request.POST['email']
+    password = request.POST['password']
+    password_confirm = request.POST.get('password_confirm', None)
+
+    error = _registration( email, password, password_confirm )
+
+    return _HttpJsonResponse( error )
 
 @csrf_exempt
 def logout_view(request):
     logout(request)
-    return HttpResponse( 'logout success' )
+    return _HttpJsonResponse( None )
+
+# @csrf_exempt
+# @login_required
+# def login_test(request):
+#     print request.user
+#     return HttpResponse( request.user.username )
+

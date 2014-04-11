@@ -1,0 +1,2 @@
+RESPONSE_STR_SUCCESS = 'success'
+RESPONSE_STR_FAIL = 'fail'
