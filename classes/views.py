@@ -5,9 +5,11 @@ from classweek import util
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+from django.core import serializers
+
 # from django.core import serializers
 
-from classes.models import Category, SubCategory
+from classes.models import Category, SubCategory, Classes
 
 def _makeJsonResponse( isSuccess, error_message, data ):
     return_value = {}
@@ -26,9 +28,17 @@ def _HttpJsonResponse( error, data ):
         return HttpResponse( json.dumps( _makeJsonResponse( False, error, data ) ), content_type="application/json" )
 
 @csrf_exempt
-def getSubCategory_view( request, category_name ):
+def getSubCategoryList_view( request, category_name ):
     subCategorys = SubCategory.objects.values_list('id','name').filter( category__name = category_name ).all()
 
-    return _HttpJsonResponse( None, json.dumps(subCategorys) )
-    # print subCategorys
-    # return HttpResponse( category_name )
+    json_data = serializers.serialize('json', subCategorys)
+
+    return _HttpJsonResponse( None, json.dumps(json_data) )
+
+@csrf_exempt
+def getClassesList_view( request, category_name, subcategory_name ):
+    classes = Classes.objects.filter( subCategory__name = subcategory_name ).all()
+
+    json_data = serializers.serialize('json', classes)
+
+    return _HttpJsonResponse( None, json_data)

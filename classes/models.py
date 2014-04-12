@@ -4,15 +4,18 @@ class Company(models.Model):
     name = models.TextField( unique=True )
     phonenumber = models.TextField()
     location = models.TextField()
-    nearby_station = models.TextField()
+    nearby_station = models.TextField( null=True )
     facilitiesInfomation = models.TextField()
-    image_url = models.URLField()
 
     def __str__(self):
         return self.name
 
     def __unicode__(self):
         return 'Company : %s' % self.name
+
+class CompanyImage(models.Model):
+    company = models.ForeignKey( Company )
+    image_url = models.URLField()
 
 class Category(models.Model):
     name = models.TextField( unique=True )
@@ -34,34 +37,38 @@ class SubCategory(models.Model):
         return 'SubCategory : %s' % self.name
 
 class Classes(models.Model):
-    title = models.TextField()
+    title = models.TextField( null=False, blank=True, default='' )
     subCategory = models.ForeignKey( SubCategory )
     company = models.ForeignKey( Company )
-    short_description = models.TextField()
-    description = models.TextField()
-    preparation = models.TextField()
-    zone = models.TextField()
-    personalOfGroup = models.TextField()
-    refundInfomation = models.TextField()
-    countOfDay = models.IntegerField()
-    priceOfDay = models.IntegerField()
-    countOfMonth = models.IntegerField()
-    priceOfMonth = models.IntegerField()
+    short_description = models.TextField( null=False, blank=True, default='' )
+    description = models.TextField( null=False, blank=True, default='' )
+    preparation = models.TextField( null=False, blank=True, default='' )
+    zone = models.TextField( null=False, blank=True, default='' )
+    personalOrGroup = models.TextField( null=False, blank=True, default='' )
+    refundInfomation = models.TextField( null=False, blank=True, default='' )
+    # countOfDay = models.IntegerField( null=False, blank=True, default=0 )
+    priceOfDay = models.IntegerField( null=False, blank=True, default=0 )
+    countOfMonth = models.IntegerField( null=False, blank=True, default=0 )
+    priceOfMonth = models.IntegerField( null=False, blank=True, default=0 )
 
     def __str__(self):
         return self.title
 
     def __unicode__(self):
-        return 'Classes : %s' % self.title
+        return 'Classes : %s / %s' % (self.title, self.short_description )
+
+class ClassesImage(models.Model):
+    classes = models.ForeignKey( Classes )
+    image_url = models.URLField()
 
 class Schedule(models.Model):
     classes = models.ForeignKey( Classes )
     # Sun, Mon, Tue, Wed, Thu, Fri, Sat
     dayOfWeek = models.CharField( max_length=3 )
-    startTime = models.TimeField( auto_now=True )
+    startTime = models.TimeField()
 
     def __str__(self):
         return self.dayOfWeek
 
     def __unicode__(self):
-        return 'Schedule : %s %d' % ( self.dayOfWeek, self.startTime )
+        return 'Schedule : %s %r' % ( self.dayOfWeek, self.startTime )
