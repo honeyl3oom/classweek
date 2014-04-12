@@ -6,6 +6,7 @@ from classweek import util
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.core import serializers
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # from django.core import serializers
 
@@ -36,9 +37,16 @@ def getSubCategoryList_view( request, category_name ):
     return _HttpJsonResponse( None, json.dumps(json_data) )
 
 @csrf_exempt
-def getClassesList_view( request, category_name, subcategory_name ):
+def getClassesList_view( request, category_name, subcategory_name, page_num = 1 ):
     classes = Classes.objects.filter( subCategory__name = subcategory_name ).all()
+    paginator = Paginator( classes, util.PAGE_PER_COUNT )
 
-    json_data = serializers.serialize('json', classes)
+    try:
+        current_page_classes = paginator.page( page_num )
+        return _HttpJsonResponse( None, serializers.serialize('json', current_page_classes))
+    except EmptyPage:
+        return _HttpJsonResponse( "page end", None)
 
-    return _HttpJsonResponse( None, json_data)
+    
+
+    
