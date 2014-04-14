@@ -25,3 +25,6 @@ class ClassesInfomationTest(TestCase):
     # def test_classes_get_classes_in_overflow_page_num(self):
         # response = self.client.post('/classes/dance/jazz/9999', data={} )
         # {"error_message": "page end", "data": null, "result": "fail"}
+
+    # def test_classes_inquire_about_classes(self):
+    #     response = self.client.post('/classes/')

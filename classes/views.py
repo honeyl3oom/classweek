@@ -9,17 +9,18 @@ from django.core import serializers
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # from django.core import serializers
+from django.db import IntegrityError
+from classes.models import Category, SubCategory, Classes, ClassesInquire
 
-from classes.models import Category, SubCategory, Classes
-
-def _makeJsonResponse( isSuccess, error_message, data ):
+def _makeJsonResponse( isSuccess, error_message, data = None ):
     return_value = {}
     if isSuccess:
         return_value['result'] = util.RESPONSE_STR_SUCCESS
     else:
         return_value['result'] = util.RESPONSE_STR_FAIL
     return_value['error_message'] = error_message
-    return_value['data'] = data
+    if data is not None:
+        return_value['data'] = data
 
     return return_value
 
@@ -51,5 +52,11 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
         return _HttpJsonResponse( util.RESPONSE_STR_PAGE_END, None)
 
 @csrf_exempt
-def inquire_view( request ):
-    return HttpResponse( 'test' )
+def inquire_view( request, classes_id ):
+    classesInquire = ClassesInquire( classes_id = classes_id, user = request.user, content= request.POST.get('content') )
+    # classesInquire.classes_id = classes_id
+    try:
+        classesInquire.save()
+    except IntegrityError, e:
+        return HttpResponse( json.dumps( _makeJsonResponse( False, util.RESPONSE_STR_CLASSES_ID_DOES_NOT_EXIST ) ), content_type="application/json" )
+    return HttpResponse( json.dumps( _makeJsonResponse( True, None ) ), content_type="application/json" )

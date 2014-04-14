@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Company(models.Model):
     name = models.TextField( unique=True )
@@ -60,6 +61,11 @@ class Classes(models.Model):
 class ClassesImage(models.Model):
     classes = models.ForeignKey( Classes )
     image_url = models.URLField()
+
+class ClassesInquire(models.Model):
+    classes = models.ForeignKey( Classes )
+    user = models.ForeignKey( User )
+    content = models.TextField( null=False, blank=True, default='' )
 
 class Schedule(models.Model):
     classes = models.ForeignKey( Classes )
