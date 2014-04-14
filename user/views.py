@@ -8,6 +8,8 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, AnonymousUser
+from django.db import IntegrityError
+from classweek import const, util
 
 from forcompany.forms import CompanyInfoForm
 
@@ -18,24 +20,17 @@ from user.models import UserProfile
 # response_data['message'] = 'registration success'
 # return HttpResponse( json.dumps(response_data), content_type="application/json")
 
-RESPONSE_STR_SUCCESS = 'success'
-RESPONSE_STR_FAIL = 'fail'
-
-ERROR_PASSWORD_CONFIRM_NOT_IDENTICAL = 'password confirm not identical'
-ERROR_NOT_ACTIVE_USER = 'not actived'
-ERROR_FAIL_TO_AUTHENTICATE = 'authenticate fail'
-ERROR_HAVE_TO_LOGIN = 'have to login'
-
 # input : username, email, password
 # @require_http_methods(["GET", "POST"])
 
-def _makeJsonResponse( isSuccess, error_message ):
+def _makeJsonResponse( isSuccess, error_message, error_code ):
     return_value = {}
     if isSuccess:
-        return_value['result'] = RESPONSE_STR_SUCCESS
+        return_value['result'] = util.RESPONSE_STR_SUCCESS
     else:
-        return_value['result'] = RESPONSE_STR_FAIL
+        return_value['result'] = util.RESPONSE_STR_FAIL
     return_value['error_message'] = error_message
+    return_value['error_code'] = error_code
     return return_value
 
 def _login( request, email, password ):
@@ -47,29 +42,32 @@ def _login( request, email, password ):
         if user.is_active:
             login( request, user )
         else:
-            error = ERROR_NOT_ACTIVE_USER
+            error = util.ERROR_NOT_ACTIVE_USER
     else:
-        error = ERROR_FAIL_TO_AUTHENTICATE
+        error = util.ERROR_FAIL_TO_AUTHENTICATE
 
     return error
 
 def _registration( email, password, password_confirm ):
     error = None
+    errorCode = 0
     if password == password_confirm:
         try:
             user = User.objects.create_user( email, email, password )
-        except Exception, e:
-            error = repr(e)
+        except ValueError:
+            ( error, errorCode ) = (const.ERROR_USERNAME_MUST_BE_SET, const.CODE_ERROR_USERNAME_MUST_BE_SET)
+        except IntegrityError:
+            ( error, errorCode ) = (const.ERROR_ALREADY_EXIST_USERNAME, const.CODE_ERROR_ALREADY_EXIST_USERNAME)
     else:
-        error = ERROR_PASSWORD_CONFIRM_NOT_IDENTICAL
+        ( error, errorCode ) = (const.ERROR_PASSWORD_CONFIRM_NOT_IDENTICAL, const.CODE_ERROR_PASSWORD_CONFIRM_NOT_IDENTICAL)
 
-    return error
+    return (error, errorCode )
 
-def _HttpJsonResponse( error ):
+def _HttpJsonResponse( error, error_code ):
     if error is None:
-        return HttpResponse( json.dumps( _makeJsonResponse( True, None ) ), content_type="application/json" )
+        return HttpResponse( json.dumps( _makeJsonResponse( True, None, None ) ), content_type="application/json" )
     else:
-        return HttpResponse( json.dumps( _makeJsonResponse( False, error ) ), content_type="application/json" )
+        return HttpResponse( json.dumps( _makeJsonResponse( False, error, error_code ) ), content_type="application/json" )
 
 @csrf_exempt
 def login_view( request ):
@@ -86,9 +84,9 @@ def registration_view( request ):
     password = request.POST['password']
     password_confirm = request.POST.get('password_confirm', None)
 
-    error = _registration( email, password, password_confirm )
+    ( error, error_code ) = _registration( email, password, password_confirm )
 
-    return _HttpJsonResponse( error )
+    return _HttpJsonResponse( error, error_code )
 
 @csrf_exempt
 def logout_view(request):
@@ -99,7 +97,7 @@ def logout_view(request):
 def update_view(request):
 
     if isinstance(request.user, AnonymousUser):
-        return _HttpJsonResponse( ERROR_HAVE_TO_LOGIN )
+        return _HttpJsonResponse( util.ERROR_HAVE_TO_LOGIN )
 
     # userProfile = UserProfile( id=request.user.profile.id, name = request.POST.get('name') )
     # userProfile.save()
