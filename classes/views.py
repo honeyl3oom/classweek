@@ -20,6 +20,7 @@ def _makeJsonResponse( isSuccess, error_message, data ):
         return_value['result'] = util.RESPONSE_STR_FAIL
     return_value['error_message'] = error_message
     return_value['data'] = data
+
     return return_value
 
 def _HttpJsonResponse( error, data ):
@@ -30,11 +31,13 @@ def _HttpJsonResponse( error, data ):
 
 @csrf_exempt
 def getSubCategoryList_view( request, category_name ):
-    subCategorys = SubCategory.objects.values_list('id','name').filter( category__name = category_name ).all()
+    subCategorys = SubCategory.objects.filter( category__name = category_name ).values()
 
-    json_data = serializers.serialize('json', subCategorys)
+    # print subCategorys
 
-    return _HttpJsonResponse( None, json.dumps(json_data) )
+    # json_data = serializers.serialize('json', subCategorys)
+
+    return _HttpJsonResponse( None, json.dumps( list(subCategorys) ) )
 
 @csrf_exempt
 def getClassesList_view( request, category_name, subcategory_name, page_num = 1 ):
@@ -45,8 +48,8 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
         current_page_classes = paginator.page( page_num )
         return _HttpJsonResponse( None, serializers.serialize('json', current_page_classes))
     except EmptyPage:
-        return _HttpJsonResponse( "page end", None)
+        return _HttpJsonResponse( util.RESPONSE_STR_PAGE_END, None)
 
-    
-
-    
+@csrf_exempt
+def inquire_view( request ):
+    return HttpResponse( 'test' )

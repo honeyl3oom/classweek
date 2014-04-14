@@ -7,9 +7,11 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AnonymousUser
 
 from forcompany.forms import CompanyInfoForm
+
+from user.models import UserProfile
 
 # response_data = {}
 # response_data['result'] = 'success'
@@ -20,6 +22,9 @@ RESPONSE_STR_SUCCESS = 'success'
 RESPONSE_STR_FAIL = 'fail'
 
 ERROR_PASSWORD_CONFIRM_NOT_IDENTICAL = 'password confirm not identical'
+ERROR_NOT_ACTIVE_USER = 'not actived'
+ERROR_FAIL_TO_AUTHENTICATE = 'authenticate fail'
+ERROR_HAVE_TO_LOGIN = 'have to login'
 
 # input : username, email, password
 # @require_http_methods(["GET", "POST"])
@@ -42,9 +47,9 @@ def _login( request, email, password ):
         if user.is_active:
             login( request, user )
         else:
-            error = 'not actived'
+            error = ERROR_NOT_ACTIVE_USER
     else:
-        error = 'authenticate fail'
+        error = ERROR_FAIL_TO_AUTHENTICATE
 
     return error
 
@@ -88,6 +93,28 @@ def registration_view( request ):
 @csrf_exempt
 def logout_view(request):
     logout(request)
+    return _HttpJsonResponse( None )
+
+@csrf_exempt
+def update_view(request):
+
+    if isinstance(request.user, AnonymousUser):
+        return _HttpJsonResponse( ERROR_HAVE_TO_LOGIN )
+
+    # userProfile = UserProfile( id=request.user.profile.id, name = request.POST.get('name') )
+    # userProfile.save()
+
+    request.user.profile.name = request.POST.get('name')
+    request.user.profile.birthday = request.POST.get('birthday')
+    request.user.profile.phonenumber = request.POST.get('phonenumber')
+    request.user.profile.gender = request.POST.get('gender')
+    request.user.profile.save()
+
+    # request.user.profile.update(name = request.POST.get('name'), birthday = request.POST.get('birthday'), phonenumber = request.POST.get('phonenumber'), gender = request.POST.get('gender') )
+
+    # userProfile = UserProfile( id=request.user.profile.id, user_id=request.user.id, name = request.POST.get('name'), birthday = request.POST.get('birthday'), phonenumber = request.POST.get('phonenumber'), gender = request.POST.get('gender') )
+    # userProfile.save()
+
     return _HttpJsonResponse( None )
 
 # @csrf_exempt

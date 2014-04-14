@@ -64,8 +64,9 @@ class ClassesImage(models.Model):
 class Schedule(models.Model):
     classes = models.ForeignKey( Classes )
     # Sun, Mon, Tue, Wed, Thu, Fri, Sat
-    dayOfWeek = models.CharField( max_length=3 )
+    dayOfWeek = models.CharField( max_length=21 )
     startTime = models.TimeField()
+    duration = models.TimeField( default='00:00:00')
 
     def __str__(self):
         return self.dayOfWeek

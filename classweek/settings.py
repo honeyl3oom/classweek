@@ -124,5 +124,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, '../static')
 
+AUTH_PROFILE_MODULE = 'user.UserProfile'
+
 # @login_request
 LOGIN_URL = '/user/login'
+
+SOUTH_TESTS_MIGRATE = False # To disable migrations and use syncdb instead
+SKIP_SOUTH_TESTS = True # To disable South's own unit tests
