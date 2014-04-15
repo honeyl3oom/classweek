@@ -107,7 +107,7 @@ def registration_view( request ):
 @csrf_exempt
 def logout_view(request):
     logout(request)
-    return _HttpJsonResponse( None )
+    return _HttpJsonResponse( None, 0 )
 
 @csrf_exempt
 def update_view(request):
