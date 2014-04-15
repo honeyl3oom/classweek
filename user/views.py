@@ -33,24 +33,40 @@ def _makeJsonResponse( isSuccess, error_message, error_code ):
     return_value['error_code'] = error_code
     return return_value
 
+# def _login( request, email, password ):
+#
+#     error = None
+#
+#     user = authenticate( username=email, password=password)
+#     if user is not None:
+#         if user.is_active:
+#             login( request, user )
+#         else:
+#             error = util.ERROR_NOT_ACTIVE_USER
+#     else:
+#         error = util.ERROR_FAIL_TO_AUTHENTICATE
+#
+#     return error
+
 def _login( request, email, password ):
+    ( error, errorCode )  = (None, 0)
 
-    error = None
-
-    user = authenticate( username=email, password=password)
-    if user is not None:
-        if user.is_active:
-            login( request, user )
-        else:
-            error = util.ERROR_NOT_ACTIVE_USER
+    if not(User.objects.filter( username = email ).exists()):
+        (error, errorCode ) = ( const.ERROR_NOT_EXIST_ID , const.CODE_ERROR_NOT_EXIST_ID )
     else:
-        error = util.ERROR_FAIL_TO_AUTHENTICATE
+        user = authenticate( username=email, password=password)
+        if user is not None:
+            if user.is_active:
+                login( request, user )
+            else:
+                (error, errorCode ) = ( const.ERROR_NOT_ACTIVE_USER , const.CODE_ERROR_NOT_ACTIVE_USER )
+        else:
+            (error, errorCode ) = ( const.ERROR_PASSWORD_NOT_CORRECT , const.CODE_ERROR_PASSWORD_NOT_CORRECT )
 
-    return error
+    return (error, errorCode )
 
 def _registration( email, password, password_confirm ):
-    error = None
-    errorCode = 0
+    ( error, errorCode )  = (None, 0)
     if password == password_confirm:
         try:
             user = User.objects.create_user( email, email, password )
@@ -74,9 +90,9 @@ def login_view( request ):
     email = request.POST['email']
     password = request.POST['password']
 
-    error = _login( request, email, password )
+    (error, error_code ) = _login( request, email, password )
 
-    return _HttpJsonResponse( error )
+    return _HttpJsonResponse( error, error_code )
 
 @csrf_exempt
 def registration_view( request ):
