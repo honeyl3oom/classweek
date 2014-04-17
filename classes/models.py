@@ -3,8 +3,9 @@ from django.contrib.auth.models import User
 
 class Company(models.Model):
     name = models.TextField( unique=True )
-    phonenumber = models.TextField()
+    phone_number = models.TextField( null=True )
     location = models.TextField()
+    zone = models.TextField( null=False, blank=True, default='' )
     nearby_station = models.TextField( null=True )
     facilitiesInfomation = models.TextField()
 
@@ -30,6 +31,9 @@ class Category(models.Model):
 class SubCategory(models.Model):
     name = models.TextField( unique=True )
     category = models.ForeignKey( Category )
+    name_kor = models.TextField( null=True )
+    description = models.TextField( null=True )
+    image_url = models.URLField( null=True )
 
     def __str__(self):
         return self.name
@@ -38,28 +42,28 @@ class SubCategory(models.Model):
         return 'SubCategory : %s' % self.name
 
 class Classes(models.Model):
-    title = models.TextField( null=False, blank=True, default='' )
+    title = models.TextField( null=True )
+    thumbnail_image_url = models.URLField( null=True )
     subCategory = models.ForeignKey( SubCategory )
     company = models.ForeignKey( Company )
-    short_description = models.TextField( null=False, blank=True, default='' )
-    description = models.TextField( null=False, blank=True, default='' )
-    preparation = models.TextField( null=False, blank=True, default='' )
-    zone = models.TextField( null=False, blank=True, default='' )
-    personalOrGroup = models.TextField( null=False, blank=True, default='' )
-    refundInfomation = models.TextField( null=False, blank=True, default='' )
-    # countOfDay = models.IntegerField( null=False, blank=True, default=0 )
-    priceOfDay = models.IntegerField( null=False, blank=True, default=0 )
-    countOfMonth = models.IntegerField( null=False, blank=True, default=0 )
-    priceOfMonth = models.IntegerField( null=False, blank=True, default=0 )
+    description = models.TextField( null=True )
+    preparation = models.TextField( null=True )
+    personalOrGroup = models.TextField( null=True )
+    refundInfomation = models.TextField( null=True )
+    # countOfDay = models.IntegerField( null=True )
+    priceOfDay = models.IntegerField( null=True )
+    countOfMonth = models.IntegerField( null=True )
+    priceOfMonth = models.IntegerField( null=True )
+    image_url = models.URLField( null=True )
 
     def __str__(self):
         return self.title
 
     def __unicode__(self):
-        return 'Classes : %s / %s' % (self.title, self.short_description )
+        return 'Classes : %s / %s' % (self.title, self.description )
 
 class ClassesImage(models.Model):
-    classes = models.ForeignKey( Classes )
+    classes = models.ForeignKey( Classes, related_name='get_images' )
     image_url = models.URLField()
 
 class ClassesInquire(models.Model):
@@ -68,10 +72,10 @@ class ClassesInquire(models.Model):
     content = models.TextField( null=False, blank=True, default='' )
 
 class Schedule(models.Model):
-    classes = models.ForeignKey( Classes )
-    # Sun, Mon, Tue, Wed, Thu, Fri, Sat
-    dayOfWeek = models.CharField( max_length=21 )
-    startTime = models.TimeField()
+    classes = models.ForeignKey( Classes , related_name='get_schedules')
+    # Mon=1, Tue=2, Wed, Thu, Fri, Sat, Sun
+    dayOfWeek = models.CharField( max_length=27 )
+    startTime = models.TextField( null=True )
     duration = models.TimeField( default='00:00:00')
 
     def __str__(self):

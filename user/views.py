@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+from django.db.utils import DataError
 from django.views.decorators.csrf import csrf_exempt
 
 from django.views.decorators.http import require_http_methods
@@ -9,7 +10,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, AnonymousUser
 from django.db import IntegrityError
-from classweek import const, util
+from classweek import const
 
 from forcompany.forms import CompanyInfoForm
 
@@ -26,27 +27,12 @@ from user.models import UserProfile
 def _makeJsonResponse( isSuccess, error_message, error_code ):
     return_value = {}
     if isSuccess:
-        return_value['result'] = util.RESPONSE_STR_SUCCESS
+        return_value['result'] = const.RESPONSE_STR_SUCCESS
     else:
-        return_value['result'] = util.RESPONSE_STR_FAIL
+        return_value['result'] = const.RESPONSE_STR_FAIL
     return_value['error_message'] = error_message
     return_value['error_code'] = error_code
     return return_value
-
-# def _login( request, email, password ):
-#
-#     error = None
-#
-#     user = authenticate( username=email, password=password)
-#     if user is not None:
-#         if user.is_active:
-#             login( request, user )
-#         else:
-#             error = util.ERROR_NOT_ACTIVE_USER
-#     else:
-#         error = util.ERROR_FAIL_TO_AUTHENTICATE
-#
-#     return error
 
 def _login( request, email, password ):
     ( error, errorCode )  = (None, 0)
@@ -111,25 +97,22 @@ def logout_view(request):
 
 @csrf_exempt
 def update_view(request):
-
+    (error, error_code ) = (None, 0)
     if isinstance(request.user, AnonymousUser):
-        return _HttpJsonResponse( util.ERROR_HAVE_TO_LOGIN )
+        (error, error_code ) = ( const.ERROR_HAVE_TO_LOGIN, const.CODE_ERROR_HAVE_TO_LOGIN )
+    else:
+        user_profile = request.user.profile
 
-    # userProfile = UserProfile( id=request.user.profile.id, name = request.POST.get('name') )
-    # userProfile.save()
+        user_profile.name = request.POST.get('name')
+        user_profile.birthday = request.POST.get('birthday')
+        user_profile.phonenumber = request.POST.get('phone_number')
+        user_profile.gender = request.POST.get('gender')
+        try:
+            user_profile.save()
+        except DataError:
+            (error, error_code ) = ( const.ERROR_DATA_INPUT_FORMAT_NOT_CORRECT, const.CODE_ERROR_DATA_INPUT_FORMAT_NOT_CORRECT )
 
-    request.user.profile.name = request.POST.get('name')
-    request.user.profile.birthday = request.POST.get('birthday')
-    request.user.profile.phonenumber = request.POST.get('phonenumber')
-    request.user.profile.gender = request.POST.get('gender')
-    request.user.profile.save()
-
-    # request.user.profile.update(name = request.POST.get('name'), birthday = request.POST.get('birthday'), phonenumber = request.POST.get('phonenumber'), gender = request.POST.get('gender') )
-
-    # userProfile = UserProfile( id=request.user.profile.id, user_id=request.user.id, name = request.POST.get('name'), birthday = request.POST.get('birthday'), phonenumber = request.POST.get('phonenumber'), gender = request.POST.get('gender') )
-    # userProfile.save()
-
-    return _HttpJsonResponse( None )
+    return _HttpJsonResponse( error, error_code )
 
 # @csrf_exempt
 # @login_required
