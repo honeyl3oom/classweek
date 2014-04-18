@@ -64,7 +64,8 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
                 'nearby_station':classes_item.company.nearby_station,
                 'price_of_day':classes_item.priceOfDay,
                 'price_of_month':classes_item.priceOfMonth,
-                'image_url':classes_item.image_url
+                'image_url':classes_item.image_url,
+                'discount_rate': round(100 - classes_item.priceOfMonth*100.0/(classes_item.priceOfDay*classes_item.countOfMonth))
                 } )
             schedules = classes_item.get_schedules.all()
             for schedule in schedules:
@@ -109,6 +110,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'price_of_day': classes.priceOfDay,
         'price_of_month': classes.priceOfMonth,
         'count_of_month': classes.countOfMonth,
+        'discount_rate': round(100 - classes.priceOfMonth*100.0/(classes.priceOfDay*classes.countOfMonth)),
         'image_url': classes.image_url,
     })
 
