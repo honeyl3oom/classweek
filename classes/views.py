@@ -36,49 +36,58 @@ def _HttpJsonResponse( error, data, error_code = 0):
 
 @csrf_exempt
 def getSubCategoryList_view( request, category_name ):
-    subCategorys = SubCategory.objects.filter( category__name = category_name ).values()
 
-    return _HttpJsonResponse( None, json.dumps( list(subCategorys) , ensure_ascii=False ) )
+    category = Category.objects.filter( name = category_name ).select_related( 'get_subcategorys' )
+    if category.exists():
+        subCategorys = category.first().get_subcategorys.filter( category__name = category_name ).values()
+
+        return _HttpJsonResponse( None, list(subCategorys) )
+    else:
+        return _HttpJsonResponse( const.ERROR_CATEGORY_NAME_DOES_NOT_EXIST, None , const.CODE_ERROR_CATEGORY_NAME_DOES_NOT_EXIST )
 
 # location, weekday, time( morning, .. ), price ( by month )
 @csrf_exempt
 def getClassesList_view( request, category_name, subcategory_name, page_num = 1 ):
     page_num = int(page_num)
 
-    classes = Classes.objects.filter( subCategory__name = subcategory_name ).select_related('get_schedules', 'company',  ).all()
+    subcategory = SubCategory.objects.filter( name = subcategory_name ).select_related( 'get_classes' )
+    if subcategory.exists():
+        classes = subcategory.first().get_classes.filter( subCategory__name = subcategory_name ).select_related('get_schedules', 'company',  ).all()
+        classes_list = []
 
-    classes_list = []
+        for classes_item in classes:
+            item = {}
+            item.update( {
+                'id':classes_item.id,
+                'title':classes_item.title,
+                'company':classes_item.company.name,
+                'nearby_station':classes_item.company.nearby_station,
+                'price_of_day':classes_item.priceOfDay,
+                'price_of_month':classes_item.priceOfMonth,
+                'image_url':classes_item.image_url
+                } )
+            schedules = classes_item.get_schedules.all()
+            for schedule in schedules:
+                item_detail = item.copy()
+                dayOfWeek_list = schedule.dayOfWeek.split('|')
+                startTime_list = schedule.startTime.split('|')
 
-    for classes_item in classes:
-        item = {}
-        item.update( {
-            'id':classes_item.id,
-            'title':classes_item.title,
-            'company':classes_item.company.name,
-            'nearby_station':classes_item.company.nearby_station,
-            'price_of_day':classes_item.priceOfDay,
-            'price_of_month':classes_item.priceOfMonth,
-            'image_url':classes_item.image_url
-            } )
-        schedules = classes_item.get_schedules.all()
-        for schedule in schedules:
-            item_detail = item.copy()
-            dayOfWeek_list = schedule.dayOfWeek.split('|')
-            startTime_list = schedule.startTime.split('|')
+                times = []
+                for i in range( len(dayOfWeek_list ) ):
+                    times.append( dayOfWeek_list[i] + " : " + startTime_list[i] )
 
-            times = []
-            for i in range( len(dayOfWeek_list ) ):
-                times.append( dayOfWeek_list[i] + " : " + startTime_list[i] )
+                item_detail.update( {
+                    'times': times,
+                    'duration': schedule.duration.strftime("%H시간%M분").decode('utf-8'),
+                    'schedule_id':schedule.id
+                })
 
-            item_detail.update( {
-                'times': times,
-                'duration': schedule.duration.strftime("%H시간%M분").decode('utf-8'),
-                'schedule_id':schedule.id
-            })
+                classes_list.append( item_detail )
 
-            classes_list.append( item_detail )
-
-    return _HttpJsonResponse( None, json.dumps( classes_list[ (page_num-1)*ITEM_COUNT_IN_PAGE : page_num*ITEM_COUNT_IN_PAGE ] , ensure_ascii=False ) )
+        return _HttpJsonResponse( None, classes_list[ (page_num-1)*ITEM_COUNT_IN_PAGE : page_num*ITEM_COUNT_IN_PAGE ] )
+        # return _HttpJsonResponse( None, json.dumps( classes_list[ (page_num-1)*ITEM_COUNT_IN_PAGE : page_num*ITEM_COUNT_IN_PAGE ] , ensure_ascii=False ) )
+    else:
+        return _HttpJsonResponse( const.ERROR_SUBCATEGORY_NAME_DOES_NOT_EXIST, None , const.CODE_ERROR_SUBCATEGORY_NAME_DOES_NOT_EXIST )
 
 @csrf_exempt
 def getClassesDetail_view( request, classes_id, schedule_id ):
@@ -192,7 +201,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
     })
 
     # print repr(classes)
-    return _HttpJsonResponse( None, json.dumps( classes_detail, ensure_ascii=False ) )
+    return _HttpJsonResponse( None, classes_detail )
 
 @csrf_exempt
 def inquire_view( request, classes_id ):

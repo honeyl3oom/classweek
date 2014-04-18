@@ -30,7 +30,7 @@ class Category(models.Model):
 
 class SubCategory(models.Model):
     name = models.TextField( unique=True )
-    category = models.ForeignKey( Category )
+    category = models.ForeignKey( Category, related_name='get_subcategorys' )
     name_kor = models.TextField( null=True )
     description = models.TextField( null=True )
     image_url = models.URLField( null=True )
@@ -44,7 +44,7 @@ class SubCategory(models.Model):
 class Classes(models.Model):
     title = models.TextField( null=True )
     thumbnail_image_url = models.URLField( null=True )
-    subCategory = models.ForeignKey( SubCategory )
+    subCategory = models.ForeignKey( SubCategory, related_name='get_classes' )
     company = models.ForeignKey( Company )
     description = models.TextField( null=True )
     preparation = models.TextField( null=True )
