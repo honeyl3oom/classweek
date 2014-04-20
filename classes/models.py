@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+import datetime
 
 class Company(models.Model):
     name = models.TextField( unique=True )
@@ -70,6 +71,7 @@ class ClassesInquire(models.Model):
     classes = models.ForeignKey( Classes )
     user = models.ForeignKey( User )
     content = models.TextField( null=False, blank=True, default='' )
+    created = models.DateTimeField(auto_now_add=True, default=datetime.datetime.now )
 
 class Schedule(models.Model):
     classes = models.ForeignKey( Classes , related_name='get_schedules')
