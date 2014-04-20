@@ -1,5 +1,12 @@
+# -*- coding: utf-8 -*-
+
 ITEM_COUNT_IN_PAGE = 10
 
+TIME_NUMBER_CONVERTER = {
+    '오전':0,
+    '오후':1,
+    '저녁':2
+}
 WEEKDAY_NUMBER_CONVERTER = {
     'Mon':0,
     'Tue':1,

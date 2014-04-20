@@ -207,10 +207,13 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
 
 @csrf_exempt
 def inquire_view( request, classes_id ):
-    classesInquire = ClassesInquire( classes_id = classes_id, user = request.user, content= request.POST.get('content') )
-    # classesInquire.classes_id = classes_id
-    try:
-        classesInquire.save()
-    except IntegrityError:
-        return HttpResponse( json.dumps( _makeJsonResponse( False, const.ERROR_CLASSES_INQUIRE_FAIL, const.CODE_ERROR_CLASSES_INQUIRE_FAIL ) ), content_type="application/json" )
-    return HttpResponse( json.dumps( _makeJsonResponse( True, None ) ), content_type="application/json" )
+    if not(request.user.is_authenticated()):
+        return HttpResponse( json.dumps( _makeJsonResponse( False, const.ERROR_HAVE_TO_LOGIN, const.CODE_ERROR_HAVE_TO_LOGIN ) ), content_type="application/json" )
+    else:
+        classesInquire = ClassesInquire( classes_id = classes_id, user = request.user, content= request.POST.get('content') )
+        # classesInquire.classes_id = classes_id
+        try:
+            classesInquire.save()
+        except IntegrityError:
+            return HttpResponse( json.dumps( _makeJsonResponse( False, const.ERROR_CLASSES_INQUIRE_FAIL, const.CODE_ERROR_CLASSES_INQUIRE_FAIL ) ), content_type="application/json" )
+        return HttpResponse( json.dumps( _makeJsonResponse( True, None ) ), content_type="application/json" )

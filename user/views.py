@@ -24,7 +24,7 @@ from user.models import UserProfile
 # input : username, email, password
 # @require_http_methods(["GET", "POST"])
 
-def _makeJsonResponse( isSuccess, error_message, error_code ):
+def _makeJsonResponse( isSuccess, error_message, error_code, name = None , birthday = None , phonenumber = None , gender = None  ):
     return_value = {}
     if isSuccess:
         return_value['result'] = const.RESPONSE_STR_SUCCESS
@@ -32,7 +32,22 @@ def _makeJsonResponse( isSuccess, error_message, error_code ):
         return_value['result'] = const.RESPONSE_STR_FAIL
     return_value['error_message'] = error_message
     return_value['error_code'] = error_code
+    if name is not None: return_value['name'] = name
+    if birthday is not None: return_value['birthday'] = birthday
+    if phonenumber is not None: return_value['phonenumber'] = phonenumber
+    if gender is not None: return_value['gender'] = gender
     return return_value
+
+
+def _get_userinfo( request, error_code ):
+    if error_code == 0:
+        return (
+            request.user.profile.name,
+            request.user.profile.birthday.strftime("%Y년 %m월 %d일").decode('utf-8'),
+            request.user.profile.phonenumber,
+            request.user.profile.gender )
+    else:
+        return (None, None, None, None )
 
 def _login( request, email, password ):
     ( error, errorCode )  = (None, 0)
@@ -65,11 +80,11 @@ def _registration( email, password, password_confirm ):
 
     return (error, errorCode )
 
-def _HttpJsonResponse( error, error_code ):
+def _HttpJsonResponse( error, error_code, name = None , birthday = None , phonenumber = None , gender = None  ):
     if error is None:
-        return HttpResponse( json.dumps( _makeJsonResponse( True, None, None ) ), content_type="application/json" )
+        return HttpResponse( json.dumps( _makeJsonResponse( True, None, None, name, birthday, phonenumber, gender ), ensure_ascii=False ), content_type="application/json")
     else:
-        return HttpResponse( json.dumps( _makeJsonResponse( False, error, error_code ) ), content_type="application/json" )
+        return HttpResponse( json.dumps( _makeJsonResponse( False, error, error_code ), ensure_ascii=False ), content_type="application/json" )
 
 @csrf_exempt
 def login_view( request ):
@@ -77,8 +92,9 @@ def login_view( request ):
     password = request.POST['password']
 
     (error, error_code ) = _login( request, email, password )
+    (name, birthday, phonenumber, gender) = _get_userinfo( request, error_code )
 
-    return _HttpJsonResponse( error, error_code )
+    return _HttpJsonResponse( error, error_code, name, birthday, phonenumber, gender )
 
 @csrf_exempt
 def registration_view( request ):

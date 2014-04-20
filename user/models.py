@@ -7,14 +7,10 @@ from django.db.models import signals
 # 이름, 생년월인, 성별, 폰번
 class UserProfile(models.Model):
     user = models.OneToOneField('auth.User', related_name='profile')
-    GENDER_CHOICES = (
-        ('M', 'Male'),
-        ('F', 'Female'),
-    )
     name = models.TextField( null=True )
     birthday = models.DateField( null=True )
     phonenumber = models.TextField( null=True )
-    gender = models.CharField( max_length=1, choices=GENDER_CHOICES, null=True)
+    gender = models.CharField( max_length=1, null=True)
     # ...
 
 def create_user_profile(sender, instance, created, **kwargs):  
