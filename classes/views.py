@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
-import datetime
+import datetime, time
 
 from classweek import const
 from classweek.const import ITEM_COUNT_IN_PAGE, WEEKDAY_NUMBER_CONVERTER
@@ -52,38 +52,89 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
 
     subcategory = SubCategory.objects.filter( name = subcategory_name ).select_related( 'get_classes' )
     if subcategory.exists():
-        classes = subcategory.first().get_classes.filter( subCategory__name = subcategory_name ).select_related('get_schedules', 'company',  ).all()
+        classes = subcategory.first().get_classes
+
+        # filter out only if there is any in 'location' param
+        if request.POST.get('location', None) is not None:
+            classes = classes.filter( company__zone = request.POST.get('location', None) )
+
+        # filter out only if there is any in 'price' param
+        if request.POST.get('price', None) is not None:
+            classes = classes.filter( priceOfMonth__lte = request.POST.get('price', None) )
+
+        classes = classes.select_related('get_schedules', 'company',  ).all()
         classes_list = []
 
         for classes_item in classes:
             item = {}
-            item.update( {
-                'id':classes_item.id,
-                'title':classes_item.title,
-                'company':classes_item.company.name,
-                'nearby_station':classes_item.company.nearby_station,
-                'price_of_day':classes_item.priceOfDay,
-                'price_of_month':classes_item.priceOfMonth,
-                'image_url':classes_item.image_url,
+            item.update({
+                'id': classes_item.id,
+                'title': classes_item.title,
+                'company': classes_item.company.name,
+                'nearby_station': classes_item.company.nearby_station,
+                'price_of_day': classes_item.priceOfDay,
+                'price_of_month': classes_item.priceOfMonth,
+                'image_url': classes_item.image_url,
                 'discount_rate': round(100 - classes_item.priceOfMonth*100.0/(classes_item.priceOfDay*classes_item.countOfMonth))
-                } )
+                })
             schedules = classes_item.get_schedules.all()
             for schedule in schedules:
                 item_detail = item.copy()
-                dayOfWeek_list = schedule.dayOfWeek.split('|')
-                startTime_list = schedule.startTime.split('|')
+
+                # get weekday
+                weekday_express_by_string_list = schedule.dayOfWeek.split('|')
+                # filter out only if there is any in 'weekday' param
+                weekday_filter = request.POST.get('weekday', None)
+                is_excluded_by_weekday = False
+                if weekday_filter is not None:
+                    for i in range(len(weekday_express_by_string_list)):
+                        if not(str(weekday_filter).__contains__(str(WEEKDAY_NUMBER_CONVERTER[weekday_express_by_string_list[i]]))):
+                            is_excluded_by_weekday = True
+                            break
+                if is_excluded_by_weekday:
+                    continue
+
+                # get start time
+                start_time_list = schedule.startTime.split('|')
+                # filter out only if there is any in 'time' param
+                start_time_filter_express_by_string = request.POST.get('time', None)
+                is_excluded_by_start_time = False
+                if start_time_filter_express_by_string is not None:
+                    for i in range(len(start_time_list)):
+                        time_object = time.strptime( start_time_list[i], "%H:%M:%S")
+
+                        is_contains_in_time_filter = False
+
+                        if "0" in start_time_filter_express_by_string:
+                            if 6 <= time_object.tm_hour < 12:
+                                is_contains_in_time_filter = True
+
+                        if is_contains_in_time_filter is False and "1" in start_time_filter_express_by_string:
+                            if 12 <= time_object.tm_hour < 18:
+                                is_contains_in_time_filter = True
+
+                        if is_contains_in_time_filter is False and "2" in start_time_filter_express_by_string:
+                            if 18 <= time_object.tm_hour < 24:
+                                is_contains_in_time_filter = True
+
+                        if is_contains_in_time_filter is False:
+                            is_excluded_by_start_time = True
+                            break
+                if is_excluded_by_start_time:
+                    continue
 
                 times = []
-                for i in range( len(dayOfWeek_list ) ):
-                    times.append( dayOfWeek_list[i] + " : " + startTime_list[i] )
 
-                item_detail.update( {
+                for i in range(len(weekday_express_by_string_list)):
+                    times.append(weekday_express_by_string_list[i] + " : " + start_time_list[i] )
+
+                item_detail.update({
                     'times': times,
                     'duration': schedule.duration.strftime("%H시간%M분").decode('utf-8'),
-                    'schedule_id':schedule.id
+                    'schedule_id': schedule.id
                 })
 
-                classes_list.append( item_detail )
+                classes_list.append(item_detail)
 
         return _HttpJsonResponse( None, classes_list[ (page_num-1)*ITEM_COUNT_IN_PAGE : page_num*ITEM_COUNT_IN_PAGE ] )
         # return _HttpJsonResponse( None, json.dumps( classes_list[ (page_num-1)*ITEM_COUNT_IN_PAGE : page_num*ITEM_COUNT_IN_PAGE ] , ensure_ascii=False ) )
