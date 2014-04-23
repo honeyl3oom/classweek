@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, url
 
 urlpatterns = patterns('',
+    url(r'^recommend/subcategory$', 'classes.views.recommend_subcategory_view', name='recommend_subcategory'),
+    url(r'^recommend/classes$', 'classes.views.recommend_classes_view', name='recommend_classes'),
     url(r'^([A-Za-z_]+)$', 'classes.views.getSubCategoryList_view', name='getSubCategoryList'),
     url(r'^([A-Za-z_]+)\/([A-Za-z_]+)$', 'classes.views.getClassesList_view', name='getClassesList'),
     url(r'^([A-Za-z_]+)\/([A-Za-z_]+)\/(\d+)$', 'classes.views.getClassesList_view', name='getClassesList'),

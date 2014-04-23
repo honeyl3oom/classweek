@@ -42,6 +42,10 @@ class SubCategory(models.Model):
     def __unicode__(self):
         return 'SubCategory : %s' % self.name
 
+class SubCategoryRecommend(models.Model):
+    subCategory = models.ForeignKey( SubCategory, related_name='get_recommends' )
+    image_url = models.URLField( null=True )
+
 class Classes(models.Model):
     title = models.TextField( null=True )
     thumbnail_image_url = models.URLField( null=True )
@@ -61,7 +65,7 @@ class Classes(models.Model):
         return self.title
 
     def __unicode__(self):
-        return 'Classes : %s / %s' % (self.title, self.description )
+        return '(%d)Classes : %s / %s' % (self.id, self.title, self.description )
 
 class ClassesImage(models.Model):
     classes = models.ForeignKey( Classes, related_name='get_images' )
@@ -84,4 +88,11 @@ class Schedule(models.Model):
         return self.dayOfWeek
 
     def __unicode__(self):
-        return 'Schedule : %s %r' % ( self.dayOfWeek, self.startTime )
+        return '(%d)Schedule : %s %r' % (self.id, self.dayOfWeek, self.startTime )
+
+class ClassesRecommend(models.Model):
+    classes = models.ForeignKey( Classes, related_name='get_recommends' )
+    schedule = models.ForeignKey( Schedule, related_name='get_recommends' )
+
+    def __str__(self):
+        return 'ClassesRecommend : %d %r %r' % (self.id, self.classes, self.schedule )

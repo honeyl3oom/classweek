@@ -12,7 +12,17 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # from django.core import serializers
 from django.db import IntegrityError
-from classes.models import Category, SubCategory, Classes, ClassesInquire, Schedule
+from classes.models import Category, SubCategory, Classes, ClassesInquire, Schedule, SubCategoryRecommend, ClassesRecommend
+
+
+def helper_rename_list_of_dict_keys( list_object, rename_key_dict ):
+    for list_item in list_object:
+        helper_rename_dict_keys( list_item, rename_key_dict )
+
+
+def helper_rename_dict_keys( dict_object, rename_key_dict ):
+    for before_rename, after_rename in rename_key_dict.iteritems():
+        dict_object[after_rename] = dict_object.pop( before_rename )
 
 def _makeJsonResponse( isSuccess, error_message, error_code = 0 , data = None):
     return_value = {}
@@ -261,10 +271,63 @@ def inquire_view( request, classes_id ):
     if not(request.user.is_authenticated()):
         return HttpResponse( json.dumps( _makeJsonResponse( False, const.ERROR_HAVE_TO_LOGIN, const.CODE_ERROR_HAVE_TO_LOGIN ) ), content_type="application/json" )
     else:
-        classesInquire = ClassesInquire( classes_id = classes_id, user = request.user, content= request.POST.get('content') )
-        # classesInquire.classes_id = classes_id
+        classes_inquire = ClassesInquire( classes_id = classes_id, user = request.user, content= request.POST.get('content') )
         try:
-            classesInquire.save()
+            classes_inquire.save()
         except IntegrityError:
             return HttpResponse( json.dumps( _makeJsonResponse( False, const.ERROR_CLASSES_INQUIRE_FAIL, const.CODE_ERROR_CLASSES_INQUIRE_FAIL ) ), content_type="application/json" )
         return HttpResponse( json.dumps( _makeJsonResponse( True, None ) ), content_type="application/json" )
+
+@csrf_exempt
+def recommend_subcategory_view(request):
+    sub_category_recommend = list ( SubCategoryRecommend.objects.values( 'subCategory__category__name', 'subCategory__name', 'image_url' ) )
+    helper_rename_list_of_dict_keys(sub_category_recommend,
+        {"subCategory__name": "subCategory_name",
+         "subCategory__category__name": "category_name"
+         })
+
+    return _HttpJsonResponse(None, sub_category_recommend)
+
+@csrf_exempt
+def recommend_classes_view(request):
+
+    classes_pks = ClassesRecommend.objects.values_list('classes', flat=True)
+    schedule_pks = ClassesRecommend.objects.values_list('schedule', flat=True)
+    classes = Classes.objects.filter(pk__in=classes_pks).select_related('get_schedules', 'company', ).all()
+    classes_list = []
+
+    for classes_item in classes:
+        classes_list_item = {}
+        classes_list_item.update({
+            'id': classes_item.id,
+            'title': classes_item.title,
+            'company': classes_item.company.name,
+            'nearby_station': classes_item.company.nearby_station,
+            'price_of_day': classes_item.priceOfDay,
+            'price_of_month': classes_item.priceOfMonth,
+            'image_url': classes_item.image_url,
+            'discount_rate': round(100 - classes_item.priceOfMonth*100.0/(classes_item.priceOfDay*classes_item.countOfMonth))
+        })
+        schedules = classes_item.get_schedules.filter(pk__in=schedule_pks).all()
+        for schedule in schedules:
+            classes_list_item_detail = classes_list_item.copy()
+
+            # get weekday
+            weekday_express_by_string_list = schedule.dayOfWeek.split('|')
+
+            # get start time
+            start_time_list = schedule.startTime.split('|')
+
+            times = []
+            for i in range(len(weekday_express_by_string_list)):
+                times.append(weekday_express_by_string_list[i] + " : " + start_time_list[i] )
+
+            classes_list_item_detail.update({
+                'times': times,
+                'duration': schedule.duration.strftime("%H시간%M분").decode('utf-8'),
+                'schedule_id': schedule.id
+            })
+
+            classes_list.append(classes_list_item_detail)
+
+    return _HttpJsonResponse( None, classes_list )
