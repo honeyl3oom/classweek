@@ -91,8 +91,8 @@ def login_view( request ):
     email = request.POST['email']
     password = request.POST['password']
 
-    (error, error_code ) = _login( request, email, password )
-    (name, birthday, phonenumber, gender) = _get_userinfo( request, error_code )
+    (error, error_code ) = _login(request, email, password)
+    (name, birthday, phonenumber, gender) = _get_userinfo(request, error_code )
 
     return _HttpJsonResponse( error, error_code, name, birthday, phonenumber, gender )
 

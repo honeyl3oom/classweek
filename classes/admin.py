@@ -1,25 +1,19 @@
 from django.contrib import admin
-from classes.models import Company, Category, SubCategory, Classes, Schedule, SubCategoryRecommend, ClassesRecommend
+from classes.models import Company, CompanyImage, Category, SubCategory, SubCategoryRecommend,\
+Classes, ClassesImage, ClassesInquire, Schedule, ClassesRecommend
 
-class CompanyAdmin( admin.ModelAdmin ):
-    pass
+# class CompanyAdmin( admin.ModelAdmin ):
+#     pass
+#
+# admin.site.register(Company, CompanyAdmin)
 
-class CategoryAdmin( admin.ModelAdmin ):
-    pass
-
-class SubCategoryAdmin( admin.ModelAdmin ):
-    pass
-
-class ClassesAdmin( admin.ModelAdmin ):
-    pass
-
-class ScheduleAdmin( admin.ModelAdmin ):
-    pass
-
-admin.site.register(Company, CompanyAdmin)
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(SubCategory, SubCategoryAdmin)
-admin.site.register(Classes, ClassesAdmin)
-admin.site.register(Schedule, ScheduleAdmin)
-admin.site.register( SubCategoryRecommend )
-admin.site.register( ClassesRecommend )
+admin.site.register(Company)
+admin.site.register(CompanyImage)
+admin.site.register(Category)
+admin.site.register(SubCategory)
+admin.site.register(SubCategoryRecommend)
+admin.site.register(Classes)
+admin.site.register(ClassesImage)
+admin.site.register(ClassesInquire)
+admin.site.register(Schedule)
+admin.site.register(ClassesRecommend)
