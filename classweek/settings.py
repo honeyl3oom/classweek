@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'classes',
     'forcompany',
     'forcompany.templatetags',
+    'foradmin',
     'csvimport',
 )
 
@@ -56,6 +57,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'custom_middleware.logger.ApiLogger',
 )
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
