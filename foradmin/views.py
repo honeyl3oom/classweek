@@ -9,10 +9,9 @@ from classweek.custom_modules.INImx import INImx
 def payment_startweb_test_view(request):
     payment_next_url = request.build_absolute_uri(reverse('payment_next_test', args=[]))
     payment_return_url = request.build_absolute_uri(reverse('payment_return_test', args=[]))
-    httpResponse = render(request, 'payment_startweb_test.html',
+    return render(request, 'payment_startweb_test.html',
                   {'payment_next_url': payment_next_url,
                    'payment_return_url': payment_return_url})
-    return httpResponse
 
 @csrf_exempt
 def payment_next_test_view(request):
