@@ -3,3 +3,15 @@
 [27/Apr/2014 11:15:21] DEBUG [foradmin.views:13] this is a debug message!
 [27/Apr/2014 11:15:30] DEBUG [foradmin.views:13] this is a debug message!
 [27/Apr/2014 11:16:31] DEBUG [foradmin.views:13] this is a debug message!
+[27/Apr/2014 11:48:58] DEBUG [foradmin.views:13] this is a debug message!
+[27/Apr/2014 11:49:20] DEBUG [foradmin.views:13] this is a debug message!
+[27/Apr/2014 11:49:22] DEBUG [foradmin.views:13] this is a debug message!
+[27/Apr/2014 11:49:31] DEBUG [foradmin.views:13] this is a debug message!
+[27/Apr/2014 11:51:33] DEBUG [foradmin.views:13] this is a debug message!
+[27/Apr/2014 11:53:17] DEBUG [foradmin.views:13] this is a debug message!
+[27/Apr/2014 11:54:02] DEBUG [foradmin.views:28] def payment_next_test_view(request):
+[27/Apr/2014 11:54:02] DEBUG [foradmin.views:29] <QueryDict: {}>
+[27/Apr/2014 11:54:02] DEBUG [foradmin.views:30] <QueryDict: {u'P_RMESG1': [u'\ufffd\u023d\ufffd\u016c\ufffd\ufffd \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd \ufffd\u04b0\ufffd\ufffd\ufffd\ufffd\u0574\u03f4\ufffd. \ufffd\ufffd\ufffd\ufffd\ufffd \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd,\ufffd\ufffd\ufffd\ufffd\ufffd\u0435\ufffd \ufffd\ufffd\ufffd\U0007deb8\ufffd \ufffd\ufffd\ufffd\ufffd\ufffd\u0574\u03f4\ufffd.(2121)'], u'P_NOTI': [u''], u'P_STATUS': [u'01'], u'P_REQ_URL': [u'https://mobile.inicis.com/smart/pay_req_url.php'], u'P_TID': [u'']}>
+[27/Apr/2014 11:55:37] DEBUG [foradmin.views:28] def payment_next_test_view(request):
+[27/Apr/2014 11:55:37] DEBUG [foradmin.views:29] <QueryDict: {}>
+[27/Apr/2014 11:55:37] DEBUG [foradmin.views:30] <QueryDict: {u'P_RMESG1': [u'\ufffd\u023d\ufffd\u016c\ufffd\ufffd \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd \ufffd\u04b0\ufffd\ufffd\ufffd\ufffd\u0574\u03f4\ufffd. \ufffd\ufffd\ufffd\ufffd\ufffd \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd,\ufffd\ufffd\ufffd\ufffd\ufffd\u0435\ufffd \ufffd\ufffd\ufffd\U0007deb8\ufffd \ufffd\ufffd\ufffd\ufffd\ufffd\u0574\u03f4\ufffd.(2121)'], u'P_NOTI': [u''], u'P_STATUS': [u'01'], u'P_REQ_URL': [u'https://mobile.inicis.com/smart/pay_req_url.php'], u'P_TID': [u'']}>
