@@ -20,7 +20,8 @@ def payment_next_test_view(request):
     inimx.inipayhome = "/home/ts/INIpay50/" # 로그기록 경로 (이 위치의 하위폴더에 log폴더 생성 후 log폴더에 대해 777 권한 설정)
 
     print '------------def payment_next_test_view(request):--------------'
-    print request
+    print request.GET
+    print request.POST
 
     # print inimx.P_TID
 
@@ -30,6 +31,7 @@ def payment_next_test_view(request):
 def payment_return_test_view(request):
 
     print '------------def payment_return_test_view(request):--------------'
-    print request
+    print request.GET
+    print request.POST
 
     return HttpResponse('payment_return_test_view')
