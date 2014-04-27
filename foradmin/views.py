@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
@@ -8,9 +9,10 @@ from classweek.custom_modules.INImx import INImx
 def payment_startweb_test_view(request):
     payment_next_url = request.build_absolute_uri(reverse('payment_next_test', args=[]))
     payment_return_url = request.build_absolute_uri(reverse('payment_return_test', args=[]))
-    return render(request, 'payment_startweb_test.html',
+    httpResponse = render(request, 'payment_startweb_test.html',
                   {'payment_next_url': payment_next_url,
                    'payment_return_url': payment_return_url})
+    return httpResponse
 
 @csrf_exempt
 def payment_next_test_view(request):

@@ -6,7 +6,7 @@
 <title>INIpayMobile 결제 샘플</title>
 <style>
 body, tr, td {font-size:10pt; font-family:돋움,verdana; color:#433F37; line-height:19px;}
-table, img {border:none}
+table, img { border:none }
 
 </style>
 <script type="application/x-javascript">
@@ -17,7 +17,7 @@ table, img {border:none}
     {
         setTimeout(updateLayout, 0);
     }, false);
- 
+
     var currentWidth = 0;
     
     function updateLayout()
@@ -133,6 +133,7 @@ function on_web()
   order_form.target = "BTPG_WALLET";
   //order_form.target = "_self";
   order_form.action = "https://mobile.inicis.com/smart/" + paymethod + "/";
+  document.charset = 'euc-kr';
   order_form.submit();
 }
 
