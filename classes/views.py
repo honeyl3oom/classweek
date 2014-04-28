@@ -7,6 +7,7 @@ from classweek.const import ITEM_COUNT_IN_PAGE, WEEKDAY_NUMBER_CONVERTER
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+from django.templatetags.static import static
 from django.core import serializers
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 

@@ -24,12 +24,13 @@ class ApiLogger(object):
             request.session.set_expiry(60 * 60 * 24 * 10000)
         request_params = repr(params_dict).decode('unicode-escape').replace("u'","'")
 
-        if request.user.is_authenticated():
-            user_session = UserSession(user=request.user, user_session_id=user_session_id)
-            try:
-                user_session.save()
-            except IntegrityError as e:
-                pass
+        if hasattr(request, 'user'):
+            if request.user.is_authenticated():
+                user_session = UserSession(user=request.user, user_session_id=user_session_id)
+                try:
+                    user_session.save()
+                except IntegrityError as e:
+                    pass
 
         api_log = ApiLog( user_session_id=user_session_id, path_name=path_name, view_name=view_name, request_params=request_params )
         api_log.save()
@@ -38,11 +39,13 @@ class ApiLogger(object):
 
     @staticmethod
     def process_response(request, response):
-        if request.user.is_authenticated() and request.session.get('user_session_id', None) is not None:
-            user_session = UserSession(user=request.user, user_session_id=request.session.get('user_session_id', None))
-            try:
-                user_session.save()
-            except IntegrityError as e:
-                pass
+
+        if hasattr(request, 'user'):
+            if request.user.is_authenticated() and request.session.get('user_session_id', None) is not None:
+                user_session = UserSession(user=request.user, user_session_id=request.session.get('user_session_id', None))
+                try:
+                    user_session.save()
+                except IntegrityError as e:
+                    pass
 
         return response

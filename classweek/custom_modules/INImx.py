@@ -1,8 +1,18 @@
 # -*- coding: utf-8 -*-
 
+import logging
+
 class INImx():
 
+    #
+    logger = None
+
     P_TID = None
+    P_STATUS = None
+    P_RMESG1 = None
+    P_REQ_URL = None
+    P_NOTI = None
+
 
     # 요청 구분 : 공통
     reqtype = None
@@ -37,11 +47,29 @@ class INImx():
     m_prtc = None
 
 
-    def __init__(self, request ):
-        self.P_TID = request.POST.get('P_TID', None )
+    def __init__(self, request, request_name ):
+
+        self.logger = logging.getLogger(request_name)
+
+        self.P_TID = request.POST.get('P_TID', None)
+        self.P_STATUS = request.POST.get('P_TID', None)
+        self.P_RMESG1 = request.POST.get('P_RMESG1', None)
+        self.P_REQ_URL = request.POST.get('P_REQ_URL', None)
+        self.P_NOTI = request.POST.get('P_NOTE', None)
         pass
 
     def start_action(self):
+
+        self.logger.debug('Start INImx_AUTH' + self.reqtype.VERSION)
+        self.logger.debug('INIPAYHOME' + self.inipayhome)
+        self.logger.debug('P_MID' + self.id_merchant)
+        self.logger.debug('P_STATUS' + self.status)
+        self.logger.debug('P_RMESG1' + self.rmesg1)
+        self.logger.debug('P_TID' + self.tid)
+        self.logger.debug('P_REQ_URL' + self.req_url)
+        self.logger.debug('P_NOTI' + self.noti)
+        self.logger.debug('AUTH Transaction End')
+
         if self.reqtype == "PAY":
             self.do_pay()
 
