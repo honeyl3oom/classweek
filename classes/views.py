@@ -85,7 +85,7 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
                 'nearby_station': classes_item.company.nearby_station,
                 'price_of_day': classes_item.priceOfDay,
                 'price_of_month': classes_item.priceOfMonth,
-                'image_url': classes_item.image_url,
+                'image_url': request.get_host() + classes_item.image_url,
                 'discount_rate': round(100 - classes_item.priceOfMonth*100.0/(classes_item.priceOfDay*classes_item.countOfMonth))
                 })
             schedules = classes_item.get_schedules.all()
