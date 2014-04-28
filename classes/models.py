@@ -11,7 +11,7 @@ class Company(models.Model):
     facilitiesInfomation = models.TextField()
 
     def __str__(self):
-        return self.name
+        return 'Company : %s' % self.name
 
     def __unicode__(self):
         return 'Company : %s' % self.name
@@ -24,7 +24,7 @@ class Category(models.Model):
     name = models.TextField( unique=True )
 
     def __str__(self):
-        return self.name
+        return 'Category : %s' % self.name
 
     def __unicode__(self):
         return 'Category : %s' % self.name
@@ -37,7 +37,7 @@ class SubCategory(models.Model):
     image_url = models.URLField( null=True )
 
     def __str__(self):
-        return self.name
+        return 'SubCategory : %s' % self.name
 
     def __unicode__(self):
         return 'SubCategory : %s' % self.name
@@ -62,7 +62,7 @@ class Classes(models.Model):
     image_url = models.URLField( null=True )
 
     def __str__(self):
-        return self.title
+        return '(%d)Classes : %s / %s' % (self.id, self.title, self.description )
 
     def __unicode__(self):
         return '(%d)Classes : %s / %s' % (self.id, self.title, self.description )
@@ -85,7 +85,7 @@ class Schedule(models.Model):
     duration = models.TimeField( default='00:00:00')
 
     def __str__(self):
-        return self.dayOfWeek
+        return '(%d)Schedule : %s %r' % (self.id, self.dayOfWeek, self.startTime )
 
     def __unicode__(self):
         return '(%d)Schedule : %s %r' % (self.id, self.dayOfWeek, self.startTime )
