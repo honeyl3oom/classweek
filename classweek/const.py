@@ -7,21 +7,30 @@ TIME_NUMBER_CONVERTER = {
     '오후':1,
     '저녁':2
 }
-WEEKDAY_NUMBER_CONVERTER = {
-    'Mon':0,
-    'Tue':1,
-    'Wed':2,
-    'Thu':3,
-    'Fri':4,
-    'Sat':5,
-    'Sun':6,
-    0:'Mon',
-    1:'Tue',
-    2:'Wed',
-    3:'Thu',
-    4:'Fri',
-    5:'Sat',
-    6:'Sun'
+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING = {
+    'Mon': 0,
+    'Tue': 1,
+    'Wed': 2,
+    'Thu': 3,
+    'Fri': 4,
+    'Sat': 5,
+    'Sun': 6,
+    0: 'Mon',
+    1: 'Tue',
+    2: 'Wed',
+    3: 'Thu',
+    4: 'Fri',
+    5: 'Sat',
+    6: 'Sun'
+}
+WEEKDAY_CONVERT_TO_KOREAN = {
+    'Mon': '월',
+    'Tue': '화',
+    'Wed': '수',
+    'Thu': '목',
+    'Fri': '금',
+    'Sat': '토',
+    'Sun': '일'
 }
 
 RESPONSE_STR_SUCCESS = 'success'

@@ -515,3 +515,12 @@ Traceback (most recent call last):
   File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/conf/urls/static.py", line 22, in static
     raise ImproperlyConfigured("Empty static prefix not permitted")
 ImproperlyConfigured: Empty static prefix not permitted
+[28/Apr/2014 10:44:37] ERROR [django.request:226] Internal Server Error: /classes/24/14
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 205, in getClassesDetail_view
+    times.append(WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i]] + " : " + start_time_express_by_string_list[i][0:5])
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xec in position 0: ordinal not in range(128)

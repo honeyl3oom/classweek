@@ -3,7 +3,7 @@ import json
 import datetime, time
 
 from classweek import const
-from classweek.const import ITEM_COUNT_IN_PAGE, WEEKDAY_NUMBER_CONVERTER
+from classweek.const import ITEM_COUNT_IN_PAGE, WEEKDAY_CONVERT_TO_NUMBER_OR_STRING, WEEKDAY_CONVERT_TO_KOREAN
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
@@ -99,7 +99,7 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
                 is_excluded_by_weekday = False
                 if weekday_filter is not None:
                     for i in range(len(weekday_express_by_string_list)):
-                        if not(str(weekday_filter).__contains__(str(WEEKDAY_NUMBER_CONVERTER[weekday_express_by_string_list[i]]))):
+                        if not(str(weekday_filter).__contains__(str(WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[i]]))):
                             is_excluded_by_weekday = True
                             break
                 if is_excluded_by_weekday:
@@ -197,12 +197,12 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'detail_image_url': detail_images
     })
 
-    dayOfWeek_list = schedule.dayOfWeek.split('|')
-    startTime_list = schedule.startTime.split('|')
+    weekday_express_by_string_list = schedule.dayOfWeek.split('|')
+    start_time_express_by_string_list = schedule.startTime.split('|')
 
     times = []
-    for i in range( len(dayOfWeek_list ) ):
-        times.append( dayOfWeek_list[i] + " : " + startTime_list[i] )
+    for i in range(len(weekday_express_by_string_list)):
+        times.append(WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i]].decode('utf-8') + " : " + start_time_express_by_string_list[i][0:5])
 
     classes_detail.update({
         'times':times,
@@ -218,46 +218,46 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
     today_weekday = today.weekday()
 
     current_weekday_position = 0
-    for i in range( len(dayOfWeek_list ) ):
-        if today_weekday <= WEEKDAY_NUMBER_CONVERTER[dayOfWeek_list[i]]:
+    for i in range( len(weekday_express_by_string_list ) ):
+        if today_weekday <= WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[i]]:
             current_weekday_position = i
             break
 
     one_month_schedule = []
     for i in range(4):
 
-        for j in range( current_weekday_position, len(dayOfWeek_list ) ):
-            if (today+timedelta_from_today).weekday() <= WEEKDAY_NUMBER_CONVERTER[dayOfWeek_list[j]]:
-                timedelta_from_today = datetime.timedelta(days=timedelta_from_today.days+WEEKDAY_NUMBER_CONVERTER[dayOfWeek_list[j]]-(today+timedelta_from_today).weekday())
+        for j in range( current_weekday_position, len(weekday_express_by_string_list ) ):
+            if (today+timedelta_from_today).weekday() <= WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j]]:
+                timedelta_from_today = datetime.timedelta(days=timedelta_from_today.days+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j]]-(today+timedelta_from_today).weekday())
             else:
-                timedelta_from_today = datetime.timedelta(days=7+timedelta_from_today.days+WEEKDAY_NUMBER_CONVERTER[dayOfWeek_list[j]]-(today+timedelta_from_today).weekday())
+                timedelta_from_today = datetime.timedelta(days=7+timedelta_from_today.days+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j]]-(today+timedelta_from_today).weekday())
 
             start_date = today+timedelta_from_today
             if j == 0:
-                end_date = start_date + datetime.timedelta(days=21+WEEKDAY_NUMBER_CONVERTER[dayOfWeek_list[len(dayOfWeek_list)-1]] - start_date.weekday())
+                end_date = start_date + datetime.timedelta(days=21+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[len(weekday_express_by_string_list)-1]] - start_date.weekday())
             else:
-                end_date = start_date + datetime.timedelta(days=28+WEEKDAY_NUMBER_CONVERTER[dayOfWeek_list[j-1]] - start_date.weekday())
+                end_date = start_date + datetime.timedelta(days=28+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j-1]] - start_date.weekday())
 
             one_month_schedule.append( {
-                'start_date_time':str(start_date.month)+"-"+str(start_date.day)+"("+WEEKDAY_NUMBER_CONVERTER[start_date.weekday()]+") " + str(startTime_list[j]),
-                'end_date_time':str(end_date.month)+"-"+str(end_date.day)+"("+WEEKDAY_NUMBER_CONVERTER[end_date.weekday()]+") " + str(startTime_list[j])
+                'start_date_time':str(start_date.month)+"-"+str(start_date.day)+"("+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[start_date.weekday()]+") " + str(start_time_express_by_string_list[j]),
+                'end_date_time':str(end_date.month)+"-"+str(end_date.day)+"("+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[end_date.weekday()]+") " + str(start_time_express_by_string_list[j])
             })
 
         for j in range( 0, current_weekday_position+1 ):
-            if (today+timedelta_from_today).weekday() <= WEEKDAY_NUMBER_CONVERTER[dayOfWeek_list[j]]:
-                timedelta_from_today = datetime.timedelta(days=timedelta_from_today.days+WEEKDAY_NUMBER_CONVERTER[dayOfWeek_list[j]]-(today+timedelta_from_today).weekday())
+            if (today+timedelta_from_today).weekday() <= WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j]]:
+                timedelta_from_today = datetime.timedelta(days=timedelta_from_today.days+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j]]-(today+timedelta_from_today).weekday())
             else:
-                timedelta_from_today = datetime.timedelta(days=7+timedelta_from_today.days+WEEKDAY_NUMBER_CONVERTER[dayOfWeek_list[j]]-(today+timedelta_from_today).weekday())
+                timedelta_from_today = datetime.timedelta(days=7+timedelta_from_today.days+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j]]-(today+timedelta_from_today).weekday())
 
             start_date = today+timedelta_from_today
             if j == 0:
-                end_date = start_date + datetime.timedelta(days=21+WEEKDAY_NUMBER_CONVERTER[dayOfWeek_list[len(dayOfWeek_list)-1]] - start_date.weekday())
+                end_date = start_date + datetime.timedelta(days=21+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[len(weekday_express_by_string_list)-1]] - start_date.weekday())
             else:
-                end_date = start_date + datetime.timedelta(days=28+WEEKDAY_NUMBER_CONVERTER[dayOfWeek_list[j-1]] - start_date.weekday())
+                end_date = start_date + datetime.timedelta(days=28+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j-1]] - start_date.weekday())
 
             one_month_schedule.append( {
-                'start_date_time':str(start_date.month)+"-"+str(start_date.day)+"("+WEEKDAY_NUMBER_CONVERTER[start_date.weekday()]+") " + str(startTime_list[j]),
-                'end_date_time':str(end_date.month)+"-"+str(end_date.day)+"("+WEEKDAY_NUMBER_CONVERTER[end_date.weekday()]+") " + str(startTime_list[j])
+                'start_date_time':str(start_date.month)+"-"+str(start_date.day)+"("+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[start_date.weekday()]+") " + str(start_time_express_by_string_list[j]),
+                'end_date_time':str(end_date.month)+"-"+str(end_date.day)+"("+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[end_date.weekday()]+") " + str(start_time_express_by_string_list[j])
             })
 
     classes_detail.update({
