@@ -59,6 +59,9 @@ def getSubCategoryList_view( request, category_name ):
 # location, weekday, time( morning, .. ), price ( by month )
 @csrf_exempt
 def getClassesList_view( request, category_name, subcategory_name, page_num = 1 ):
+
+    print category_name, subcategory_name
+
     page_num = int(page_num)
 
     subcategory = SubCategory.objects.filter( name = subcategory_name ).select_related( 'get_classes' )
