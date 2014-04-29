@@ -8,7 +8,7 @@ class Company(models.Model):
     location = models.TextField()
     zone = models.TextField( null=False, blank=True, default='' )
     nearby_station = models.TextField( null=True )
-    facilitiesInfomation = models.TextField()
+    facilitiesInformation = models.TextField( null=False, blank=True, default='' )
 
     def __str__(self):
         return 'Company : %s' % self.name
@@ -54,12 +54,15 @@ class Classes(models.Model):
     description = models.TextField( null=True )
     preparation = models.TextField( null=True )
     personalOrGroup = models.TextField( null=True )
-    refundInfomation = models.TextField( null=True )
+    refundInformation = models.TextField( null=True )
     # countOfDay = models.IntegerField( null=True )
     priceOfDay = models.IntegerField( null=True )
     countOfMonth = models.IntegerField( null=True )
     priceOfMonth = models.IntegerField( null=True )
     image_url = models.URLField( null=True )
+
+    class Meta:
+        unique_together = (("title", "thumbnail_image_url", "subCategory", "company", "description", "preparation", "personalOrGroup", "refundInformation", "priceOfDay", "countOfMonth", "priceOfMonth", "image_url"),)
 
     def __str__(self):
         return '(%d)Classes : %s / %s' % (self.id, self.title, self.description )

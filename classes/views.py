@@ -13,7 +13,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # from django.core import serializers
 from django.db import IntegrityError
-from classes.models import Category, SubCategory, Classes, ClassesInquire, Schedule, SubCategoryRecommend, ClassesRecommend
+from classes.models import Category, Company,\
+    SubCategory, Classes, ClassesInquire, Schedule, SubCategoryRecommend, ClassesRecommend
 
 
 def helper_rename_list_of_dict_keys( list_object, rename_key_dict ):
@@ -171,7 +172,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'person_or_group': classes.personalOrGroup,
         'description': classes.description,
         'preparation': classes.preparation,
-        'refund_info': classes.refundInfomation,
+        'refund_info': classes.refundInformation,
         'price_of_day': classes.priceOfDay,
         'price_of_month': classes.priceOfMonth,
         'count_of_month': classes.countOfMonth,
@@ -179,16 +180,16 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'image_url': classes.image_url,
     })
 
-    facilitiesInfomation = classes.company.facilitiesInfomation
+    facilitiesInformation = classes.company.facilitiesInformation
 
     classes_detail.update({
-        'toilet': facilitiesInfomation.__contains__('toilet'),
-        'fitting_room': facilitiesInfomation.__contains__('fitting_room'),
-        'shower_stall': facilitiesInfomation.__contains__('shower_stall'),
-        'locker': facilitiesInfomation.__contains__('locker'),
-        'parking_lot': facilitiesInfomation.__contains__('parking_lot'),
-        'practice_room': facilitiesInfomation.__contains__('practice_room'),
-        'instrument_rental': facilitiesInfomation.__contains__('instrument_rental')
+        'toilet': facilitiesInformation.__contains__('toilet'),
+        'fitting_room': facilitiesInformation.__contains__('fitting_room'),
+        'shower_stall': facilitiesInformation.__contains__('shower_stall'),
+        'locker': facilitiesInformation.__contains__('locker'),
+        'parking_lot': facilitiesInformation.__contains__('parking_lot'),
+        'practice_room': facilitiesInformation.__contains__('practice_room'),
+        'instrument_rental': facilitiesInformation.__contains__('instrument_rental')
     })
 
     images = classes.get_images.all()
@@ -335,3 +336,225 @@ def recommend_classes_view(request):
             classes_list.append(classes_list_item_detail)
 
     return _HttpJsonResponse( None, classes_list )
+
+
+
+
+
+
+
+
+import csv
+
+
+def import_category_csv_file_view(request):
+    with open('./classes/resource/model/csv/category_model.csv', 'rb') as f:
+        reader = csv.reader(f)
+        is_first = True
+
+        for row in reader:
+            if is_first:
+                is_first = False
+                continue
+            category = Category(name=row[0])
+            try:
+                category.save()
+            except Exception, e:
+                print e
+
+    return HttpResponse('success')
+
+
+def import_sub_category_csv_file_view(request):
+    with open('./classes/resource/model/csv/sub_category_model.csv', 'rb') as f:
+        reader = csv.reader(f)
+        is_first = True
+
+        for row in reader:
+            if is_first:
+                is_first = False
+                continue
+
+            sub_category = SubCategory(name=unicode(row[0], 'euc-kr'), category=Category.objects.get(name=unicode(row[1], 'euc-kr')), name_kor=unicode(row[2], 'euc-kr'), description=unicode(row[3], 'euc-kr'), image_url=unicode(row[4], 'euc-kr'))
+            # category_id = Category.objects.filter(name=unicode(row[1], 'euc-kr')).first().id
+            # sub_category = SubCategory(name=unicode(row[0], 'euc-kr'), category_id=category_id, name_kor=unicode(row[2], 'euc-kr'), description=unicode(row[3], 'euc-kr'), image_url=unicode(row[4], 'euc-kr'))
+            try:
+                sub_category.save()
+            except Exception, e:
+                print e
+
+    return HttpResponse('success')
+
+
+def import_company_csv_file_view(request):
+    with open('./classes/resource/model/csv/company_model.csv', 'rb') as f:
+        reader = csv.reader(f)
+        is_first = True
+
+        for row in reader:
+            if is_first:
+                is_first = False
+                continue
+
+            company = Company(
+                name=unicode(row[0], 'euc-kr'),
+                phone_number=unicode(row[1], 'euc-kr'),
+                location=unicode(row[2], 'euc-kr'),
+                zone=unicode(row[3], 'euc-kr'),
+                nearby_station=unicode(row[4], 'euc-kr'),
+                facilitiesInformation=unicode(row[5], 'euc-kr'))
+
+            try:
+                company.save()
+            except Exception, e:
+                print e
+
+    return HttpResponse('success')
+
+
+def import_classes_csv_file_view(request):
+    with open('./classes/resource/model/csv/classes_model.csv', 'rb') as f:
+        reader = csv.reader(f)
+        is_first = True
+
+        for row in reader:
+            if is_first:
+                is_first = False
+                continue
+
+            try:
+                sub_category = SubCategory.objects.get(name=unicode(row[2], 'euc-kr'))
+            except Exception, e:
+                print unicode(row[2], 'euc-kr'), e
+
+            try:
+                company = Company.objects.get(name=unicode(row[3], 'euc-kr'))
+            except Exception, e:
+                print unicode(row[3], 'euc-kr'), e
+
+
+            classes = Classes(title=unicode(row[0], 'euc-kr'),
+                              thumbnail_image_url=unicode(row[1], 'euc-kr'),
+                              subCategory=sub_category,
+                              company=company,
+                              description=unicode(row[4], 'euc-kr'),
+                              preparation=unicode(row[5], 'euc-kr'),
+                              personalOrGroup=unicode(row[6], 'euc-kr'),
+                              refundInformation=unicode(row[7], 'euc-kr'),
+                              priceOfDay=unicode(row[8], 'euc-kr'),
+                              countOfMonth=unicode(row[9], 'euc-kr'),
+                              priceOfMonth=unicode(row[10], 'euc-kr'),
+                              image_url=unicode(row[11], 'euc-kr'))
+            try:
+                classes.save()
+            except Exception, e:
+                pass
+
+    return HttpResponse('success')
+
+def import_schedule_csv_file_view(request):
+    with open('./classes/resource/model/csv/schedule_model.csv', 'rb') as f:
+        reader = csv.reader(f)
+        is_first = True
+
+        for row in reader:
+            if is_first:
+                is_first = False
+                continue
+
+            try:
+                sub_category = SubCategory.objects.get(name=unicode(row[2], 'euc-kr'))
+            except Exception, e:
+                print unicode(row[2], 'euc-kr'), e
+
+            try:
+                company = Company.objects.get(name=unicode(row[3], 'euc-kr'))
+            except Exception, e:
+                print unicode(row[3], 'euc-kr'), e
+
+            try:
+                classes = Classes.objects.get(title=unicode(row[0], 'euc-kr'),
+                              thumbnail_image_url=unicode(row[1], 'euc-kr'),
+                              subCategory=sub_category,
+                              company=company,
+                              description=unicode(row[4], 'euc-kr'),
+                              preparation=unicode(row[5], 'euc-kr'),
+                              personalOrGroup=unicode(row[6], 'euc-kr'),
+                              refundInformation=unicode(row[7], 'euc-kr'),
+                              priceOfDay=unicode(row[8], 'euc-kr'),
+                              countOfMonth=unicode(row[9], 'euc-kr'),
+                              priceOfMonth=unicode(row[10], 'euc-kr'),
+                              image_url=unicode(row[11], 'euc-kr'))
+            except Exception, e:
+                print e
+
+            schedule = Schedule(classes=classes,
+                                dayOfWeek=unicode(row[12], 'euc-kr'),
+                                startTime=unicode(row[13], 'euc-kr'),
+                                duration=unicode(row[14], 'euc-kr'))
+            try:
+                schedule.save()
+            except Exception, e:
+                print e
+
+    return HttpResponse('success')
+
+# import csv
+#
+# def import_category_csv_file_view(request):
+#     with open('./classes/resource/model/csv/category_model.csv', 'rb') as f:
+#         reader = csv.reader(f)
+#
+#         headers = None
+#         for row in reader:
+#
+#             if headers is None:
+#                 headers = row
+#             else:
+#                 category = Category()
+#                 for i in range(len(headers)):
+#                     # category = Category(**{headers[i]: row[i]})
+#                     setattr(category, headers[i], row[i])
+#
+#                 try:
+#                     category.save()
+#                 except:
+#                     pass
+#
+#     return HttpResponse('success')
+#
+# def import_sub_category_csv_file_view(reqeust):
+#     # subCategory = SubCategory(name='test',name_kor='테스트',description='ddd',image_url='http://test')
+#     # ppp = Category.objects.filter(name='music').first().id
+#     # print ppp
+#     # subCategory.category.name = 'music'
+#     # subCategory.save()
+#
+#     with open('./classes/resource/model/csv/sub_category_model.csv', 'rb') as f:
+#         reader = csv.reader(f)
+#
+#         headers = None
+#         for row in reader:
+#
+#             if headers is None:
+#                 headers = row
+#             else:
+#                 sub_category = SubCategory()
+#                 for i in range(len(headers)):
+#                     if str(headers[i]).__contains__('__'):
+#                         headers_list = str(headers[i]).split('__')
+#                     setattr(sub_category, headers[i], unicode(row[i], 'euc-kr') )
+#
+#                 # print sub_category.category_name
+#                 # print sub_category.name, sub_category
+#
+#                 try:
+#                     sub_category.save()
+#                 except Exception, e:
+#                     print e
+#
+#     return HttpResponse('success')
+
+# def category_csv_import():
+#     category = Category(name='test')
+#     category.save()
