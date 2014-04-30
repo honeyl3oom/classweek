@@ -128,6 +128,10 @@ LOGGING = {
             'handlers': ['file_foradmin'],
             'level': 'DEBUG',
         },
+        'classes': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
     }
 }
 

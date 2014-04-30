@@ -15,6 +15,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import IntegrityError
 from classes.models import Category, Company,\
     SubCategory, Classes, ClassesInquire, Schedule, SubCategoryRecommend, ClassesRecommend
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def helper_rename_list_of_dict_keys( list_object, rename_key_dict ):
@@ -39,7 +42,8 @@ def _makeJsonResponse( isSuccess, error_message, error_code = 0 , data = None):
 
     return return_value
 
-def _HttpJsonResponse( error, data, error_code = 0):
+
+def _http_json_response(error, data, error_code = 0):
     if error is None:
         return HttpResponse(json.dumps( _makeJsonResponse( True, None, error_code, data ) , ensure_ascii=False ), content_type="application/json; charset=utf-8" )
     else:
@@ -47,15 +51,15 @@ def _HttpJsonResponse( error, data, error_code = 0):
 
 
 @csrf_exempt
-def getSubCategoryList_view( request, category_name ):
-
-    category = Category.objects.filter( name = category_name ).select_related( 'get_subcategorys' )
+def get_sub_category_list_view(request, category_name ):
+    logger.debug('def getSubCategoryList_view( request, category_name ):')
+    category = Category.objects.filter(name=category_name).select_related( 'get_subcategorys' )
     if category.exists():
-        subCategorys = category.first().get_subcategorys.filter( category__name = category_name ).values()
+        sub_categorys = category.first().get_subcategorys.filter(category__name=category_name).values()
 
-        return _HttpJsonResponse( None, list(subCategorys) )
+        return _http_json_response(None, list(sub_categorys))
     else:
-        return _HttpJsonResponse( const.ERROR_CATEGORY_NAME_DOES_NOT_EXIST, None , const.CODE_ERROR_CATEGORY_NAME_DOES_NOT_EXIST )
+        return _http_json_response(const.ERROR_CATEGORY_NAME_DOES_NOT_EXIST, None , const.CODE_ERROR_CATEGORY_NAME_DOES_NOT_EXIST)
 
 # location, weekday, time( morning, .. ), price ( by month )
 @csrf_exempt
@@ -151,10 +155,10 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
 
                 classes_list.append(item_detail)
 
-        return _HttpJsonResponse( None, classes_list[ (page_num-1)*ITEM_COUNT_IN_PAGE : page_num*ITEM_COUNT_IN_PAGE ] )
+        return _http_json_response( None, classes_list[ (page_num-1)*ITEM_COUNT_IN_PAGE : page_num*ITEM_COUNT_IN_PAGE ] )
         # return _HttpJsonResponse( None, json.dumps( classes_list[ (page_num-1)*ITEM_COUNT_IN_PAGE : page_num*ITEM_COUNT_IN_PAGE ] , ensure_ascii=False ) )
     else:
-        return _HttpJsonResponse( const.ERROR_SUBCATEGORY_NAME_DOES_NOT_EXIST, None , const.CODE_ERROR_SUBCATEGORY_NAME_DOES_NOT_EXIST )
+        return _http_json_response( const.ERROR_SUBCATEGORY_NAME_DOES_NOT_EXIST, None , const.CODE_ERROR_SUBCATEGORY_NAME_DOES_NOT_EXIST )
 
 @csrf_exempt
 def getClassesDetail_view( request, classes_id, schedule_id ):
@@ -195,10 +199,11 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
     images = classes.get_images.all()
     detail_images = []
     for image in images:
-        detail_images.append( image.image_url )
+        if len(image.image_url) > 0:
+            detail_images.append('http://' + request.get_host() + image.image_url)
 
-    classes_detail.update({\
-        'detail_image_url': 'http://' + request.get_host() + detail_images
+    classes_detail.update({
+        'detail_image_url': detail_images
     })
 
     weekday_express_by_string_list = schedule.dayOfWeek.split('|')
@@ -269,7 +274,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
     })
 
     # print repr(classes)
-    return _HttpJsonResponse( None, classes_detail )
+    return _http_json_response( None, classes_detail )
 
 @csrf_exempt
 def inquire_view( request, classes_id ):
@@ -291,7 +296,7 @@ def recommend_subcategory_view(request):
          "subCategory__category__name": "category_name"
          })
 
-    return _HttpJsonResponse(None, sub_category_recommend)
+    return _http_json_response(None, sub_category_recommend)
 
 @csrf_exempt
 def recommend_classes_view(request):
@@ -325,7 +330,7 @@ def recommend_classes_view(request):
 
             times = []
             for i in range(len(weekday_express_by_string_list)):
-                times.append(weekday_express_by_string_list[i] + " : " + start_time_list[i] )
+                times.append(weekday_express_by_string_list[i] + " : " + start_time_list[i])
 
             classes_list_item_detail.update({
                 'times': times,
@@ -335,7 +340,7 @@ def recommend_classes_view(request):
 
             classes_list.append(classes_list_item_detail)
 
-    return _HttpJsonResponse( None, classes_list )
+    return _http_json_response( None, classes_list )
 
 
 
