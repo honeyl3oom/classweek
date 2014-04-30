@@ -111,8 +111,10 @@ class INImx():
 
         params_dict = urlparse.parse_qsl(response.text.strip())
         self.logger.debug(params_dict)
-        params_dict = {key.decode('euc-kr').encode('utf-8'): value.decode('euc-kr').encode('utf-8') for key, value in params_dict}
+        print params_dict.get('P_STATUS', 'status is none')
+        params_dict = {key.encode('utf-8'): value.encode('utf-8') for key, value in params_dict}
         self.logger.debug(params_dict)
+        print params_dict.get('P_STATUS', 'status is none')
 
         # params_dict = urlparse.parse_qsl(response.text)
         # self.logger.debug(params_dict)
