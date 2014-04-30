@@ -48,12 +48,30 @@ class INImx():
     m_prtc = None
 
     # 결과 파싱용
-    # m_payMethod
-    # m_moid
-    # m_tid
-    # m_buyerName
-    # m_resultprice
-    # m_pgAuthDate
+    result_p_status = None
+    result_p_tid = None
+    result_p_type = None
+    result_p_auth_dt = None
+    result_p_mid = None
+    result_p_oid = None
+    result_p_amt = None
+    result_p_uname = None
+    result_p_rmesg1 = None
+    result_p_rmesg2 = None
+    result_p_noti = None
+    result_p_fn_cd1 = None
+    result_p_auth_no = None
+    result_p_card_issuer_code = None
+    result_p_card_num = None
+    result_p_card_member_num = None
+    result_p_card_purchase_code = None
+    result_p_card_prtc_code = None
+    result_p_hpp_corp_ = None
+    result_p_vact_num = None
+    result_p_vact_date = None
+    result_p_vact_time = None
+    result_p_vact_name = None
+    result_p_vact_bank_code = None
 
 
     def __init__(self, request, request_name):
@@ -117,6 +135,32 @@ class INImx():
             params_item_key = params_item_split[0]
             params_item_value = params_item_split[1]
             params_dict[params_item_key]= params_item_value
+
+        result_p_status = params_dict.get('P_STATUS', None)
+        self.logger.debug(result_p_status)
+        # result_p_tid = None
+        # result_p_type = None
+        # result_p_auth_dt = None
+        # result_p_mid = None
+        # result_p_oid = None
+        # result_p_amt = None
+        # result_p_uname = None
+        # result_p_rmesg1 = None
+        # result_p_rmesg2 = None
+        # result_p_noti = None
+        # result_p_fn_cd1 = None
+        # result_p_auth_no = None
+        # result_p_card_issuer_code = None
+        # result_p_card_num = None
+        # result_p_card_member_num = None
+        # result_p_card_purchase_code = None
+        # result_p_card_prtc_code = None
+        # result_p_hpp_corp_ = None
+        # result_p_vact_num = None
+        # result_p_vact_date = None
+        # result_p_vact_time = None
+        # result_p_vact_name = None
+        # result_p_vact_bank_code = None
 
         self.logger.debug(params_dict)
         #
