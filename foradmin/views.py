@@ -20,9 +20,11 @@ def payment_startweb_test_view(request):
 
     payment_next_url = request.build_absolute_uri(reverse('payment_next_test', args=[]))
     payment_return_url = request.build_absolute_uri(reverse('payment_return_test', args=[]))
+    payment_noti_url = request.build_absolute_uri(reverse('payment_noti_test', args=[]))
     return render(request, 'payment_startweb_test.html',
                   {'payment_next_url': payment_next_url,
-                   'payment_return_url': payment_return_url})
+                   'payment_return_url': payment_return_url,
+                   'payment_noti_url': payment_noti_url})
 
 @csrf_exempt
 def payment_next_test_view(request):
@@ -50,6 +52,18 @@ def payment_next_test_view(request):
     # print inimx.P_TID
 
     return HttpResponse('payment_next_test_view')
+
+@csrf_exempt
+def payment_noti_test_view(request):
+
+    logger.debug('def payment_noti_test_view(request):')
+    logger.debug( request.GET )
+    logger.debug( request.POST )
+
+    if request.META.REMOTE_ADDR in ("118.129.210.25", "211.219.96.165", "118.129.210.24", "192.168.187.140", "172.20.22.40"):
+
+
+    return HttpResponse('def payment_noti_test_view(request):')
 
 @csrf_exempt
 def payment_return_test_view(request):
