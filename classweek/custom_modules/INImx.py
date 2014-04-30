@@ -2,6 +2,7 @@
 
 import logging
 import requests
+import urlparse
 
 class INImx():
 
@@ -82,9 +83,8 @@ class INImx():
             'P_TID': self.tid
         }
         response = requests.post( self.req_url, data=params)
-        self.logger.debug(response)
-        self.logger.debug(response.text)
-        self.logger.debug(dir(response))
+        params_dict = urlparse.parse_qsl(str(response.text).strip())
+        self.logger.debug(params_dict)
         # response_data = urllib.urlopen(self.req_url, params).read()
         # self.logger.debug(response_data)
         # self.logger.debug(dir(response_data))
