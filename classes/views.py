@@ -177,7 +177,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'price_of_month': classes.priceOfMonth,
         'count_of_month': classes.countOfMonth,
         'discount_rate': round(100 - classes.priceOfMonth*100.0/(classes.priceOfDay*classes.countOfMonth)),
-        'image_url': classes.image_url,
+        'image_url': 'http://' + request.get_host() + classes.image_url
     })
 
     facilitiesInformation = classes.company.facilitiesInformation
@@ -198,7 +198,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         detail_images.append( image.image_url )
 
     classes_detail.update({\
-        'detail_image_url': detail_images
+        'detail_image_url': 'http://' + request.get_host() + detail_images
     })
 
     weekday_express_by_string_list = schedule.dayOfWeek.split('|')
@@ -310,7 +310,7 @@ def recommend_classes_view(request):
             'nearby_station': classes_item.company.nearby_station,
             'price_of_day': classes_item.priceOfDay,
             'price_of_month': classes_item.priceOfMonth,
-            'image_url': classes_item.image_url,
+            'image_url': 'http://' + request.get_host() + classes_item.image_url,
             'discount_rate': round(100 - classes_item.priceOfMonth*100.0/(classes_item.priceOfDay*classes_item.countOfMonth))
         })
         schedules = classes_item.get_schedules.filter(pk__in=schedule_pks).all()
