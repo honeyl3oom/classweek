@@ -109,12 +109,11 @@ class INImx():
         # self.logger.debug(response_body.strip().encode('euc-kr'))
         # self.logger.debug(response_body.strip().encode('utf-8'))
 
-        self.logger.debug(response.text.strip())
-        params_list = response.text.strip().encode('euc-kr').split('&')
+        params_list = response.text.strip().split('&')
         params_dict = {}
 
         for params_item in params_list:
-            params_item_split = params_item.splite("=")
+            params_item_split = params_item.split("=")
             params_item_key = params_item_split[0]
             params_item_value = params_item_split[1]
             params_dict[params_item_key]= params_item_value
