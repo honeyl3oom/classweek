@@ -85,7 +85,7 @@ class INImx():
         response = requests.post( self.req_url, data=params)
         self.logger.debug(response.text)
         response_body = repr(response.text).strip()
-        response_body = response_body.decode('unicode-escape').encode()
+        response_body = response_body.decode('unicode-escape').encode('euc-kr')
         # self.logger.debug(response_body)
         # self.logger.debug(response_body.strip())
         # self.logger.debug(unicode(response_body.strip(), 'euc-kr'))
