@@ -109,12 +109,25 @@ class INImx():
         # self.logger.debug(response_body.strip().encode('euc-kr'))
         # self.logger.debug(response_body.strip().encode('utf-8'))
 
-        params_dict = urlparse.parse_qsl(response.text.strip())[0]
+        params_list = response.text.strip().split('&')
+        params_dict = {}
+
+        for params_item in params_list:
+            params_item_split = params_item.splite("=")
+            params_item_key = params_item_split[0]
+            params_item_value = params_item_split[1]
+            params_dict[params_item_key]= params_item_value
+
         self.logger.debug(params_dict)
-        self.logger.debug(params_dict.get('P_STATUS', 'status is none'))
-        params_dict = {key.encode('utf-8'): value.encode('utf-8') for key, value in params_dict}
-        self.logger.debug(params_dict)
-        print params_dict.get('P_STATUS', 'status is none')
+        #
+        #
+        #
+        # params_dict = urlparse.parse_qsl(response.text.strip())[0]
+        # self.logger.debug(params_dict)
+        # self.logger.debug(params_dict.get('P_STATUS', 'status is none'))
+        # params_dict = {key.encode('utf-8'): value.encode('utf-8') for key, value in params_dict}
+        # self.logger.debug(params_dict)
+        # print params_dict.get('P_STATUS', 'status is none')
 
         # params_dict = urlparse.parse_qsl(response.text)
         # self.logger.debug(params_dict)
