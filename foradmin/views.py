@@ -45,7 +45,7 @@ def payment_next_test_view(request):
     if inimx.status == "00":
         inimx.start_action()
 
-        if inimx.m_
+        # if inimx.m_
 
     # print inimx.P_TID
 
