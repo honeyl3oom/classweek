@@ -83,6 +83,13 @@ class INImx():
             'P_TID': self.tid
         }
         response = requests.post( self.req_url, data=params)
+        self.logger.debug(response.text)
+        self.logger.debug(str(response.text))
+        self.logger.debug(str(response.text).strip())
+        self.logger.debug(unicode(str(response.text).strip(), 'euc-kr'))
+        self.logger.debug(unicode(str(response.text).strip(), 'utf-8'))
+        self.logger.debug(str(response.text).strip().encode('euc-kr'))
+        self.logger.debug(str(response.text).strip().encode('utf-8'))
         params_dict = urlparse.parse_qsl(str(response.text).strip())
         self.logger.debug(params_dict)
         # response_data = urllib.urlopen(self.req_url, params).read()
