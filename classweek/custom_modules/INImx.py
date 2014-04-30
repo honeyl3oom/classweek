@@ -15,7 +15,6 @@ class INImx():
     P_REQ_URL = None
     P_NOTI = None
 
-
     # 요청 구분 : 공통
     reqtype = None
 
@@ -26,12 +25,12 @@ class INImx():
     rmesg1 = None
     tid = None
     req_url = None
+    noti = None
 
     # 클래스 내부 용
     m_serviceurl = None
     m_resultCode = None
     m_resultmsg = None
-    noti = None
     m_resultprice = None
     m_pgAuthDate = None
     m_authCode = None
@@ -47,6 +46,14 @@ class INImx():
     m_nextUrl = None
     m_notiUrl = None
     m_prtc = None
+
+    # 결과 파싱용
+    m_payMethod
+    m_moid
+    m_tid
+    m_buyerName
+    m_resultprice
+    m_pgAuthDate
 
 
     def __init__(self, request, request_name):
@@ -85,6 +92,7 @@ class INImx():
         response = requests.post( self.req_url, data=params)
         self.logger.debug(response.text)
         response_body = repr(response.text)
+        self.logger.debug(response.encoding)
         response_body = response_body.decode('euc-kr')
         response_body = response_body.encode('utf-8')
         response_body = response_body.strip()
