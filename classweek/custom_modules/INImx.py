@@ -54,12 +54,10 @@ class INImx():
         self.logger.debug('INImx def __init__(self, request, request_name):')
 
         self.P_TID = request.POST.get('P_TID', None)
-        self.P_STATUS = request.POST.get('P_TID', None)
-        self.logger.debug('status = ' + self.P_STATUS)
+        self.P_STATUS = request.POST.get('P_STATUS', None)
         self.P_RMESG1 = request.POST.get('P_RMESG1', None)
         self.P_REQ_URL = request.POST.get('P_REQ_URL', None)
         self.P_NOTI = request.POST.get('P_NOTE', None)
-        pass
 
     def start_action(self):
 
