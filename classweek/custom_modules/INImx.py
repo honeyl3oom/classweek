@@ -112,9 +112,6 @@ class INImx():
         params_dict = urlparse.parse_qsl(response.text)
         self.logger.debug(params_dict)
 
-        params_dict = {key.encode('euc-kr'): value.encode('euc-kr') for key, value in params_dict}
-        self.logger.debug(params_dict)
-
         params_dict = urlparse.parse_qsl(response.text)
         params_dict = {key.encode('utf-8'): value.encode('utf-8') for key, value in params_dict}
         self.logger.debug(params_dict)
@@ -125,12 +122,13 @@ class INImx():
         params_dict = urlparse.parse_qsl(response.text)
         self.logger.debug(params_dict)
 
-        params_dict = {key.encode('euc-kr'): value.encode('euc-kr') for key, value in params_dict}
+        params_dict = {key.encode('utf-8'): value.encode('utf-8') for key, value in params_dict}
         self.logger.debug(params_dict)
 
         params_dict = urlparse.parse_qsl(response.text)
-        params_dict = {key.encode('utf-8'): value.encode('utf-8') for key, value in params_dict}
+        params_dict = {key.encode('euc-kr'): value.encode('euc-kr') for key, value in params_dict}
         self.logger.debug(params_dict)
+
         # response_data = urllib.urlopen(self.req_url, params).read()
         # self.logger.debug(response_data)
         # self.logger.debug(dir(response_data))
