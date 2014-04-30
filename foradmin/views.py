@@ -11,7 +11,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 def payment_startweb_test_view(request):
-    logger.debug("this is a debug message!")
+
+    logger.debug("def payment_startweb_test_view(request):")
 
     url = static('test.jpg')
 
@@ -25,6 +26,11 @@ def payment_startweb_test_view(request):
 
 @csrf_exempt
 def payment_next_test_view(request):
+
+    logger.debug('def payment_next_test_view(request):')
+    logger.debug( request.GET )
+    logger.debug( request.POST )
+
     inimx = INImx(request, __name__)
 
     inimx.reqtype = "PAY"
@@ -38,10 +44,6 @@ def payment_next_test_view(request):
 
     if inimx.status == "00":
         inimx.start_action()
-
-    logger.debug('def payment_next_test_view(request):')
-    logger.debug( request.GET )
-    logger.debug( request.POST )
 
     # print inimx.P_TID
 
