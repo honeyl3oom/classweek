@@ -107,27 +107,30 @@ class INImx():
         # self.logger.debug(unicode(response_body.strip(), 'utf-8'))
         # self.logger.debug(response_body.strip().encode('euc-kr'))
         # self.logger.debug(response_body.strip().encode('utf-8'))
-        response.encode = 'unicode'
 
-        params_dict = urlparse.parse_qsl(response.text)
+        self.logger.debug(repr(response.text).decode('ISO-8859-1').encode('utf-8'))
+        params_dict = urlparse.parse_qsl(repr(response.text).decode('ISO-8859-1').encode('utf-8'))
         self.logger.debug(params_dict)
 
-        params_dict = urlparse.parse_qsl(response.text)
-        params_dict = {key.encode('utf-8'): value.encode('utf-8') for key, value in params_dict}
-        self.logger.debug(params_dict)
-
-
-        response.encode = 'utf-8'
-
-        params_dict = urlparse.parse_qsl(response.text)
-        self.logger.debug(params_dict)
-
-        params_dict = {key.encode('utf-8'): value.encode('utf-8') for key, value in params_dict}
-        self.logger.debug(params_dict)
-
-        params_dict = urlparse.parse_qsl(response.text)
-        params_dict = {key.encode('euc-kr'): value.encode('euc-kr') for key, value in params_dict}
-        self.logger.debug(params_dict)
+        # params_dict = urlparse.parse_qsl(response.text)
+        # self.logger.debug(params_dict)
+        #
+        # params_dict = urlparse.parse_qsl(response.text)
+        # params_dict = {key.encode('utf-8'): value.encode('utf-8') for key, value in params_dict}
+        # self.logger.debug(params_dict)
+        #
+        #
+        # response.encode = 'utf-8'
+        #
+        # params_dict = urlparse.parse_qsl(response.text)
+        # self.logger.debug(params_dict)
+        #
+        # params_dict = {key.encode('utf-8'): value.encode('utf-8') for key, value in params_dict}
+        # self.logger.debug(params_dict)
+        #
+        # params_dict = urlparse.parse_qsl(response.text)
+        # params_dict = {key.encode('euc-kr'): value.encode('euc-kr') for key, value in params_dict}
+        # self.logger.debug(params_dict)
 
         # response_data = urllib.urlopen(self.req_url, params).read()
         # self.logger.debug(response_data)
