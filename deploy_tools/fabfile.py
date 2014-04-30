@@ -7,6 +7,11 @@ REPO_URL = 'https://github.com/parkjuram/classweek.git'
 USER_NAME = "blackpigstudio"
 PROJECT_NAME = "classweek"
 
+env.hosts = ['175.126.82.184']
+env.user = 'blackpigstudio'
+# env.key_filename = '/Users/John/.ssh/google_compute_engine'
+env.forward_agent = True
+
 def deploy():
     project_folder = '/home/%s/project/%s' % ( USER_NAME, PROJECT_NAME )
     source_folder = project_folder + '/source'
@@ -31,13 +36,13 @@ def _get_latest_source(source_folder):
     run('cd %s && git reset --hard %s' % (source_folder, current_commit))
 
 def _update_settings(source_folder, site_name):
-    settings_path = source_folder + '/superlists/settings.py'
+    settings_path = source_folder + '/classweek/settings.py'
     sed(settings_path, "DEBUG = True", "DEBUG = False")
     sed(settings_path,
         'ALLOWED_HOSTS =.+$',
         'ALLOWED_HOSTS = ["%s"]' % (site_name,)
     )
-    secret_key_file = source_folder + '/superlists/secret_key.py'
+    secret_key_file = source_folder + '/classweek/secret_key.py'
     if not exists(secret_key_file):
         chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
         key = ''.join(random.SystemRandom().choice(chars) for _ in range(50))
