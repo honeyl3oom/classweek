@@ -48,12 +48,12 @@ class INImx():
     m_prtc = None
 
     # 결과 파싱용
-    m_payMethod
-    m_moid
-    m_tid
-    m_buyerName
-    m_resultprice
-    m_pgAuthDate
+    # m_payMethod
+    # m_moid
+    # m_tid
+    # m_buyerName
+    # m_resultprice
+    # m_pgAuthDate
 
 
     def __init__(self, request, request_name):
