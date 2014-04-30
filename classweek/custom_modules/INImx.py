@@ -63,7 +63,7 @@ class INImx():
 
         self.logger.debug('INImx def start_action(self):')
 
-        self.logger.debug('Start INImx_AUTH' + self.reqtype.VERSION)
+        self.logger.debug('Start INImx_AUTH' + self.reqtype)
         self.logger.debug('INIPAYHOME' + self.inipayhome)
         self.logger.debug('P_MID' + self.id_merchant)
         self.logger.debug('P_STATUS' + self.status)
