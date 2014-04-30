@@ -95,7 +95,7 @@ class INImx():
         self.logger.debug(response.encoding)
         # response_body = unicode(response_body, 'iso-8859-1').encode('utf-8')
         response_body = response_body.decode('iso-8859-1')
-        response_body = response_body.encode('utf-8')
+        response_body = response_body.encode('euc-kr')
         response_body = response_body.strip()
         self.logger.debug(response_body)
         # self.logger.debug(response_body)
