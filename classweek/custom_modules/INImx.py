@@ -109,7 +109,7 @@ class INImx():
         # self.logger.debug(response_body.strip().encode('utf-8'))
         params_dict = urlparse.parse_qsl(response.text)
 
-        params_dict = {key.encode('utf-8'): value.encode('utf-8') for key, value in params_dict}
+        params_dict = {key.encode('euc-kr'): value.encode('euc-kr') for key, value in params_dict}
 
         self.logger.debug(params_dict)
         # response_data = urllib.urlopen(self.req_url, params).read()
