@@ -93,7 +93,7 @@ class INImx():
         self.logger.debug('INIPAYHOME : ' + self.inipayhome)
         self.logger.debug('P_MID : ' + self.id_merchant)
         self.logger.debug('P_STATUS : ' + self.status)
-        self.logger.debug('P_RMESG1 : ' + unicode(self.rmesg1, 'euc-kr').encode('utf-8'))
+        self.logger.debug('P_RMESG1 : ' + self.rmesg1)
         self.logger.debug('P_TID : ' + self.tid)
         self.logger.debug('P_REQ_URL : ' + self.req_url)
         self.logger.debug('P_NOTI : ' + self.noti)
