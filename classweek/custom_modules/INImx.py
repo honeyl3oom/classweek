@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
+import httplib, urllib
 
 class INImx():
 
@@ -74,6 +75,13 @@ class INImx():
             self.do_pay()
 
     def do_pay(self):
+        params = urllib.urlencode({'P_MID': self.id_merchant, 'P_TID': self.tid})
+        headers = {"Content-type": "application/x-www-form-urlencoded", "Accept": "text/plain"}
+        conn = httplib.HTTPConnection("hostname:post")
+        conn.request("POST","/index.html",params, headers)
+        response = conn.getresponse()
+        self.logger.debug( response )
+        self.logger.debug( dir(response) )
         pass
 
 #     function startAction()
