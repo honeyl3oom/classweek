@@ -8,4 +8,4 @@ gunicorn==18.0
 wsgiref==0.1.2
 tablib==0.9.11
 django-csvimport==1.0
-
+requests==2.2.1

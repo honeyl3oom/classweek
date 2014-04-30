@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import httplib, urllib
+import requests
 
 class INImx():
 
@@ -77,13 +77,17 @@ class INImx():
             self.do_pay()
 
     def do_pay(self):
-        params = urllib.urlencode({
+        params = {
             'P_MID': self.id_merchant,
             'P_TID': self.tid
-        })
-        response_data = urllib.urlopen( self.req_url, params).read()
-        self.logger.debug(response_data)
-        self.logger.debug(dir(response_data))
+        }
+        response = requests.post( self.req_url, data=params)
+        self.logger.debug(response)
+        self.logger.debug(response.text)
+        self.logger.debug(dir(response))
+        # response_data = urllib.urlopen(self.req_url, params).read()
+        # self.logger.debug(response_data)
+        # self.logger.debug(dir(response_data))
         # conn = httplib.HTTPConnection("hostname:post")
         # conn.request("POST", "/index.html", params, headers)
         # response = conn.getresponse()
