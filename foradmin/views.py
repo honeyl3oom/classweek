@@ -14,6 +14,7 @@ def payment_startweb_test_view(request):
 
     logger.debug("def payment_startweb_test_view(request):")
     logger.debug("\xbc\xad\xba\xf1\xbd\xba".decode('EUC-KR').encode('UTF-8'))
+    logger.debug(u'\uc11c\ube44\uc2a4 \uc0ac\uc6a9\ubd88\uac00 \uac00\ub9f9\uc810')
 
     url = static('test.jpg')
 
