@@ -13,6 +13,7 @@ logger = logging.getLogger(__name__)
 def payment_startweb_test_view(request):
 
     logger.debug("def payment_startweb_test_view(request):")
+    logger.debug("\xbc\xad\xba\xf1\xbd\xba".decode('EUC-KR').encode('UTF-8'))
 
     url = static('test.jpg')
 
