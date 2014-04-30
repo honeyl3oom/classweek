@@ -90,6 +90,7 @@ class INImx():
             'P_TID': self.tid
         }
         response = requests.post( self.req_url, data=params)
+        response.encoding = 'euc-kr'
         # response_body = repr(response.text).decode('utf-8').encode('utf-8')
         # self.logger.debug(response_body)
         # self.logger.debug('한글잘나오나')
