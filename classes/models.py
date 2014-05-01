@@ -9,6 +9,7 @@ class Company(models.Model):
     zone = models.TextField( null=False, blank=True, default='' )
     nearby_station = models.TextField( null=True )
     facilitiesInformation = models.TextField( null=False, blank=True, default='' )
+    # toilet, fitting_room, shower_stall, locker, parking_lot, practice_room, instrument_rental
 
     def __str__(self):
         return 'Company : %s' % self.name

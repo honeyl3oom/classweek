@@ -310,3 +310,4 @@ Traceback (most recent call last):
   File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 153, in getClassesList_view
     time.strftime('%p %I시 %M분', time.strptime(start_time_list[i], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전'))
 UnicodeDecodeError: 'ascii' codec can't decode byte 0xec in position 0: ordinal not in range(128)
+[01/May/2014 07:33:37] DEBUG [classes.views:56] def getSubCategoryList_view( request, category_name ):

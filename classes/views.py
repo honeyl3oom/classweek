@@ -14,7 +14,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 # from django.core import serializers
 from django.db import IntegrityError
-from classes.models import Category, Company,\
+from classes.models import Category, Company, CompanyImage,\
     SubCategory, Classes, ClassesInquire, Schedule, SubCategoryRecommend, ClassesRecommend
 import logging
 
@@ -402,13 +402,20 @@ def import_company_csv_file_view(request):
                 is_first = False
                 continue
 
-            Company.objects.get_or_create(
+            company, created = Company.objects.get_or_create(
                 name=unicode(row[0], 'euc-kr'),
                 phone_number=unicode(row[1], 'euc-kr'),
                 location=unicode(row[2], 'euc-kr'),
                 zone=unicode(row[3], 'euc-kr'),
                 nearby_station=unicode(row[4], 'euc-kr'),
                 facilitiesInformation=unicode(row[5], 'euc-kr'))
+
+            for i in range(6, len(row)):
+                if len(row[i]) > 0:
+                    CompanyImage.objects.get_or_create(
+                        company=company,
+                        image_url=unicode(row[i], 'euc-kr')
+                    )
 
     return HttpResponse('success')
 
