@@ -149,7 +149,8 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
                 times = []
 
                 for i in range(len(weekday_express_by_string_list)):
-                    times.append(weekday_express_by_string_list[i] + " : " + start_time_list[i] )
+                    times.append( WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i]].decode('utf-8') + " : " +
+                                 time.strftime('%p %I시 %M분', time.strptime(start_time_list[i], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전').decode('utf-8'))
 
                 item_detail.update({
                     'times': times,
@@ -214,7 +215,8 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
 
     times = []
     for i in range(len(weekday_express_by_string_list)):
-        times.append(WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i]].decode('utf-8') + " : " + start_time_express_by_string_list[i][0:5])
+        times.append(WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i]].decode('utf-8') + " : " +
+                     time.strftime('%p %I시 %M분', time.strptime(start_time_express_by_string_list[i], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전').decode('utf-8'))
 
     classes_detail.update({
         'times': times,

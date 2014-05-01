@@ -264,3 +264,49 @@ TypeError: <SubCategory: SubCategory : dance_etc> is not JSON serializable
 [01/May/2014 05:32:37] DEBUG [classes.views:56] def getSubCategoryList_view( request, category_name ):
 [01/May/2014 05:35:41] DEBUG [classes.views:56] def getSubCategoryList_view( request, category_name ):
 [01/May/2014 05:39:58] DEBUG [classes.views:56] def getSubCategoryList_view( request, category_name ):
+[01/May/2014 06:22:46] DEBUG [classes.views:56] def getSubCategoryList_view( request, category_name ):
+[01/May/2014 06:36:48] ERROR [django.request:226] Internal Server Error: /classes/dance/jazz_dance
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 153, in getClassesList_view
+    time.strftime('%I시 %M분', time.strptime(start_time_list[i], '%H:%M:%S')) )
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xec in position 2: ordinal not in range(128)
+[01/May/2014 06:37:24] ERROR [django.request:226] Internal Server Error: /classes/dance/jazz_dance
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 153, in getClassesList_view
+    time.strftime('%I시 %M분', time.strptime(start_time_list[i], '%H:%M:%S')).decode('utf-8') )
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xec in position 0: ordinal not in range(128)
+[01/May/2014 06:39:59] ERROR [django.request:226] Internal Server Error: /classes/dance/jazz_dance
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 153, in getClassesList_view
+    time.strftime('%p %I시 %M분', time.strptime(start_time_list[i], '%H:%M:%S')).decode('utf-8').replace('PM', '오후').replace('AM', '오전'))
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xec in position 0: ordinal not in range(128)
+[01/May/2014 06:40:07] ERROR [django.request:226] Internal Server Error: /classes/dance/jazz_dance
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 153, in getClassesList_view
+    time.strftime('%p %I시 %M분', time.strptime(start_time_list[i], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전'))
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xec in position 0: ordinal not in range(128)
+[01/May/2014 06:40:08] ERROR [django.request:226] Internal Server Error: /classes/dance/jazz_dance
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 153, in getClassesList_view
+    time.strftime('%p %I시 %M분', time.strptime(start_time_list[i], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전'))
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xec in position 0: ordinal not in range(128)
