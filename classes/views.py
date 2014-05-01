@@ -318,6 +318,7 @@ def recommend_classes_view(request):
             'title': classes_item.title,
             'company': classes_item.company.name,
             'nearby_station': classes_item.company.nearby_station,
+            'count_of_month': classes_item.countOfMonth,
             'price_of_day': classes_item.priceOfDay,
             'price_of_month': classes_item.priceOfMonth,
             'image_url': 'http://' + request.get_host() + classes_item.image_url,
