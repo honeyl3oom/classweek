@@ -56,17 +56,11 @@ def get_sub_category_list_view(request, category_name ):
     logger.debug('def getSubCategoryList_view( request, category_name ):')
     try:
         category = Category.objects.select_related('get_subcategorys').get(name=category_name)
-        sub_categorys= category.get_subcategorys.values()
-        # sub_categorys = Category.objects.get(name='dance').get_subcategorys.all()
-        # sub_categorys = SubCategory.objects.get(name='girls_hiphop')
-        # print sub_categorys.image_url
-        # for sub_category in sub_categorys:
-        #     print sub_category.image_url
-        #     if len(sub_category['image_url']) > 0:
-        #         sub_category['image_url'] = 'http://' + request.get_host() + sub_category['image_url']
+        sub_categorys = list(category.get_subcategorys.values())
+        for sub_category in sub_categorys:
+            sub_category['image_url'] = 'http://' + request.get_host() + sub_category['image_url']
 
-        # return HttpResponse(sub_categorys.image_url)
-        return _http_json_response(None, list(sub_categorys))
+        return _http_json_response(None, sub_categorys)
     except ObjectDoesNotExist:
         return _http_json_response(const.ERROR_CATEGORY_NAME_DOES_NOT_EXIST, None , const.CODE_ERROR_CATEGORY_NAME_DOES_NOT_EXIST)
 
@@ -90,7 +84,7 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
         if request.POST.get('price', None) is not None:
             classes = classes.filter( priceOfMonth__lte = request.POST.get('price', None) )
 
-        classes = classes.select_related('get_schedules', 'company',  ).all()
+        classes = classes.select_related('get_schedules', 'company', ).all()
         classes_list = []
 
         for classes_item in classes:
@@ -101,6 +95,7 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
                 'company': classes_item.company.name,
                 'nearby_station': classes_item.company.nearby_station,
                 'price_of_day': classes_item.priceOfDay,
+                'count_of_month': classes_item.countOfMonth,
                 'price_of_month': classes_item.priceOfMonth,
                 'image_url': 'http://' + request.get_host() + classes_item.image_url,
                 'discount_rate': round(100 - classes_item.priceOfMonth*100.0/(classes_item.priceOfDay*classes_item.countOfMonth))
@@ -222,9 +217,9 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         times.append(WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i]].decode('utf-8') + " : " + start_time_express_by_string_list[i][0:5])
 
     classes_detail.update({
-        'times':times,
-        'duration':schedule.duration.strftime("%H시간%M분").decode('utf-8'),
-        'schedule_id':schedule.id
+        'times': times,
+        'duration': schedule.duration.strftime("%H시간%M분").decode('utf-8'),
+        'schedule_id': schedule.id
     })
 
     today = datetime.datetime.today()
@@ -282,7 +277,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
     })
 
     # print repr(classes)
-    return _http_json_response( None, classes_detail )
+    return _http_json_response(None, classes_detail )
 
 @csrf_exempt
 def inquire_view( request, classes_id ):
