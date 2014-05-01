@@ -10,6 +10,7 @@ from django.http import HttpResponse
 from django.templatetags.static import static
 from django.core import serializers
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.exceptions import ObjectDoesNotExist
 
 # from django.core import serializers
 from django.db import IntegrityError
@@ -53,20 +54,20 @@ def _http_json_response(error, data, error_code = 0):
 @csrf_exempt
 def get_sub_category_list_view(request, category_name ):
     logger.debug('def getSubCategoryList_view( request, category_name ):')
-    category = Category.objects.filter(name=category_name).select_related( 'get_subcategorys' )
-    if category.exists():
-        # sub_categorys= category.first().get_subcategorys.filter(category__name=category_name).all()
+    try:
+        category = Category.objects.select_related('get_subcategorys').get(name=category_name)
+        sub_categorys= category.get_subcategorys.values()
         # sub_categorys = Category.objects.get(name='dance').get_subcategorys.all()
-        sub_categorys = SubCategory.objects.get(name='girls_hiphop')
-        print sub_categorys.image_url
+        # sub_categorys = SubCategory.objects.get(name='girls_hiphop')
+        # print sub_categorys.image_url
         # for sub_category in sub_categorys:
         #     print sub_category.image_url
         #     if len(sub_category['image_url']) > 0:
         #         sub_category['image_url'] = 'http://' + request.get_host() + sub_category['image_url']
 
-        return HttpResponse(sub_categorys.image_url)
-        # return _http_json_response(None, list(sub_categorys))
-    else:
+        # return HttpResponse(sub_categorys.image_url)
+        return _http_json_response(None, list(sub_categorys))
+    except ObjectDoesNotExist:
         return _http_json_response(const.ERROR_CATEGORY_NAME_DOES_NOT_EXIST, None , const.CODE_ERROR_CATEGORY_NAME_DOES_NOT_EXIST)
 
 # location, weekday, time( morning, .. ), price ( by month )
