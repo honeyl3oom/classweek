@@ -55,9 +55,17 @@ def get_sub_category_list_view(request, category_name ):
     logger.debug('def getSubCategoryList_view( request, category_name ):')
     category = Category.objects.filter(name=category_name).select_related( 'get_subcategorys' )
     if category.exists():
-        sub_categorys = category.first().get_subcategorys.filter(category__name=category_name).values()
+        # sub_categorys= category.first().get_subcategorys.filter(category__name=category_name).all()
+        # sub_categorys = Category.objects.get(name='dance').get_subcategorys.all()
+        sub_categorys = SubCategory.objects.get(name='girls_hiphop')
+        print sub_categorys.image_url
+        # for sub_category in sub_categorys:
+        #     print sub_category.image_url
+        #     if len(sub_category['image_url']) > 0:
+        #         sub_category['image_url'] = 'http://' + request.get_host() + sub_category['image_url']
 
-        return _http_json_response(None, list(sub_categorys))
+        return HttpResponse(sub_categorys.image_url)
+        # return _http_json_response(None, list(sub_categorys))
     else:
         return _http_json_response(const.ERROR_CATEGORY_NAME_DOES_NOT_EXIST, None , const.CODE_ERROR_CATEGORY_NAME_DOES_NOT_EXIST)
 
@@ -101,7 +109,7 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
                 item_detail = item.copy()
 
                 # get weekday
-                weekday_express_by_string_list = schedule.dayOfWeek.split('|')
+                weekday_express_by_string_list = schedule.dayOfWeek.split(',')
                 # filter out only if there is any in 'weekday' param
                 weekday_filter = request.POST.get('weekday', None)
                 is_excluded_by_weekday = False
@@ -114,7 +122,7 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
                     continue
 
                 # get start time
-                start_time_list = schedule.startTime.split('|')
+                start_time_list = schedule.startTime.split(',')
                 # filter out only if there is any in 'time' param
                 start_time_filter_express_by_string = request.POST.get('time', None)
                 is_excluded_by_start_time = False
@@ -156,7 +164,6 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
                 classes_list.append(item_detail)
 
         return _http_json_response( None, classes_list[ (page_num-1)*ITEM_COUNT_IN_PAGE : page_num*ITEM_COUNT_IN_PAGE ] )
-        # return _HttpJsonResponse( None, json.dumps( classes_list[ (page_num-1)*ITEM_COUNT_IN_PAGE : page_num*ITEM_COUNT_IN_PAGE ] , ensure_ascii=False ) )
     else:
         return _http_json_response( const.ERROR_SUBCATEGORY_NAME_DOES_NOT_EXIST, None , const.CODE_ERROR_SUBCATEGORY_NAME_DOES_NOT_EXIST )
 
@@ -206,8 +213,8 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'detail_image_url': detail_images
     })
 
-    weekday_express_by_string_list = schedule.dayOfWeek.split('|')
-    start_time_express_by_string_list = schedule.startTime.split('|')
+    weekday_express_by_string_list = schedule.dayOfWeek.split(',')
+    start_time_express_by_string_list = schedule.startTime.split(',')
 
     times = []
     for i in range(len(weekday_express_by_string_list)):
@@ -300,7 +307,7 @@ def recommend_subcategory_view(request):
 
 @csrf_exempt
 def recommend_classes_view(request):
-
+    logger.info( 'def recommend_classes_view(request):' )
     classes_pks = ClassesRecommend.objects.values_list('classes', flat=True)
     schedule_pks = ClassesRecommend.objects.values_list('schedule', flat=True)
     classes = Classes.objects.filter(pk__in=classes_pks).select_related('get_schedules', 'company', ).all()
@@ -323,10 +330,10 @@ def recommend_classes_view(request):
             classes_list_item_detail = classes_list_item.copy()
 
             # get weekday
-            weekday_express_by_string_list = schedule.dayOfWeek.split('|')
+            weekday_express_by_string_list = schedule.dayOfWeek.split(',')
 
             # get start time
-            start_time_list = schedule.startTime.split('|')
+            start_time_list = schedule.startTime.split(',')
 
             times = []
             for i in range(len(weekday_express_by_string_list)):
@@ -340,7 +347,7 @@ def recommend_classes_view(request):
 
             classes_list.append(classes_list_item_detail)
 
-    return _http_json_response( None, classes_list )
+    return _http_json_response(None, classes_list)
 
 
 
@@ -354,25 +361,22 @@ import csv
 
 def import_category_csv_file_view(request):
     with open('./classes/resource/model/csv/category_model.csv', 'rb') as f:
-        reader = csv.reader(f)
+        reader = csv.reader(f,  delimiter='|')
         is_first = True
 
         for row in reader:
             if is_first:
                 is_first = False
                 continue
-            category = Category(name=row[0])
-            try:
-                category.save()
-            except Exception, e:
-                print e
+            Category.objects.get_or_create(
+                name=row[0])
 
     return HttpResponse('success')
 
 
 def import_sub_category_csv_file_view(request):
     with open('./classes/resource/model/csv/sub_category_model.csv', 'rb') as f:
-        reader = csv.reader(f)
+        reader = csv.reader(f,  delimiter='|')
         is_first = True
 
         for row in reader:
@@ -380,20 +384,19 @@ def import_sub_category_csv_file_view(request):
                 is_first = False
                 continue
 
-            sub_category = SubCategory(name=unicode(row[0], 'euc-kr'), category=Category.objects.get(name=unicode(row[1], 'euc-kr')), name_kor=unicode(row[2], 'euc-kr'), description=unicode(row[3], 'euc-kr'), image_url=unicode(row[4], 'euc-kr'))
-            # category_id = Category.objects.filter(name=unicode(row[1], 'euc-kr')).first().id
-            # sub_category = SubCategory(name=unicode(row[0], 'euc-kr'), category_id=category_id, name_kor=unicode(row[2], 'euc-kr'), description=unicode(row[3], 'euc-kr'), image_url=unicode(row[4], 'euc-kr'))
-            try:
-                sub_category.save()
-            except Exception, e:
-                print e
+            SubCategory.objects.get_or_create(
+                name=unicode(row[0], 'euc-kr'),
+                category=Category.objects.get(name=unicode(row[1], 'euc-kr')),
+                name_kor=unicode(row[2], 'euc-kr'),
+                description=unicode(row[3], 'euc-kr'),
+                image_url=unicode(row[4], 'euc-kr'))
 
     return HttpResponse('success')
 
 
 def import_company_csv_file_view(request):
     with open('./classes/resource/model/csv/company_model.csv', 'rb') as f:
-        reader = csv.reader(f)
+        reader = csv.reader(f,  delimiter='|')
         is_first = True
 
         for row in reader:
@@ -401,7 +404,7 @@ def import_company_csv_file_view(request):
                 is_first = False
                 continue
 
-            company = Company(
+            Company.objects.get_or_create(
                 name=unicode(row[0], 'euc-kr'),
                 phone_number=unicode(row[1], 'euc-kr'),
                 location=unicode(row[2], 'euc-kr'),
@@ -409,17 +412,12 @@ def import_company_csv_file_view(request):
                 nearby_station=unicode(row[4], 'euc-kr'),
                 facilitiesInformation=unicode(row[5], 'euc-kr'))
 
-            try:
-                company.save()
-            except Exception, e:
-                print e
-
     return HttpResponse('success')
 
 
 def import_classes_csv_file_view(request):
     with open('./classes/resource/model/csv/classes_model.csv', 'rb') as f:
-        reader = csv.reader(f)
+        reader = csv.reader(f,  delimiter='|')
         is_first = True
 
         for row in reader:
@@ -437,29 +435,25 @@ def import_classes_csv_file_view(request):
             except Exception, e:
                 print unicode(row[3], 'euc-kr'), e
 
-
-            classes = Classes(title=unicode(row[0], 'euc-kr'),
-                              thumbnail_image_url=unicode(row[1], 'euc-kr'),
-                              subCategory=sub_category,
-                              company=company,
-                              description=unicode(row[4], 'euc-kr'),
-                              preparation=unicode(row[5], 'euc-kr'),
-                              personalOrGroup=unicode(row[6], 'euc-kr'),
-                              refundInformation=unicode(row[7], 'euc-kr'),
-                              priceOfDay=unicode(row[8], 'euc-kr'),
-                              countOfMonth=unicode(row[9], 'euc-kr'),
-                              priceOfMonth=unicode(row[10], 'euc-kr'),
-                              image_url=unicode(row[11], 'euc-kr'))
-            try:
-                classes.save()
-            except Exception, e:
-                pass
+            Classes.objects.get_or_create(
+                title=unicode(row[0], 'euc-kr'),
+                thumbnail_image_url=unicode(row[1], 'euc-kr'),
+                subCategory=sub_category,
+                company=company,
+                description=unicode(row[4], 'euc-kr'),
+                preparation=unicode(row[5], 'euc-kr'),
+                personalOrGroup=unicode(row[6], 'euc-kr'),
+                refundInformation=unicode(row[7], 'euc-kr'),
+                priceOfDay=unicode(row[8], 'euc-kr'),
+                countOfMonth=unicode(row[9], 'euc-kr'),
+                priceOfMonth=unicode(row[10], 'euc-kr'),
+                image_url=unicode(row[11], 'euc-kr'))
 
     return HttpResponse('success')
 
 def import_schedule_csv_file_view(request):
     with open('./classes/resource/model/csv/schedule_model.csv', 'rb') as f:
-        reader = csv.reader(f)
+        reader = csv.reader(f,  delimiter='|')
         is_first = True
 
         for row in reader:
@@ -478,29 +472,27 @@ def import_schedule_csv_file_view(request):
                 print unicode(row[3], 'euc-kr'), e
 
             try:
-                classes = Classes.objects.get(title=unicode(row[0], 'euc-kr'),
-                              thumbnail_image_url=unicode(row[1], 'euc-kr'),
-                              subCategory=sub_category,
-                              company=company,
-                              description=unicode(row[4], 'euc-kr'),
-                              preparation=unicode(row[5], 'euc-kr'),
-                              personalOrGroup=unicode(row[6], 'euc-kr'),
-                              refundInformation=unicode(row[7], 'euc-kr'),
-                              priceOfDay=unicode(row[8], 'euc-kr'),
-                              countOfMonth=unicode(row[9], 'euc-kr'),
-                              priceOfMonth=unicode(row[10], 'euc-kr'),
-                              image_url=unicode(row[11], 'euc-kr'))
+                classes = Classes.objects.get(
+                    title=unicode(row[0], 'euc-kr'),
+                    thumbnail_image_url=unicode(row[1], 'euc-kr'),
+                    subCategory=sub_category,
+                    company=company,
+                    description=unicode(row[4], 'euc-kr'),
+                    preparation=unicode(row[5], 'euc-kr'),
+                    personalOrGroup=unicode(row[6], 'euc-kr'),
+                    refundInformation=unicode(row[7], 'euc-kr'),
+                    priceOfDay=unicode(row[8], 'euc-kr'),
+                    countOfMonth=unicode(row[9], 'euc-kr'),
+                    priceOfMonth=unicode(row[10], 'euc-kr'),
+                    image_url=unicode(row[11], 'euc-kr'))
             except Exception, e:
                 print e
 
-            schedule = Schedule(classes=classes,
-                                dayOfWeek=unicode(row[12], 'euc-kr'),
-                                startTime=unicode(row[13], 'euc-kr'),
-                                duration=unicode(row[14], 'euc-kr'))
-            try:
-                schedule.save()
-            except Exception, e:
-                print e
+            Schedule.objects.get_or_create(
+                classes=classes,
+                dayOfWeek=unicode(row[12], 'euc-kr'),
+                startTime=unicode(row[13], 'euc-kr'),
+                duration=unicode(row[14], 'euc-kr'))
 
     return HttpResponse('success')
 
@@ -508,7 +500,7 @@ def import_schedule_csv_file_view(request):
 #
 # def import_category_csv_file_view(request):
 #     with open('./classes/resource/model/csv/category_model.csv', 'rb') as f:
-#         reader = csv.reader(f)
+#         reader = csv.reader(f,  delimiter='|')
 #
 #         headers = None
 #         for row in reader:
@@ -536,7 +528,7 @@ def import_schedule_csv_file_view(request):
 #     # subCategory.save()
 #
 #     with open('./classes/resource/model/csv/sub_category_model.csv', 'rb') as f:
-#         reader = csv.reader(f)
+#         reader = csv.reader(f,  delimiter='|')
 #
 #         headers = None
 #         for row in reader:

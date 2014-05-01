@@ -1,0 +1,183 @@
+[30/Apr/2014 13:21:58] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:21:58] ERROR [django.request:226] Internal Server Error: /classes/dance
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 59, in get_sub_category_list_view
+    sub_categorys['image_url'] = 'http://' + request.get_host() + sub_categorys['image_url']
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/models/query.py", line 108, in __getitem__
+    raise TypeError
+TypeError
+[30/Apr/2014 13:22:20] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:22:20] ERROR [django.request:226] Internal Server Error: /classes/dance
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 59, in get_sub_category_list_view
+    sub_categorys.image_url = 'http://' + request.get_host() + sub_categorys['image_url']
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/models/query.py", line 108, in __getitem__
+    raise TypeError
+TypeError
+[30/Apr/2014 13:22:21] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:22:21] ERROR [django.request:226] Internal Server Error: /classes/dance
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 59, in get_sub_category_list_view
+    sub_categorys.image_url = 'http://' + request.get_host() + sub_categorys['image_url']
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/models/query.py", line 108, in __getitem__
+    raise TypeError
+TypeError
+[30/Apr/2014 13:23:37] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:24:55] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:25:52] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:26:05] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:27:19] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:28:20] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:30:31] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:30:39] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:36:42] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:36:44] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:36:45] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:36:45] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:36:55] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:36:55] ERROR [django.request:226] Internal Server Error: /classes/dance
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 64, in get_sub_category_list_view
+    return _http_json_response(None, list(sub_categorys))
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 48, in _http_json_response
+    return HttpResponse(json.dumps( _makeJsonResponse( True, None, error_code, data ) , ensure_ascii=False ), content_type="application/json; charset=utf-8" )
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/__init__.py", line 250, in dumps
+    sort_keys=sort_keys, **kw).encode(obj)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/encoder.py", line 207, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/encoder.py", line 270, in iterencode
+    return _iterencode(o, 0)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/encoder.py", line 184, in default
+    raise TypeError(repr(o) + " is not JSON serializable")
+TypeError: <SubCategory: SubCategory : dance_etc> is not JSON serializable
+[30/Apr/2014 13:37:18] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:37:18] ERROR [django.request:226] Internal Server Error: /classes/dance
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 65, in get_sub_category_list_view
+    return _http_json_response(None, list(sub_categorys))
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 48, in _http_json_response
+    return HttpResponse(json.dumps( _makeJsonResponse( True, None, error_code, data ) , ensure_ascii=False ), content_type="application/json; charset=utf-8" )
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/__init__.py", line 250, in dumps
+    sort_keys=sort_keys, **kw).encode(obj)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/encoder.py", line 207, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/encoder.py", line 270, in iterencode
+    return _iterencode(o, 0)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/encoder.py", line 184, in default
+    raise TypeError(repr(o) + " is not JSON serializable")
+TypeError: <SubCategory: SubCategory : dance_etc> is not JSON serializable
+[30/Apr/2014 13:40:20] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:40:20] ERROR [django.request:226] Internal Server Error: /classes/dance
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 59, in get_sub_category_list_view
+    sub_categorys = Category.objects.filter(name='dance').get_subcategorys
+AttributeError: 'QuerySet' object has no attribute 'get_subcategorys'
+[30/Apr/2014 13:40:40] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:40:40] ERROR [django.request:226] Internal Server Error: /classes/dance
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 61, in get_sub_category_list_view
+    for sub_category in sub_categorys:
+TypeError: 'RelatedManager' object is not iterable
+[30/Apr/2014 13:40:55] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:40:55] ERROR [django.request:226] Internal Server Error: /classes/dance
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 66, in get_sub_category_list_view
+    return _http_json_response(None, list(sub_categorys))
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 48, in _http_json_response
+    return HttpResponse(json.dumps( _makeJsonResponse( True, None, error_code, data ) , ensure_ascii=False ), content_type="application/json; charset=utf-8" )
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/__init__.py", line 250, in dumps
+    sort_keys=sort_keys, **kw).encode(obj)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/encoder.py", line 207, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/encoder.py", line 270, in iterencode
+    return _iterencode(o, 0)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/encoder.py", line 184, in default
+    raise TypeError(repr(o) + " is not JSON serializable")
+TypeError: <SubCategory: SubCategory : dance_etc> is not JSON serializable
+[30/Apr/2014 13:41:48] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:41:48] ERROR [django.request:226] Internal Server Error: /classes/dance
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 67, in get_sub_category_list_view
+    return _http_json_response(None, list(sub_categorys))
+TypeError: 'SubCategory' object is not iterable
+[30/Apr/2014 13:41:59] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:41:59] ERROR [django.request:226] Internal Server Error: /classes/dance
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 67, in get_sub_category_list_view
+    return _http_json_response(None, list(sub_categorys))
+TypeError: 'SubCategory' object is not iterable
+[30/Apr/2014 13:48:23] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:48:23] ERROR [django.request:226] Internal Server Error: /classes/dance
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 67, in get_sub_category_list_view
+    return _http_json_response(None, list(sub_categorys))
+TypeError: 'SubCategory' object is not iterable
+[30/Apr/2014 13:48:43] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:53:11] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:53:12] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[30/Apr/2014 13:53:12] DEBUG [classes.views:55] def getSubCategoryList_view( request, category_name ):
+[01/May/2014 04:38:02] ERROR [django.request:226] Internal Server Error: /classes/import/subcategory
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 390, in import_sub_category_csv_file_view
+    sub_category = SubCategory(name=unicode(row[0], 'euc-kr'), category=Category.objects.get(name=unicode(row[1], 'euc-kr')), name_kor=unicode(row[2], 'euc-kr'), description=unicode(row[3], 'euc-kr'), image_url=unicode(row[4], 'euc-kr'))
+IndexError: list index out of range
+[01/May/2014 04:53:39] ERROR [django.request:226] Internal Server Error: /classes/import/subcategory
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 390, in import_sub_category_csv_file_view
+    sub_category = SubCategory(name=unicode(row[0], 'euc-kr'), category=Category.objects.get(name=unicode(row[1], 'euc-kr')), name_kor=unicode(row[2], 'euc-kr'), description=unicode(row[3], 'euc-kr'), image_url=unicode(row[4], 'euc-kr'))
+IndexError: list index out of range
+[01/May/2014 05:07:09] ERROR [django.request:226] Internal Server Error: /classes/import/category
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 371, in import_category_csv_file_view
+    Category.objects.update_or_create(
+AttributeError: 'Manager' object has no attribute 'update_or_create'

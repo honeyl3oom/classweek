@@ -30,11 +30,11 @@ class Category(models.Model):
         return 'Category : %s' % self.name
 
 class SubCategory(models.Model):
-    name = models.TextField( unique=True )
-    category = models.ForeignKey( Category, related_name='get_subcategorys' )
-    name_kor = models.TextField( null=True )
-    description = models.TextField( null=True )
-    image_url = models.URLField( null=True )
+    name = models.TextField(unique=True)
+    category = models.ForeignKey(Category, related_name='get_subcategorys')
+    name_kor = models.TextField(null=True)
+    description = models.TextField(null=True)
+    image_url = models.URLField(null=True)
 
     def __str__(self):
         return 'SubCategory : %s' % self.name
