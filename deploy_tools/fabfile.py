@@ -58,16 +58,16 @@ def _update_virtualenv(source_folder):
     ))
 
 def _update_static_files(source_folder):
-    run('cd %s && ../virtualenv/bin/python manage.py collectstatic --noinput' % (
+    run('cd %s && sudo ../virtualenv/bin/python manage.py collectstatic --noinput' % (
         source_folder,
     ))
 
 def _update_database(source_folder):
-    run('cd %s && ../virtualenv/bin/python manage.py syncdb --noinput' % (source_folder,))
+    run('cd %s && sudo ../virtualenv/bin/python manage.py syncdb --noinput' % (source_folder,))
     # run('cd %s && ../virtualenv/bin/python manage.py schemamigration classes --initial' % (source_folder,))
-    run('cd %s && ../virtualenv/bin/python manage.py schemamigration classes --auto' % (source_folder,))
+    run('cd %s && sudo ../virtualenv/bin/python manage.py schemamigration classes --auto' % (source_folder,))
     # run('cd %s && ../virtualenv/bin/python manage.py schemamigration user --initial' % (source_folder,))
-    run('cd %s && ../virtualenv/bin/python manage.py schemamigration user --auto' % (source_folder,))
+    run('cd %s && sudo ../virtualenv/bin/python manage.py schemamigration user --auto' % (source_folder,))
 
     run('cd %s && ../virtualenv/bin/python manage.py migrate classes' % (source_folder,))
     run('cd %s && ../virtualenv/bin/python manage.py migrate user' % (source_folder,))
