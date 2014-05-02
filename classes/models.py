@@ -9,7 +9,7 @@ class Company(models.Model):
     zone = models.TextField( null=False, blank=True, default='' )
     nearby_station = models.TextField( null=True )
     facilitiesInformation = models.TextField( null=False, blank=True, default='')
-    thumbnail_image_url = models.URLField(null=False, blank=True, default='')
+    thumbnail_image_url = models.TextField(null=False, blank=True, default='')
     # toilet, fitting_room, shower_stall, locker, parking_lot, practice_room, instrument_rental
 
     def __str__(self):
@@ -20,7 +20,7 @@ class Company(models.Model):
 
 class CompanyImage(models.Model):
     company = models.ForeignKey(Company, related_name='get_company_images')
-    image_url = models.URLField()
+    image_url = models.TextField()
 
 class Category(models.Model):
     name = models.TextField( unique=True )
@@ -36,7 +36,8 @@ class SubCategory(models.Model):
     category = models.ForeignKey(Category, related_name='get_subcategorys')
     name_kor = models.TextField(null=True)
     description = models.TextField(null=True)
-    image_url = models.URLField(null=True)
+    image_url = models.TextField(null=True)
+    order_priority_number = models.IntegerField(null=False, default=0)
 
     def __str__(self):
         return 'SubCategory : %s' % self.name
@@ -45,11 +46,11 @@ class SubCategory(models.Model):
         return 'SubCategory : %s' % self.name
 
 class SubCategoryRecommend(models.Model):
-    image_url = models.URLField( null=True )
+    image_url = models.TextField( null=True )
 
 class Classes(models.Model):
     title = models.TextField( null=True )
-    thumbnail_image_url = models.URLField( null=True )
+    thumbnail_image_url = models.TextField( null=True )
     subCategory = models.ForeignKey( SubCategory, related_name='get_classes' )
     company = models.ForeignKey( Company )
     description = models.TextField( null=True )
@@ -60,7 +61,7 @@ class Classes(models.Model):
     priceOfDay = models.IntegerField( null=True )
     countOfMonth = models.IntegerField( null=True )
     priceOfMonth = models.IntegerField( null=True )
-    image_url = models.URLField( null=True )
+    image_url = models.TextField( null=True )
 
     class Meta:
         unique_together = (("title", "thumbnail_image_url", "subCategory", "company", "description", "preparation", "personalOrGroup", "refundInformation", "priceOfDay", "countOfMonth", "priceOfMonth", "image_url"),)
@@ -73,7 +74,7 @@ class Classes(models.Model):
 
 class ClassesImage(models.Model):
     classes = models.ForeignKey( Classes, related_name='get_images' )
-    image_url = models.URLField()
+    image_url = models.TextField()
 
 class ClassesInquire(models.Model):
     classes = models.ForeignKey( Classes )

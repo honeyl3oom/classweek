@@ -51,10 +51,10 @@ def _http_json_response(error, data, error_code = 0):
 
 @csrf_exempt
 def get_sub_category_list_view(request, category_name ):
-    logger.debug('def getSubCategoryList_view( request, category_name ):')
     try:
-        category = Category.objects.select_related('get_subcategorys').get(name=category_name)
-        sub_categorys = list(category.get_subcategorys.values())
+        sub_categorys = list(Category.objects.select_related('get_subcategorys').get(name=category_name).
+                             get_subcategorys.order_by('order_priority_number').values('id', 'name', 'category_id', 'name_kor',
+                                                                                       'description', 'image_url'))
         for sub_category in sub_categorys:
             sub_category['image_url'] = 'http://' + request.get_host() + sub_category['image_url']
 

@@ -371,3 +371,5 @@ IntegrityError: null value in column "subCategory_id" violates not-null constrai
 DETAIL:  Failing row contains (1, null, /static/classes/recommendation/rcmnd_3.png).
 
 [02/May/2014 06:24:50] INFO [classes.views:302] def recommend_classes_view(request):
+[02/May/2014 06:38:07] DEBUG [classes.views:54] def getSubCategoryList_view( request, category_name ):
+[02/May/2014 06:38:11] DEBUG [classes.views:54] def getSubCategoryList_view( request, category_name ):
