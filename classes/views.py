@@ -176,7 +176,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'person_or_group': classes.personalOrGroup,
         'description': classes.description,
         'preparation': classes.preparation,
-        'refund_info': classes.refundInformation,
+        'refund_info': classes.refundInformation.replace('\\n', '\n'),
         'price_of_day': classes.priceOfDay,
         'price_of_month': classes.priceOfMonth,
         'count_of_month': classes.countOfMonth,
