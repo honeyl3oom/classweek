@@ -293,11 +293,7 @@ def inquire_view(request, classes_id):
 
 @csrf_exempt
 def recommend_subcategory_view(request):
-    sub_category_recommend = list ( SubCategoryRecommend.objects.values( 'subCategory__category__name', 'subCategory__name', 'image_url' ) )
-    helper_rename_list_of_dict_keys(sub_category_recommend,
-        {"subCategory__name": "subCategory_name",
-         "subCategory__category__name": "category_name"
-         })
+    sub_category_recommend = list ( SubCategoryRecommend.objects.values('image_url'))
 
     return _http_json_response(None, sub_category_recommend)
 
