@@ -293,9 +293,12 @@ def inquire_view(request, classes_id):
 
 @csrf_exempt
 def recommend_subcategory_view(request):
-    sub_category_recommend = list ( SubCategoryRecommend.objects.values('image_url'))
+    sub_category_recommends = list ( SubCategoryRecommend.objects.values('image_url'))
 
-    return _http_json_response(None, sub_category_recommend)
+    for sub_category_recommend in sub_category_recommends:
+        sub_category_recommend['image_url'] = 'http://' + request.get_host() + sub_category_recommend['image_url']
+
+    return _http_json_response(None, sub_category_recommends)
 
 @csrf_exempt
 def recommend_classes_view(request):
