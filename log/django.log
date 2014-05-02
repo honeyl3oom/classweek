@@ -370,3 +370,4 @@ Traceback (most recent call last):
 IntegrityError: null value in column "subCategory_id" violates not-null constraint
 DETAIL:  Failing row contains (1, null, /static/classes/recommendation/rcmnd_3.png).
 
+[02/May/2014 06:24:50] INFO [classes.views:302] def recommend_classes_view(request):
