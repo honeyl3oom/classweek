@@ -184,16 +184,16 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'image_url': 'http://' + request.get_host() + classes.company.thumbnail_image_url
     })
 
-    facilitiesInformation = classes.company.facilitiesInformation
+    facilities_information = classes.company.facilitiesInformation
 
     classes_detail.update({
-        'toilet': facilitiesInformation.__contains__('toilet'),
-        'fitting_room': facilitiesInformation.__contains__('fitting_room'),
-        'shower_stall': facilitiesInformation.__contains__('shower_stall'),
-        'locker': facilitiesInformation.__contains__('locker'),
-        'parking_lot': facilitiesInformation.__contains__('parking_lot'),
-        'practice_room': facilitiesInformation.__contains__('practice_room'),
-        'instrument_rental': facilitiesInformation.__contains__('instrument_rental')
+        'toilet': facilities_information.__contains__('toilet'),
+        'fitting_room': facilities_information.__contains__('fitting_room'),
+        'shower_stall': facilities_information.__contains__('shower_stall'),
+        'locker': facilities_information.__contains__('locker'),
+        'parking_lot': facilities_information.__contains__('parking_lot'),
+        'practice_room': facilities_information.__contains__('practice_room'),
+        'instrument_rental': facilities_information.__contains__('instrument_rental')
     })
 
     images = classes.company.get_company_images.all()
@@ -317,7 +317,7 @@ def recommend_classes_view(request):
             'count_of_month': classes_item.countOfMonth,
             'price_of_day': classes_item.priceOfDay,
             'price_of_month': classes_item.priceOfMonth,
-            'image_url': 'http://' + request.get_host() + classes_item.image_url,
+            'image_url': 'http://' + request.get_host() + classes_item.company.thumbnail_image_url,
             'discount_rate': round(100 - classes_item.priceOfMonth*100.0/(classes_item.priceOfDay*classes_item.countOfMonth))
         })
         schedules = classes_item.get_schedules.filter(pk__in=schedule_pks).all()
