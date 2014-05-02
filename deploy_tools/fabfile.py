@@ -1,5 +1,5 @@
 from fabric.contrib.files import append, exists, sed
-from fabric.api import env, local, run
+from fabric.api import env, local, run, settings
 import random
 
 REPO_URL = 'https://github.com/parkjuram/classweek.git'
@@ -64,13 +64,15 @@ def _update_static_files(source_folder):
 
 def _update_database(source_folder):
     run('cd %s && sudo ../virtualenv/bin/python manage.py syncdb --noinput' % (source_folder,))
-    # run('cd %s && ../virtualenv/bin/python manage.py schemamigration classes --initial' % (source_folder,))
-    run('cd %s && sudo ../virtualenv/bin/python manage.py schemamigration classes --auto' % (source_folder,))
-    # run('cd %s && ../virtualenv/bin/python manage.py schemamigration user --initial' % (source_folder,))
-    run('cd %s && sudo ../virtualenv/bin/python manage.py schemamigration user --auto' % (source_folder,))
 
-    run('cd %s && ../virtualenv/bin/python manage.py migrate classes' % (source_folder,))
-    run('cd %s && ../virtualenv/bin/python manage.py migrate user' % (source_folder,))
+    with settings(warn_only=True):
+        # run('cd %s && ../virtualenv/bin/python manage.py schemamigration classes --initial' % (source_folder,))
+        run('cd %s && sudo ../virtualenv/bin/python manage.py schemamigration classes --auto' % (source_folder,))
+        # run('cd %s && ../virtualenv/bin/python manage.py schemamigration user --initial' % (source_folder,))
+        run('cd %s && sudo ../virtualenv/bin/python manage.py schemamigration user --auto' % (source_folder,))
+        run('cd %s && ../virtualenv/bin/python manage.py migrate classes' % (source_folder,))
+        run('cd %s && ../virtualenv/bin/python manage.py migrate user' % (source_folder,))
+        
     # one-off fake database migration. remove me before next deploy
     # run('cd %s && ../virtualenv/bin/python manage.py migrate lists --fake 0001' % (
         # source_folder,
