@@ -45,7 +45,6 @@ class SubCategory(models.Model):
         return 'SubCategory : %s' % self.name
 
 class SubCategoryRecommend(models.Model):
-    subCategory = models.ForeignKey( SubCategory, related_name='get_recommends' )
     image_url = models.URLField( null=True )
 
 class Classes(models.Model):
@@ -90,14 +89,14 @@ class Schedule(models.Model):
     duration = models.TimeField( default='00:00:00')
 
     def __str__(self):
-        return '(%d)Schedule : %s %r' % (self.id, self.dayOfWeek, self.startTime )
+        return 'class_id=(%d), (%d)Schedule : %s %r' % (self.classes_id, self.id, self.dayOfWeek, self.startTime )
 
     def __unicode__(self):
-        return '(%d)Schedule : %s %r' % (self.id, self.dayOfWeek, self.startTime )
+        return 'class_id=(%d), (%d)Schedule : %s %r' % (self.classes_id, self.id, self.dayOfWeek, self.startTime )
 
 class ClassesRecommend(models.Model):
-    classes = models.ForeignKey( Classes, related_name='get_recommends' )
-    schedule = models.ForeignKey( Schedule, related_name='get_recommends' )
+    classes = models.ForeignKey( Classes, related_name='get_recommends')
+    schedule = models.ForeignKey( Schedule, related_name='get_recommends')
 
     def __str__(self):
         return 'ClassesRecommend : %d %r %r' % (self.id, self.classes, self.schedule )

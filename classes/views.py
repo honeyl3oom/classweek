@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-import json, datetime, time
+import json
+import datetime
+import time
 
 from classweek import const
 from classweek.const import ITEM_COUNT_IN_PAGE, WEEKDAY_CONVERT_TO_NUMBER_OR_STRING, WEEKDAY_CONVERT_TO_KOREAN
@@ -16,9 +18,9 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def helper_rename_list_of_dict_keys( list_object, rename_key_dict ):
+def helper_rename_list_of_dict_keys(list_object, rename_key_dict):
     for list_item in list_object:
-        helper_rename_dict_keys( list_item, rename_key_dict )
+        helper_rename_dict_keys(list_item, rename_key_dict)
 
 
 def helper_rename_dict_keys( dict_object, rename_key_dict ):
@@ -145,7 +147,7 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
                 times = []
 
                 for i in range(len(weekday_express_by_string_list)):
-                    times.append( WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i]].decode('utf-8') + " : " +
+                    times.append(WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i]].decode('utf-8') + " : " +
                                  time.strftime('%p %I시 %M분', time.strptime(start_time_list[i], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전').decode('utf-8'))
 
                 item_detail.update({
@@ -347,9 +349,17 @@ def recommend_classes_view(request):
 
 
 
+def import_all_view(request):
+    import_category_csv_file_view(request)
+    import_sub_category_csv_file_view(request)
+    import_company_csv_file_view(request)
+    import_classes_csv_file_view(request)
+    import_schedule_csv_file_view(request)
+    import_sub_category_recommend_csv_file_view(request)
+
+    return HttpResponse('success')
 
 import csv
-
 
 def import_category_csv_file_view(request):
     with open('./classes/resource/model/csv/category_model.csv', 'rb') as f:
@@ -486,7 +496,7 @@ def import_schedule_csv_file_view(request):
                     priceOfMonth=unicode(row[10], 'euc-kr'),
                     image_url=unicode(row[11], 'euc-kr'))
             except Exception, e:
-                print e
+                logger.info(e)
 
             Schedule.objects.get_or_create(
                 classes=classes,
@@ -495,6 +505,21 @@ def import_schedule_csv_file_view(request):
                 duration=unicode(row[14], 'euc-kr'))
 
     return HttpResponse('success')
+
+def import_sub_category_recommend_csv_file_view(request):
+    with open('./classes/resource/model/csv/sub_category_recommend_model.csv', 'rb') as f:
+        reader = csv.reader(f,  delimiter='|')
+        is_first = True
+
+        for row in reader:
+            if is_first:
+                is_first = False
+                continue
+
+            SubCategoryRecommend.objects.get_or_create(
+                image_url=row[0]
+            )
+    pass
 
 # import csv
 #

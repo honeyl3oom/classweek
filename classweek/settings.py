@@ -117,6 +117,12 @@ LOGGING = {
             'filename': 'log/foradmin.log',
             'formatter': 'verbose'
         },
+        'file_payment': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'log/payment.log',
+            'formatter': 'verbose'
+        }
     },
     'loggers': {
         'django': {
@@ -130,6 +136,10 @@ LOGGING = {
         },
         'classes': {
             'handlers': ['file'],
+            'level': 'DEBUG',
+        },
+        'payment': {
+            'handlers': ['file_payment'],
             'level': 'DEBUG',
         },
     }

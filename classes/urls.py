@@ -1,11 +1,13 @@
 from django.conf.urls import patterns, url
 
 urlpatterns = patterns('',
+    url(r'^import/all', 'classes.views.import_all_view', name='import_all'),
     url(r'^import/category', 'classes.views.import_category_csv_file_view', name='import_category_csv_file'),
     url(r'^import/subcategory', 'classes.views.import_sub_category_csv_file_view', name='import_sub_category_csv_file'),
     url(r'^import/company', 'classes.views.import_company_csv_file_view', name='import_company_csv_file'),
     url(r'^import/classes', 'classes.views.import_classes_csv_file_view', name='import_classes_csv_file'),
     url(r'^import/schedule', 'classes.views.import_schedule_csv_file_view', name='import_schedule_csv_file'),
+    url(r'^import/recommend/subcategory', 'classes.views.import_sub_category_recommend_csv_file_view', name='import_sub_category_recommend_csv_file'),
     url(r'^recommend/subcategory$', 'classes.views.recommend_subcategory_view', name='recommend_subcategory'),
     url(r'^recommend/classes$', 'classes.views.recommend_classes_view', name='recommend_classes'),
     url(r'^([A-Za-z_]+)$', 'classes.views.get_sub_category_list_view', name='getSubCategoryList'),

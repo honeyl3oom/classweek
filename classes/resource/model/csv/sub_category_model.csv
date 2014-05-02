@@ -1,13 +1,13 @@
 name|category_name|name_kor|description|image_url
-kpop|dance|KPOP(방송댄스)|최신 유행 KPOP 안무 클래스|/static/classes/no.jpg
-girls_hiphop|dance|걸스힙합|섹시, 파워풀 걸스 힙합 클래스|/static/classes/no.jpg
-urban_hiphop|dance|얼반힙합|스타일리쉬한 힙합 한무 클래스|/static/classes/no.jpg
-jazz_dance|dance|재즈댄스|역동적이고 파워풀한 재즈댄스 클래스|/static/classes/no.jpg
-dance_etc|dance|팝핀/왁킹/락킹/크럼프/비보이|팝핀에서 부터 비보이까지, 다양한 장르의 댄스 클래스|/static/classes/no.jpg
-ukulele|music|우쿨렐레|작지만 아름다운 악기 우쿨렐레 클래스|/static/classes/no.jpg
-acoustic_guitar|music|통기타|언제나 매력적인 통기타 클래스|/static/classes/no.jpg
-electronic_guitar|music|일렉기타|통기타와는 또 다른 매력의 일렉기타 클래스|/static/classes/no.jpg
-drum|music|드럼/봉고|드럼 클래스 그리고 맨손으로 치는 드럼, 봉고 클래스|/static/classes/no.jpg
-classic_piano|music|클래식 피아노|아름다운 선율의 클래식 피아노 클래스|/static/classes/no.jpg
-jazz_piano|music|재즈 피아노|클래식 피아노와는 다른 매력의 재즈 피아노 클래스|/static/classes/no.jpg
-music_etc|music|하모니카/오카리나|부는 매력의 색다른 하모니카/오카리나 클래스|/static/classes/no.jpg
+kpop|dance|KPOP(방송댄스)|최신 유행 KPOP 안무 클래스|/static/classes/subcategory/kpop.png
+girls_hiphop|dance|걸스힙합|섹시, 파워풀 걸스 힙합 클래스|/static/classes/subcategory/girls_hiphop.png
+urban_hiphop|dance|얼반힙합|스타일리쉬한 힙합 한무 클래스|/static/classes/subcategory/urban_hiphop.png
+jazz_dance|dance|재즈댄스|역동적이고 파워풀한 재즈댄스 클래스|/static/classes/subcategory/jazz_dance.png
+dance_etc|dance|팝핀/왁킹/락킹/크럼프/비보이|팝핀에서 부터 비보이까지, 다양한 장르의 댄스 클래스|/static/classes/subcategory/dance_etc.png
+ukulele|music|우쿨렐레|작지만 아름다운 악기 우쿨렐레 클래스|/static/classes/subcategory/ukulele.png
+acoustic_guitar|music|통기타|언제나 매력적인 통기타 클래스|/static/classes/subcategory/acoustic_guitar.png
+electronic_guitar|music|일렉기타|통기타와는 또 다른 매력의 일렉기타 클래스|/static/classes/subcategory/electronic_guitar.png
+drum|music|드럼/봉고|드럼 클래스 그리고 맨손으로 치는 드럼, 봉고 클래스|/static/classes/subcategory/drum.png
+classic_piano|music|클래식 피아노|아름다운 선율의 클래식 피아노 클래스|/static/classes/subcategory/classic_piano.png
+jazz_piano|music|재즈 피아노|클래식 피아노와는 다른 매력의 재즈 피아노 클래스|/static/classes/subcategory/jazz_piano.png
+music_etc|music|하모니카/오카리나|부는 매력의 색다른 하모니카/오카리나 클래스|/static/classes/subcategory/music_etc.png
