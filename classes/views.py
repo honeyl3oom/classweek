@@ -76,7 +76,7 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
 
         # filter out only if there is any in 'location' param
         if request.POST.get('location', None) is not None:
-            classes = classes.filter( company__zone = request.POST.get('location', None) )
+            classes = classes.filter( company__zone = request.POST.get('location', None))
 
         # filter out only if there is any in 'price' param
         if request.POST.get('price', None) is not None:
