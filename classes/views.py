@@ -94,7 +94,8 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
                 'nearby_station': classes_item.company.nearby_station,
                 'price_of_day': classes_item.priceOfDay,
                 'count_of_month': classes_item.countOfMonth,
-                'price_of_month': classes_item.priceOfMonth,
+                'original_price_of_month': classes_item.priceOfDay*classes_item.countOfMonth,
+                'discount_price_of_month': classes_item.priceOfMonth,
                 'image_url': 'http://' + request.get_host() + classes_item.company.thumbnail_image_url,
                 'discount_rate': round(100 - classes_item.priceOfMonth*100.0/(classes_item.priceOfDay*classes_item.countOfMonth))
                 })
@@ -180,7 +181,8 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'preparation': classes.preparation,
         'refund_info': classes.refundInformation.replace('\\n', '\n'),
         'price_of_day': classes.priceOfDay,
-        'price_of_month': classes.priceOfMonth,
+        'original_price_of_month': classes.priceOfDay*classes.countOfMonth,
+        'discount_price_of_month': classes.priceOfMonth,
         'count_of_month': classes.countOfMonth,
         'discount_rate': round(100 - classes.priceOfMonth*100.0/(classes.priceOfDay*classes.countOfMonth)),
         'image_url': 'http://' + request.get_host() + classes.company.thumbnail_image_url
