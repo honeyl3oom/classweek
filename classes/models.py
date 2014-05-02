@@ -8,7 +8,8 @@ class Company(models.Model):
     location = models.TextField()
     zone = models.TextField( null=False, blank=True, default='' )
     nearby_station = models.TextField( null=True )
-    facilitiesInformation = models.TextField( null=False, blank=True, default='' )
+    facilitiesInformation = models.TextField( null=False, blank=True, default='')
+    thumbnail_image_url = models.URLField(null=False, blank=True, default='')
     # toilet, fitting_room, shower_stall, locker, parking_lot, practice_room, instrument_rental
 
     def __str__(self):
@@ -18,7 +19,7 @@ class Company(models.Model):
         return 'Company : %s' % self.name
 
 class CompanyImage(models.Model):
-    company = models.ForeignKey( Company )
+    company = models.ForeignKey(Company, related_name='get_company_images')
     image_url = models.URLField()
 
 class Category(models.Model):

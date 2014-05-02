@@ -1,18 +1,13 @@
 # -*- coding: utf-8 -*-
-import json
-import datetime, time
+import json, datetime, time
 
 from classweek import const
 from classweek.const import ITEM_COUNT_IN_PAGE, WEEKDAY_CONVERT_TO_NUMBER_OR_STRING, WEEKDAY_CONVERT_TO_KOREAN
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-from django.templatetags.static import static
-from django.core import serializers
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.exceptions import ObjectDoesNotExist
 
-# from django.core import serializers
 from django.db import IntegrityError
 from classes.models import Category, Company, CompanyImage,\
     SubCategory, Classes, ClassesInquire, Schedule, SubCategoryRecommend, ClassesRecommend
@@ -30,9 +25,10 @@ def helper_rename_dict_keys( dict_object, rename_key_dict ):
     for before_rename, after_rename in rename_key_dict.iteritems():
         dict_object[after_rename] = dict_object.pop( before_rename )
 
-def _makeJsonResponse( isSuccess, error_message, error_code = 0 , data = None):
+
+def _make_json_response(is_success, error_message, error_code = 0 , data = None):
     return_value = {}
-    if isSuccess:
+    if is_success:
         return_value['result'] = const.RESPONSE_STR_SUCCESS
     else:
         return_value['result'] = const.RESPONSE_STR_FAIL
@@ -46,9 +42,9 @@ def _makeJsonResponse( isSuccess, error_message, error_code = 0 , data = None):
 
 def _http_json_response(error, data, error_code = 0):
     if error is None:
-        return HttpResponse(json.dumps( _makeJsonResponse( True, None, error_code, data ) , ensure_ascii=False ), content_type="application/json; charset=utf-8" )
+        return HttpResponse(json.dumps( _make_json_response( True, None, error_code, data ) , ensure_ascii=False ), content_type="application/json; charset=utf-8" )
     else:
-        return HttpResponse(json.dumps( _makeJsonResponse( False, error, error_code, data ) , ensure_ascii=False ), content_type="application/json; charset=utf-8" )
+        return HttpResponse(json.dumps( _make_json_response( False, error, error_code, data ) , ensure_ascii=False ), content_type="application/json; charset=utf-8" )
 
 
 @csrf_exempt
@@ -97,7 +93,7 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
                 'price_of_day': classes_item.priceOfDay,
                 'count_of_month': classes_item.countOfMonth,
                 'price_of_month': classes_item.priceOfMonth,
-                'image_url': 'http://' + request.get_host() + classes_item.image_url,
+                'image_url': 'http://' + request.get_host() + classes_item.company.thumbnail_image_url,
                 'discount_rate': round(100 - classes_item.priceOfMonth*100.0/(classes_item.priceOfDay*classes_item.countOfMonth))
                 })
             schedules = classes_item.get_schedules.all()
@@ -111,7 +107,7 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
                 is_excluded_by_weekday = False
                 if weekday_filter is not None:
                     for i in range(len(weekday_express_by_string_list)):
-                        if not(str(weekday_filter).__contains__(str(WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[i]]))):
+                        if not(str(weekday_filter).__contains_e_(str(WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[i]]))):
                             is_excluded_by_weekday = True
                             break
                 if is_excluded_by_weekday:
@@ -185,7 +181,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'price_of_month': classes.priceOfMonth,
         'count_of_month': classes.countOfMonth,
         'discount_rate': round(100 - classes.priceOfMonth*100.0/(classes.priceOfDay*classes.countOfMonth)),
-        'image_url': 'http://' + request.get_host() + classes.image_url
+        'image_url': 'http://' + request.get_host() + classes.company.thumbnail_image_url
     })
 
     facilitiesInformation = classes.company.facilitiesInformation
@@ -200,7 +196,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'instrument_rental': facilitiesInformation.__contains__('instrument_rental')
     })
 
-    images = classes.get_images.all()
+    images = classes.company.get_company_images.all()
     detail_images = []
     for image in images:
         if len(image.image_url) > 0:
@@ -282,16 +278,16 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
     return _http_json_response(None, classes_detail )
 
 @csrf_exempt
-def inquire_view( request, classes_id ):
+def inquire_view(request, classes_id):
     if not(request.user.is_authenticated()):
-        return HttpResponse( json.dumps( _makeJsonResponse( False, const.ERROR_HAVE_TO_LOGIN, const.CODE_ERROR_HAVE_TO_LOGIN ) ), content_type="application/json" )
+        return HttpResponse(json.dumps(_make_json_response( False, const.ERROR_HAVE_TO_LOGIN, const.CODE_ERROR_HAVE_TO_LOGIN)), content_type="application/json")
     else:
         classes_inquire = ClassesInquire( classes_id = classes_id, user = request.user, content= request.POST.get('content') )
         try:
             classes_inquire.save()
         except IntegrityError:
-            return HttpResponse( json.dumps( _makeJsonResponse( False, const.ERROR_CLASSES_INQUIRE_FAIL, const.CODE_ERROR_CLASSES_INQUIRE_FAIL ) ), content_type="application/json" )
-        return HttpResponse( json.dumps( _makeJsonResponse( True, None ) ), content_type="application/json" )
+            return HttpResponse( json.dumps( _make_json_response( False, const.ERROR_CLASSES_INQUIRE_FAIL, const.CODE_ERROR_CLASSES_INQUIRE_FAIL ) ), content_type="application/json" )
+        return HttpResponse( json.dumps( _make_json_response( True, None ) ), content_type="application/json" )
 
 @csrf_exempt
 def recommend_subcategory_view(request):
@@ -352,9 +348,6 @@ def recommend_classes_view(request):
 
 
 
-
-
-
 import csv
 
 
@@ -409,9 +402,10 @@ def import_company_csv_file_view(request):
                 location=unicode(row[2], 'euc-kr'),
                 zone=unicode(row[3], 'euc-kr'),
                 nearby_station=unicode(row[4], 'euc-kr'),
-                facilitiesInformation=unicode(row[5], 'euc-kr'))
+                facilitiesInformation=unicode(row[5], 'euc-kr'),
+                thumbnail_image_url=unicode(row[6], 'euc-kr'))
 
-            for i in range(6, len(row)):
+            for i in range(7, len(row)):
                 if len(row[i]) > 0:
                     CompanyImage.objects.get_or_create(
                         company=company,
