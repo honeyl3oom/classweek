@@ -52,8 +52,9 @@ def payment_next_test_view(request):
 def payment_noti_test_view(request):
 
     logger.debug('def payment_noti_test_view(request):')
-    logger.debug( request.GET )
-    logger.debug( request.POST )
+    logger.debug(request.GET)
+    logger.debug(request.POST)
+    logger.debug(request.META.REMOTE_ADDR)
 
     if request.META.REMOTE_ADDR in ("118.129.210.25", "211.219.96.165", "118.129.210.24", "192.168.187.140", "172.20.22.40"):
         result_p_status = request.POST.get('P_STATUS', '')
