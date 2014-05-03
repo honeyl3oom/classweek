@@ -28,8 +28,8 @@ def payment_startweb_test_view(request):
 def payment_next_test_view(request):
 
     logger.debug('def payment_next_test_view(request):')
-    logger.debug( request.GET )
-    logger.debug( request.POST )
+    logger.debug(request.GET)
+    logger.debug(request.POST)
 
     inimx = INImx(request, __name__)
 
