@@ -13,6 +13,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from classes.models import Category, Company, CompanyImage,\
     SubCategory, Classes, ClassesInquire, Schedule, SubCategoryRecommend, ClassesRecommend
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -110,7 +111,7 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
                 is_excluded_by_weekday = False
                 if weekday_filter is not None:
                     for i in range(len(weekday_express_by_string_list)):
-                        if not(str(weekday_filter).__contains_e_(str(WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[i]]))):
+                        if not(str(weekday_filter).__contains__(str(WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[i]]))):
                             is_excluded_by_weekday = True
                             break
                 if is_excluded_by_weekday:
