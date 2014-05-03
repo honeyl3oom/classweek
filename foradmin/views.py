@@ -45,6 +45,7 @@ def payment_next_test_view(request):
     if inimx.status == "00":
         inimx.start_action()
 
+
     return HttpResponse('payment_next_test_view')
 
 @csrf_exempt

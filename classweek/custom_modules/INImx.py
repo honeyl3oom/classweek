@@ -85,6 +85,7 @@ class INImx():
         self.P_REQ_URL = request.POST.get('P_REQ_URL', None)
         self.P_NOTI = request.POST.get('P_NOTI', None)
 
+    # send request to req_url
     def start_action(self):
 
         self.logger.debug('INImx def start_action(self):')
