@@ -138,7 +138,7 @@ def payment_noti_test_view(request):
                 p_vact_date=p_vact_date,
                 p_vact_time=p_vact_time,
                 p_vact_name=p_vact_name,
-                p_vact_bank_code=p_vact_bank_code)
+                p_vact_bank_code=p_vact_bank_code
             )
         except Exception, e:
             logger.error(e)
