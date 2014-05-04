@@ -113,32 +113,35 @@ def payment_noti_test_view(request):
         logger.debug('P_VACT_NAME : ' + p_vact_name)
         logger.debug('P_VACT_BANK_CODE : ' + p_vact_bank_code)
 
-        payment_log = PaymentLog.objects.create(
-            p_status=unicode(p_status, 'euc-kr'),
-            p_tid=unicode(p_tid, 'euc-kr'),
-            p_type=unicode(p_type, 'euc-kr'),
-            p_auth_dt=unicode(p_auth_dt, 'euc-kr'),
-            p_mid=unicode(p_mid, 'euc-kr'),
-            p_oid=unicode(p_oid, 'euc-kr'),
-            p_amt=unicode(p_amt, 'euc-kr'),
-            p_uname=unicode(p_uname, 'euc-kr'),
-            p_rmesg1=unicode(p_rmesg1, 'euc-kr'),
-            p_rmesg2=unicode(p_rmesg2, 'euc-kr'),
-            p_noti=unicode(p_noti, 'euc-kr'),
-            p_fn_cd1=unicode(p_fn_cd1, 'euc-kr'),
-            p_auth_no=unicode(p_auth_no, 'euc-kr'),
-            p_card_issuer_code=unicode(p_card_issuer_code, 'euc-kr'),
-            p_card_num=unicode(p_card_num, 'euc-kr'),
-            p_card_member_num=unicode(p_card_member_num, 'euc-kr'),
-            p_card_purchase_code=unicode(p_card_purchase_code, 'euc-kr'),
-            p_card_prtc_code=unicode(p_card_prtc_code, 'euc-kr'),
-            p_hpp_corp=unicode(p_hpp_corp, 'euc-kr'),
-            p_vact_num=unicode(p_vact_num, 'euc-kr'),
-            p_vact_date=unicode(p_vact_date, 'euc-kr'),
-            p_vact_time=unicode(p_vact_time, 'euc-kr'),
-            p_vact_name=unicode(p_vact_name, 'euc-kr'),
-            p_vact_bank_code=unicode(p_vact_bank_code, 'euc-kr')
-        )
+        try:
+            payment_log = PaymentLog.objects.create(
+                p_status=unicode(p_status, 'euc-kr'),
+                p_tid=unicode(p_tid, 'euc-kr'),
+                p_type=unicode(p_type, 'euc-kr'),
+                p_auth_dt=unicode(p_auth_dt, 'euc-kr'),
+                p_mid=unicode(p_mid, 'euc-kr'),
+                p_oid=unicode(p_oid, 'euc-kr'),
+                p_amt=unicode(p_amt, 'euc-kr'),
+                p_uname=unicode(p_uname, 'euc-kr'),
+                p_rmesg1=unicode(p_rmesg1, 'euc-kr'),
+                p_rmesg2=unicode(p_rmesg2, 'euc-kr'),
+                p_noti=unicode(p_noti, 'euc-kr'),
+                p_fn_cd1=unicode(p_fn_cd1, 'euc-kr'),
+                p_auth_no=unicode(p_auth_no, 'euc-kr'),
+                p_card_issuer_code=unicode(p_card_issuer_code, 'euc-kr'),
+                p_card_num=unicode(p_card_num, 'euc-kr'),
+                p_card_member_num=unicode(p_card_member_num, 'euc-kr'),
+                p_card_purchase_code=unicode(p_card_purchase_code, 'euc-kr'),
+                p_card_prtc_code=unicode(p_card_prtc_code, 'euc-kr'),
+                p_hpp_corp=unicode(p_hpp_corp, 'euc-kr'),
+                p_vact_num=unicode(p_vact_num, 'euc-kr'),
+                p_vact_date=unicode(p_vact_date, 'euc-kr'),
+                p_vact_time=unicode(p_vact_time, 'euc-kr'),
+                p_vact_name=unicode(p_vact_name, 'euc-kr'),
+                p_vact_bank_code=unicode(p_vact_bank_code, 'euc-kr')
+            )
+        except Exception, e:
+            logger.error(e)
 
         if request.user.is_authenticated():
             payment_item_info_json = json.loads(p_noti)
