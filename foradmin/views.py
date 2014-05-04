@@ -6,6 +6,11 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
 from classweek.custom_modules.INImx import INImx
 from django.templatetags.static import static
+from foradmin.models import Purchase, PaymentLog
+from classes.models import Classes, Schedule
+
+import json
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -54,59 +59,109 @@ def payment_noti_test_view(request):
     logger.debug('def payment_noti_test_view(request):')
     logger.debug(request.GET)
     logger.debug(request.POST)
-    # logger.debug(request.META.get('HTTP_X_FORWARDED_FOR'))
-    logger.debug(request.META.get('REMOTE_ADDR'))
 
     if request.META.get('REMOTE_ADDR') in ("118.129.210.25", "211.219.96.165", "118.129.210.24", "192.168.187.140", "172.20.22.40"):
-        result_p_status = request.POST.get('P_STATUS', '')
-        result_p_tid = request.POST.get('P_TID', '')
-        result_p_type = request.POST.get('P_TYPE', '')
-        result_p_auth_dt = request.POST.get('P_AUTH_DT', '')
-        result_p_mid = request.POST.get('P_MID', '')
-        result_p_oid = request.POST.get('P_OID', '')
-        result_p_amt = request.POST.get('P_AMT', '')
-        result_p_uname = request.POST.get('P_UNAME', '')
-        result_p_rmesg1 = request.POST.get('P_RMESG1', '')
-        result_p_rmesg2 = request.POST.get('P_RMESG2', '')
-        result_p_noti = request.POST.get('P_NOTI', '')
-        result_p_fn_cd1 = request.POST.get('P_FN_CD1', '')
-        result_p_auth_no = request.POST.get('P_AUTH_NO', '')
-        result_p_card_issuer_code = request.POST.get('P_CARD_ISSUER_CODE', '')
-        result_p_card_num = request.POST.get('P_CARD_NUM', '')
-        result_p_card_member_num = request.POST.get('P_CARD_MEMBER_NUM', '')
-        result_p_card_purchase_code = request.POST.get('P_CARD_PURCHASE_CODE', '')
-        result_p_card_prtc_code = request.POST.get('P_CARD_PRTC_CODE', '')
-        result_p_hpp_corp = request.POST.get('P_HPP_CORP', '')
-        result_p_vact_num = request.POST.get('P_VACT_NUM', '')
-        result_p_vact_date = request.POST.get('P_VACT_DATE', '')
-        result_p_vact_time = request.POST.get('P_VACT_TIME', '')
-        result_p_vact_name = request.POST.get('P_VACT_NAME', '')
-        result_p_vact_bank_code = request.POST.get('P_VACT_CODE', '')
+
+        p_status = request.POST.get('P_STATUS', '')
+        p_tid = request.POST.get('P_TID', '')
+        p_type = request.POST.get('P_TYPE', '')
+        p_auth_dt = request.POST.get('P_AUTH_DT', '')
+        p_mid = request.POST.get('P_MID', '')
+        p_oid = request.POST.get('P_OID', '')
+        p_amt = request.POST.get('P_AMT', '')
+        p_uname = request.POST.get('P_UNAME', '')
+        p_rmesg1 = request.POST.get('P_RMESG1', '')
+        p_rmesg2 = request.POST.get('P_RMESG2', '')
+        p_noti = request.POST.get('P_NOTI', '')
+        p_fn_cd1 = request.POST.get('P_FN_CD1', '')
+        p_auth_no = request.POST.get('P_AUTH_NO', '')
+        p_card_issuer_code = request.POST.get('P_CARD_ISSUER_CODE', '')
+        p_card_num = request.POST.get('P_CARD_NUM', '')
+        p_card_member_num = request.POST.get('P_CARD_MEMBER_NUM', '')
+        p_card_purchase_code = request.POST.get('P_CARD_PURCHASE_CODE', '')
+        p_card_prtc_code = request.POST.get('P_CARD_PRTC_CODE', '')
+        p_hpp_corp = request.POST.get('P_HPP_CORP', '')
+        p_vact_num = request.POST.get('P_VACT_NUM', '')
+        p_vact_date = request.POST.get('P_VACT_DATE', '')
+        p_vact_time = request.POST.get('P_VACT_TIME', '')
+        p_vact_name = request.POST.get('P_VACT_NAME', '')
+        p_vact_bank_code = request.POST.get('P_VACT_BANK_CODE', '')
+
+        payment_log = PaymentLog.objects.create(
+            p_status=unicode(p_status, 'euc-kr'),
+            p_tid=unicode(p_tid, 'euc-kr'),
+            p_type=unicode(p_type, 'euc-kr'),
+            p_auth_dt=unicode(p_auth_dt, 'euc-kr'),
+            p_mid=unicode(p_mid, 'euc-kr'),
+            p_oid=unicode(p_oid, 'euc-kr'),
+            p_amt=unicode(p_amt, 'euc-kr'),
+            p_uname=unicode(p_uname, 'euc-kr'),
+            p_rmesg1=unicode(p_rmesg1, 'euc-kr'),
+            p_rmesg2=unicode(p_rmesg2, 'euc-kr'),
+            p_noti=unicode(p_noti, 'euc-kr'),
+            p_fn_cd1=unicode(p_fn_cd1, 'euc-kr'),
+            p_auth_no=unicode(p_auth_no, 'euc-kr'),
+            p_card_issuer_code=unicode(p_card_issuer_code, 'euc-kr'),
+            p_card_num=unicode(p_card_num, 'euc-kr'),
+            p_card_member_num=unicode(p_card_member_num, 'euc-kr'),
+            p_card_purchase_code=unicode(p_card_purchase_code, 'euc-kr'),
+            p_card_prtc_code=unicode(p_card_prtc_code, 'euc-kr'),
+            p_hpp_corp=unicode(p_hpp_corp, 'euc-kr'),
+            p_vact_num=unicode(p_vact_num, 'euc-kr'),
+            p_vact_date=unicode(p_vact_date, 'euc-kr'),
+            p_vact_time=unicode(p_vact_time, 'euc-kr'),
+            p_vact_name=unicode(p_vact_name, 'euc-kr'),
+            p_vact_bank_code=unicode(p_vact_bank_code, 'euc-kr')
+        )
+
+        if request.user.is_authenticated():
+            payment_item_info_json = json.loads(p_noti)
+
+            classes_id = payment_item_info_json.get('classes_id', None)
+            classes = Classes.objects.get(id=classes_id) if classes_id is not None else None
+
+            schedule_id = payment_item_info_json.get('schedule_id', None)
+            schedule = Schedule.objects.get(id=schedule_id) if schedule_id is not None else None
+
+            if classes is None or schedule is None:
+                logger.error('payment item info is not correct')
+
+            Purchase(
+                payment_log=payment_log,
+                user=request.user,
+                classes=classes,
+                schedule=schedule,
+                day_or_month=payment_item_info_json.get('day_or_month', ''),
+                class_start_date=payment_item_info_json.get('class_start_date', ''),
+                price=payment_item_info_json.get('price', 0)
+            )
+        else:
+            logger.error('not authenticated user payment')
         
-        logger.debug('P_STATUS : ' + result_p_status)
-        logger.debug('P_TID : ' + result_p_tid)
-        logger.debug('P_TYPE : ' + result_p_type)
-        logger.debug('P_AUTH_DT : ' + result_p_auth_dt)
-        logger.debug('P_MID : ' + result_p_mid)
-        logger.debug('P_OID : ' + result_p_oid)
-        logger.debug('P_AMT : ' + result_p_amt)
-        logger.debug('P_UNAME : ' + result_p_uname)
-        logger.debug('P_RMESG1 : ' + result_p_rmesg1)
-        logger.debug('P_RMESG2 : ' + result_p_rmesg2)
-        logger.debug('P_NOTI : ' + result_p_noti)
-        logger.debug('P_FN_CD1 : ' + result_p_fn_cd1)
-        logger.debug('P_AUTH_NO : ' + result_p_auth_no)
-        logger.debug('P_CARD_ISSUER_CODE : ' + result_p_card_issuer_code)
-        logger.debug('P_CARD_NUM : ' + result_p_card_num)
-        logger.debug('P_CARD_MEMBER_NUM : ' + result_p_card_member_num)
-        logger.debug('P_CARD_PURCHASE_CODE : ' + result_p_card_purchase_code)
-        logger.debug('P_CARD_PRTC_CODE : ' + result_p_card_prtc_code)
-        logger.debug('P_HPP_CORP : ' + result_p_hpp_corp)
-        logger.debug('P_VACT_NUM : ' + result_p_vact_num)
-        logger.debug('P_VACT_DATE : ' + result_p_vact_date)
-        logger.debug('P_VACT_TIME : ' + result_p_vact_time)
-        logger.debug('P_VACT_NAME : ' + result_p_vact_name)
-        logger.debug('P_VACT_CODE : ' + result_p_vact_bank_code)
+        logger.debug('P_STATUS : ' + p_status)
+        logger.debug('P_TID : ' + p_tid)
+        logger.debug('P_TYPE : ' + p_type)
+        logger.debug('P_AUTH_DT : ' + p_auth_dt)
+        logger.debug('P_MID : ' + p_mid)
+        logger.debug('P_OID : ' + p_oid)
+        logger.debug('P_AMT : ' + p_amt)
+        logger.debug('P_UNAME : ' + p_uname)
+        logger.debug('P_RMESG1 : ' + p_rmesg1)
+        logger.debug('P_RMESG2 : ' + p_rmesg2)
+        logger.debug('P_NOTI : ' + p_noti)
+        logger.debug('P_FN_CD1 : ' + p_fn_cd1)
+        logger.debug('P_AUTH_NO : ' + p_auth_no)
+        logger.debug('P_CARD_ISSUER_CODE : ' + p_card_issuer_code)
+        logger.debug('P_CARD_NUM : ' + p_card_num)
+        logger.debug('P_CARD_MEMBER_NUM : ' + p_card_member_num)
+        logger.debug('P_CARD_PURCHASE_CODE : ' + p_card_purchase_code)
+        logger.debug('P_CARD_PRTC_CODE : ' + p_card_prtc_code)
+        logger.debug('P_HPP_CORP : ' + p_hpp_corp)
+        logger.debug('P_VACT_NUM : ' + p_vact_num)
+        logger.debug('P_VACT_DATE : ' + p_vact_date)
+        logger.debug('P_VACT_TIME : ' + p_vact_time)
+        logger.debug('P_VACT_NAME : ' + p_vact_name)
+        logger.debug('P_VACT_BANK_CODE : ' + p_vact_bank_code)
 
 
     return HttpResponse('def payment_noti_test_view(request):')
