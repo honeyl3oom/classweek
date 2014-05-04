@@ -54,10 +54,10 @@ def payment_noti_test_view(request):
     logger.debug('def payment_noti_test_view(request):')
     logger.debug(request.GET)
     logger.debug(request.POST)
-    logger.debug(request.META)
-    logger.debug(request.META.REMOTE_ADDR)
+    # logger.debug(request.META.get('HTTP_X_FORWARDED_FOR'))
+    logger.debug(request.META.get('REMOTE_ADDR'))
 
-    if request.META.REMOTE_ADDR in ("118.129.210.25", "211.219.96.165", "118.129.210.24", "192.168.187.140", "172.20.22.40"):
+    if request.META.get('REMOTE_ADDR') in ("118.129.210.25", "211.219.96.165", "118.129.210.24", "192.168.187.140", "172.20.22.40"):
         result_p_status = request.POST.get('P_STATUS', '')
         result_p_tid = request.POST.get('P_TID', '')
         result_p_type = request.POST.get('P_TYPE', '')
