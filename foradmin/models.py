@@ -27,7 +27,7 @@ class UserSession(models.Model):
 
 class PaymentLog(models.Model):
     p_status = models.CharField(max_length=5, default='')
-    p_tid = models.CharField(max_length=40, default='')
+    p_tid = models.CharField(max_length=40, default='', primary_key=True)
     p_type = models.CharField(max_length=10, default='') # ISP(신용카드 ISP), CARD(신용카드 안심클릭), HPMN(해피머니), CULTURE(문화상품권), MOBILE(휴대폰), VBANK(가상계좌), BANK(계좌이체)
     p_auth_dt = models.CharField(max_length=14, default='') # YYYYmmddHHmmss
     p_mid = models.CharField(max_length=10, default='')
