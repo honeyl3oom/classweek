@@ -40,14 +40,14 @@ def before_payment_view(request):
     P_MID = INICIS_MARKET_ID
     P_AMT = classes.priceOfMonth if day_or_month == 'month' else classes.priceOfDay
     P_UNAME = request.user.profile.name
-    P_NOTI = json.dumps({
+    P_NOTI = {
         'username': request.user.profile.name,
         'classes_id': classes_id,
         'schedule_id': schedule_id,
         'day_or_month': day_or_month,
         'class_start_date': class_start_date,
         'price': P_AMT
-    })
+    }
     P_NEXT_URL = request.build_absolute_uri(reverse('payment_next', args=[]))
     P_NOTI_URL = request.build_absolute_uri(reverse('payment_noti', args=[]))
     P_RETURN_URL = request.build_absolute_uri(reverse('payment_return', args=[]))
