@@ -212,7 +212,7 @@ def payment_next_view(request):
         else:
             purchase = Purchase.objects.create(
                 payment_log=payment_log,
-                user=request.user,
+                user=user,
                 classes=classes,
                 schedule=schedule,
                 day_or_month=payment_item_info_json.get('day_or_month', ''),
@@ -330,7 +330,7 @@ def payment_noti_view(request):
         else:
             purchase = Purchase.objects.create(
                 payment_log=payment_log,
-                user=request.user,
+                user=user,
                 classes=classes,
                 schedule=schedule,
                 day_or_month=payment_item_info_json.get('day_or_month', ''),
