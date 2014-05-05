@@ -8,8 +8,8 @@ from django.contrib.auth.models import User
 from foradmin.models import Purchase, PaymentLog
 from classes.models import Classes, Schedule
 from classweek.const import INICIS_MARKET_ID
+from datetime import datetime
 import requests
-
 import json
 
 import logging
@@ -25,13 +25,11 @@ def before_payment_view(request):
     classes_id = request.POST.get('classes_id', None)
     schedule_id = request.POST.get('schedule_id', None)
     day_or_month = request.POST.get('day_or_month', None)
-    class_start_date = request.POST.get('class_start_date', None)
+    class_start_datetime = request.POST.get('class_start_datetime', None)
+    class_end_datetime = request.POST.get('class_end_datetime', None)
 
-    if None in (classes_id, schedule_id, day_or_month, class_start_date):
+    if None in (classes_id, schedule_id, day_or_month, class_start_datetime, class_end_datetime):
         return HttpResponse('error')
-
-    print request.user
-    print dir(request.user)
 
     if not(request.user.is_authenticated()):
         return HttpResponse('error')
@@ -45,7 +43,8 @@ def before_payment_view(request):
         'classes_id': classes_id,
         'schedule_id': schedule_id,
         'day_or_month': day_or_month,
-        'class_start_date': class_start_date,
+        'class_start_datetime': class_start_datetime,
+        'class_end_datetime': class_end_datetime,
         'price': P_AMT
     }
     P_NEXT_URL = request.build_absolute_uri(reverse('payment_next', args=[]))
@@ -217,7 +216,8 @@ def payment_next_view(request):
                 classes=classes,
                 schedule=schedule,
                 day_or_month=payment_item_info_json.get('day_or_month', ''),
-                class_start_date=payment_item_info_json.get('class_start_date', ''),
+                class_start_datetime=datetime.strptime(payment_item_info_json.get('class_start_datetime', ''),'%Y-%m-%d %H:%M:%S.%f'),
+                class_end_datetime=datetime.strptime(payment_item_info_json.get('class_end_datetime', ''),'%Y-%m-%d %H:%M:%S.%f'),
                 price=payment_item_info_json.get('price', 0)
             )
 
@@ -336,7 +336,8 @@ def payment_noti_view(request):
                 classes=classes,
                 schedule=schedule,
                 day_or_month=payment_item_info_json.get('day_or_month', ''),
-                class_start_date=payment_item_info_json.get('class_start_date', ''),
+                class_start_datetime=datetime.strptime(payment_item_info_json.get('class_start_datetime', ''),'%Y-%m-%d %H:%M:%S.%f'),
+                class_end_datetime=datetime.strptime(payment_item_info_json.get('class_end_datetime', ''),'%Y-%m-%d %H:%M:%S.%f'),
                 price=payment_item_info_json.get('price', 0)
             )
 

@@ -58,7 +58,8 @@ class Purchase(models.Model):
     classes = models.ForeignKey(Classes, related_name='get_purchases')
     schedule = models.ForeignKey(Schedule, related_name='get_purchases')
     day_or_month = models.TextField(null=False, blank=True, default='month') # day | month
-    class_start_date = models.TextField(default='')
+    class_start_datetime = models.DateTimeField(null=False, auto_now=True)
+    class_end_datetime = models.DateTimeField(null=False, auto_now=True)
     price = models.IntegerField(null=False, default=0)
     state = models.IntegerField(null=False, default=0) # 0:대기, 1:승인, 2:미승인
     created = models.DateTimeField(null=False, auto_now=True)
