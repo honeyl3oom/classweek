@@ -3,7 +3,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from classes.models import Classes, Schedule
-import datetime
+from datetime import datetime
 
 
 class ApiLog(models.Model):
@@ -11,7 +11,7 @@ class ApiLog(models.Model):
     path_name = models.TextField(null=False, blank=True, default='')
     view_name = models.TextField(null=False, blank=True, default='')
     request_params = models.TextField(null=False, blank=True, default='')
-    created = models.DateTimeField(auto_now_add=True, default=datetime.datetime.now)
+    created = models.DateTimeField(auto_now_add=True, default=datetime.now)
 
     def __unicode__(self):
         return 'ApiLog : %r' % self.user_session_id
@@ -58,8 +58,8 @@ class Purchase(models.Model):
     classes = models.ForeignKey(Classes, related_name='get_purchases')
     schedule = models.ForeignKey(Schedule, related_name='get_purchases')
     day_or_month = models.TextField(null=False, blank=True, default='month') # day | month
-    class_start_datetime = models.DateTimeField(null=False, auto_now=True)
-    class_end_datetime = models.DateTimeField(null=False, auto_now=True)
+    class_start_datetime = models.DateTimeField(null=False, default=datetime.now)
+    class_end_datetime = models.DateTimeField(null=False, default=datetime.now)
     price = models.IntegerField(null=False, default=0)
     state = models.IntegerField(null=False, default=0) # 0:대기, 1:승인, 2:미승인
     created = models.DateTimeField(null=False, auto_now=True)
