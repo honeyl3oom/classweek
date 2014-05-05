@@ -125,6 +125,7 @@ def payment_next_view(request):
         p_rmesg1 = params_dict.get('P_RMESG1', '')
         p_rmesg2 = params_dict.get('P_RMESG2', '')
         p_noti = params_dict.get('P_NOTI', '')
+        p_noti = str(p_noti).replace('\\', '')
         p_fn_cd1 = params_dict.get('P_FN_CD1', '')
         p_auth_no = params_dict.get('P_AUTH_NO', '')
         p_card_issuer_code = params_dict.get('P_CARD_ISSUER_CODE', '')
@@ -194,7 +195,7 @@ def payment_next_view(request):
         except Exception, e:
             logger.error(e)
 
-        payment_item_info_json = json.loads(str(p_noti).replace('\\', ''))
+        payment_item_info_json = json.loads(p_noti)
 
         username = payment_item_info_json.get('username', None)
         user = User.objects.get(username=username) if username is not None else None
@@ -243,6 +244,7 @@ def payment_noti_view(request):
         p_rmesg1 = request.POST.get('P_RMESG1', '')
         p_rmesg2 = request.POST.get('P_RMESG2', '')
         p_noti = request.POST.get('P_NOTI', '')
+        p_noti = str(p_noti).replace('\\', '')
         p_fn_cd1 = request.POST.get('P_FN_CD1', '')
         p_auth_no = request.POST.get('P_AUTH_NO', '')
         p_card_issuer_code = request.POST.get('P_CARD_ISSUER_CODE', '')
@@ -312,7 +314,7 @@ def payment_noti_view(request):
         except Exception, e:
             logger.error(e)
 
-        payment_item_info_json = json.loads(str(p_noti).replace('\\', ''))
+        payment_item_info_json = json.loads(p_noti)
 
         username = payment_item_info_json.get('username', None)
         user = User.objects.get(username=username) if username is not None else None
