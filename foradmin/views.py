@@ -194,7 +194,7 @@ def payment_next_view(request):
         except Exception, e:
             logger.error(e)
 
-        payment_item_info_json = json.loads(p_noti)
+        payment_item_info_json = json.loads(str(p_noti).replace('\\', ''))
 
         username = payment_item_info_json.get('username', None)
         user = User.objects.get(username=username) if username is not None else None
