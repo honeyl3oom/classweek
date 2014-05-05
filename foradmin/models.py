@@ -50,7 +50,7 @@ class PaymentLog(models.Model):
     p_vact_time = models.CharField(max_length=6, default='')
     p_vact_name = models.TextField(default='')
     p_vact_bank_code = models.CharField(max_length=2, default='')
-    created = models.DateTimeField(null=False, auto_now=True)
+    created = models.DateTimeField(null=False, auto_now=True, default=datetime.now)
 
 
 class Purchase(models.Model):
