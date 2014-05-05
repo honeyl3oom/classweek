@@ -33,15 +33,15 @@ def before_payment_view(request):
     print request.user
     print dir(request.user)
 
-    if not(request.user.is_authenticated()) or not(hasattr(request.user, 'profile')):
+    if not(request.user.is_authenticated()):
         return HttpResponse('error')
 
     classes = Classes.objects.get(id=classes_id)
     P_MID = INICIS_MARKET_ID
     P_AMT = classes.priceOfMonth if day_or_month == 'month' else classes.priceOfDay
-    P_UNAME = request.user.profile.name
+    P_UNAME = request.user.username
     P_NOTI = {
-        'username': request.user.profile.name,
+        'username': request.user.username,
         'classes_id': classes_id,
         'schedule_id': schedule_id,
         'day_or_month': day_or_month,
@@ -312,7 +312,7 @@ def payment_noti_view(request):
         except Exception, e:
             logger.error(e)
 
-        payment_item_info_json = json.loads(p_noti)
+        payment_item_info_json = json.loads(str(p_noti).replace('\\', ''))
 
         username = payment_item_info_json.get('username', None)
         user = User.objects.get(username=username) if username is not None else None
