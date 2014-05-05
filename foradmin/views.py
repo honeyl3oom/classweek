@@ -75,9 +75,9 @@ def payment_startweb_test_view(request):
     # logger.debug("\xbc\xad\xba\xf1\xbd\xba".decode('EUC-KR').encode('UTF-8'))
     # logger.debug(u'\uc11c\ube44\uc2a4 \uc0ac\uc6a9\ubd88\uac00 \uac00\ub9f9\uc810')
 
-    payment_next_url = request.build_absolute_uri(reverse('payment_next_test', args=[]))
-    payment_return_url = request.build_absolute_uri(reverse('payment_return_test', args=[]))
-    payment_noti_url = request.build_absolute_uri(reverse('payment_noti_test', args=[]))
+    payment_next_url = request.build_absolute_uri(reverse('payment_next', args=[]))
+    payment_return_url = request.build_absolute_uri(reverse('payment_return', args=[]))
+    payment_noti_url = request.build_absolute_uri(reverse('payment_noti', args=[]))
     return render(request, 'payment_startweb_test.html',
                   {'payment_next_url': payment_next_url,
                    'payment_return_url': payment_return_url,
@@ -86,7 +86,7 @@ def payment_startweb_test_view(request):
 @csrf_exempt
 def payment_next_view(request):
 
-    logger.debug('def payment_next_test_view(request):')
+    logger.debug('def payment_next_view(request):')
     logger.debug(request.GET)
     logger.debug(request.POST)
 
@@ -220,12 +220,12 @@ def payment_next_view(request):
                 price=payment_item_info_json.get('price', 0)
             )
 
-    return HttpResponse('payment_next_test_view')
+    return HttpResponse('payment_next_view')
 
 @csrf_exempt
 def payment_noti_view(request):
 
-    logger.debug('def payment_noti_test_view(request):')
+    logger.debug('def payment_noti_view(request):')
     logger.debug(request.GET)
     logger.debug(request.POST)
     logger.debug(request.META.get('REMOTE_ADDR'))
@@ -340,13 +340,13 @@ def payment_noti_view(request):
 
 
 
-    return HttpResponse('def payment_noti_test_view(request):')
+    return HttpResponse('def payment_noti_view(request):')
 
 @csrf_exempt
 def payment_return_view(request):
 
-    logger.debug('def payment_return_test_view(request):')
+    logger.debug('def payment_return_view(request):')
     logger.debug( request.GET )
     logger.debug( request.POST )
 
-    return HttpResponse('payment_return_test_view')
+    return HttpResponse('payment_return_view')
