@@ -33,6 +33,8 @@ WEEKDAY_CONVERT_TO_KOREAN = {
     'Sun': '일'
 }
 
+INICIS_MARKET_ID = "CAEblac956"
+
 RESPONSE_STR_SUCCESS = 'success'
 RESPONSE_STR_FAIL = 'fail'
 
