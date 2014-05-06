@@ -356,7 +356,7 @@ def recommend_classes_view(request):
 
 @csrf_exempt
 def nowtaking_view(request):
-    purchases = Purchase.objects.get(class_end_datetime__gte=datetime.now())
+    purchases = Purchase.objects.filter(class_end_datetime__gte=datetime.now()).all()
 
     nowtaking_list = []
 
