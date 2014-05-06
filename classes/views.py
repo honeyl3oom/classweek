@@ -354,6 +354,7 @@ def recommend_classes_view(request):
 
     return _http_json_response(None, classes_list)
 
+@csrf_exempt
 def nowtaking_view(request):
     purchases = Purchase.objects.get(class_end_datetime__gte=datetime.now())
 
