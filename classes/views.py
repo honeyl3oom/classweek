@@ -396,9 +396,9 @@ def nowtaking_view(request):
             'title': title,
             'time': time,
             'start_datetime': start_datetime.strftime("%Y-%m-%d") +
-                              WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[start_datetime.strftime("%w")]],
+                              WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[int(start_datetime.strftime("%w"))]],
             'end_datetime': end_datetime.strftime("%Y-%m-%d") +
-                            WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[end_datetime.strftime("%w")]],
+                            WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[int(end_datetime.strftime("%w"))]],
             'current_state': current_state
         }
 
