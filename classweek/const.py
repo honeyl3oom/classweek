@@ -33,7 +33,13 @@ WEEKDAY_CONVERT_TO_KOREAN = {
     'Sun': '일'
 }
 
-INICIS_MARKET_ID = "CAEblac956"
+PAYMENT_STATE_TO_KOREAN = {
+    1: '대기',
+    2: '승인',
+    3: '미승인'
+}
+
+INICIS_MARKET_ID = 'CAEblac956'
 
 RESPONSE_STR_SUCCESS = 'success'
 RESPONSE_STR_FAIL = 'fail'

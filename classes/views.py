@@ -4,7 +4,8 @@ from datetime import datetime, timedelta
 import time
 
 from classweek import const
-from classweek.const import ITEM_COUNT_IN_PAGE, WEEKDAY_CONVERT_TO_NUMBER_OR_STRING, WEEKDAY_CONVERT_TO_KOREAN
+from classweek.const import ITEM_COUNT_IN_PAGE, \
+    WEEKDAY_CONVERT_TO_NUMBER_OR_STRING, WEEKDAY_CONVERT_TO_KOREAN, PAYMENT_STATE_TO_KOREAN
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
@@ -394,12 +395,12 @@ def nowtaking_view(request):
 
         nowtaking_item = {
             'title': title,
-            'time': time,
-            'start_datetime': start_datetime.strftime("%Y-%m-%d") +
-                              WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[int(start_datetime.strftime("%w"))]],
-            'end_datetime': end_datetime.strftime("%Y-%m-%d") +
-                            WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[int(end_datetime.strftime("%w"))]],
-            'current_state': current_state
+            'time': time.decode('utf-8'),
+            'start_datetime': (start_datetime.strftime("%Y-%m-%d") +
+                              WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[int(start_datetime.strftime("%w"))]]).decode('utf-8'),
+            'end_datetime': (end_datetime.strftime("%Y-%m-%d") +
+                            WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[int(end_datetime.strftime("%w"))]]).decode('utf-8'),
+            'current_state': PAYMENT_STATE_TO_KOREAN[current_state].decode('utf-8')
         }
 
         nowtaking_list.append(nowtaking_item)
