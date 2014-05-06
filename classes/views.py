@@ -370,8 +370,7 @@ def nowtaking_view(request):
         weekday_list_expressed_by_string = weekday_before_split_expressed_by_string.split(',')
         start_time_before_split_expressed_by_string = schedule.startTime
         start_time_list_expressed_by_string = start_time_before_split_expressed_by_string.split(',')
-        duration_expressed_by_string = schedule.duration
-        duration_time = datetime.strptime(duration_expressed_by_string, '%H:%M:%S').time()
+        duration_time = schedule.duration
 
         time = ''
 
