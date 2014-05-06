@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from foradmin.models import Purchase, PaymentLog
 from classes.models import Classes, Schedule
-from classweek.const import INICIS_MARKET_ID
+from classweek.const import *
 from datetime import datetime
 import requests
 import json
@@ -22,6 +22,8 @@ logger = logging.getLogger(__name__)
 @csrf_exempt
 def before_payment_view(request):
 
+    error = None
+
     classes_id = request.POST.get('classes_id', None)
     schedule_id = request.POST.get('schedule_id', None)
     day_or_month = request.POST.get('day_or_month', None)
@@ -29,44 +31,52 @@ def before_payment_view(request):
     class_end_datetime = request.POST.get('class_end_datetime', None)
 
     if None in (classes_id, schedule_id, day_or_month, class_start_datetime, class_end_datetime):
-        return HttpResponse('error')
+        error, error_code = ERROR_REQUEST_PARAMS_WRONG, CODE_ERROR_REQUEST_PARAMS_WRONG
 
-    if not(request.user.is_authenticated()):
-        return HttpResponse('error')
+    if error is None and not(request.user.is_authenticated()):
+        error, error_code = ERROR_HAVE_TO_LOGIN, CODE_ERROR_HAVE_TO_LOGIN
 
-    classes = Classes.objects.get(id=classes_id)
-    P_MID = INICIS_MARKET_ID
-    P_AMT = classes.priceOfMonth if day_or_month == 'month' else classes.priceOfDay
-    P_UNAME = request.user.username
-    P_NOTI = {
-        'username': request.user.username,
-        'classes_id': classes_id,
-        'schedule_id': schedule_id,
-        'day_or_month': day_or_month,
-        'class_start_datetime': class_start_datetime,
-        'class_end_datetime': class_end_datetime,
-        'price': P_AMT
-    }
-    P_NEXT_URL = request.build_absolute_uri(reverse('payment_next', args=[]))
-    P_NOTI_URL = request.build_absolute_uri(reverse('payment_noti', args=[]))
-    P_RETURN_URL = request.build_absolute_uri(reverse('payment_return', args=[]))
-    P_GOODS = 'blackpigstudio'+","+str(classes_id)+","+str(schedule_id)
+    if error is None:
+        classes = Classes.objects.get(id=classes_id)
+        P_MID = INICIS_MARKET_ID
+        P_AMT = classes.priceOfMonth if day_or_month == 'month' else classes.priceOfDay
+        P_UNAME = request.user.username
+        P_NOTI = {
+            'username': request.user.username,
+            'classes_id': classes_id,
+            'schedule_id': schedule_id,
+            'day_or_month': day_or_month,
+            'class_start_datetime': class_start_datetime,
+            'class_end_datetime': class_end_datetime,
+            'price': P_AMT
+        }
+        P_NEXT_URL = request.build_absolute_uri(reverse('payment_next', args=[]))
+        P_NOTI_URL = request.build_absolute_uri(reverse('payment_noti', args=[]))
+        P_RETURN_URL = request.build_absolute_uri(reverse('payment_return', args=[]))
+        P_GOODS = 'blackpigstudio'+","+str(classes_id)+","+str(schedule_id)
 
-    return HttpResponse(json.dumps(
-        {
-            'data': {
-                'P_MID': P_MID,
-                'P_AMT': P_AMT,
-                'P_UNAME': P_UNAME,
-                'P_NOTI': P_NOTI,
-                'P_NEXT_URL': P_NEXT_URL,
-                'P_NOTI_URL': P_NOTI_URL,
-                'P_RETURN_URL': P_RETURN_URL,
-                'P_GOODS': P_GOODS},
-            'error_code': 0,
-            'error_message': None,
-            'result': 'success'
-        }, ensure_ascii=False), content_type='"application/json; charset=utf-8"')
+        return HttpResponse(json.dumps(
+            {
+                'data': {
+                    'P_MID': P_MID,
+                    'P_AMT': P_AMT,
+                    'P_UNAME': P_UNAME,
+                    'P_NOTI': P_NOTI,
+                    'P_NEXT_URL': P_NEXT_URL,
+                    'P_NOTI_URL': P_NOTI_URL,
+                    'P_RETURN_URL': P_RETURN_URL,
+                    'P_GOODS': P_GOODS},
+                'error_code': 0,
+                'error_message': None,
+                'result': 'success'
+            }, ensure_ascii=False), content_type='"application/json; charset=utf-8"')
+    else:
+        return HttpResponse(json.dumps(
+            {
+                'error_code': error_code,
+                'error_message': error,
+                'result': 'fail'
+            }, ensure_ascii=False), content_type='"application/json; charset=utf-8"')
 
 def payment_startweb_test_view(request):
 

@@ -13,6 +13,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from classes.models import Category, Company, CompanyImage,\
     SubCategory, Classes, ClassesInquire, Schedule, SubCategoryRecommend, ClassesRecommend
+from foradmin.models import Purchase
 
 import logging
 
@@ -353,6 +354,57 @@ def recommend_classes_view(request):
 
     return _http_json_response(None, classes_list)
 
+def nowtaking_view(request):
+    purchases = Purchase.objects.get(class_end_datetime__gte=datetime.now())
+
+    nowtaking_list = []
+
+    for purchase in purchases:
+        classes = purchase.classes
+        schedule = purchase.schedule
+
+        title = classes.title
+
+        weekday_before_split_expressed_by_string = schedule.dayOfWeek
+        weekday_list_expressed_by_string = weekday_before_split_expressed_by_string.split(',')
+        start_time_before_split_expressed_by_string = schedule.startTime
+        start_time_list_expressed_by_string = start_time_before_split_expressed_by_string.split(',')
+        duration_expressed_by_string = schedule.duration
+        duration_time = datetime.strptime(duration_expressed_by_string, '%H:%M:%S').time()
+
+        time = ''
+
+        if len(weekday_list_expressed_by_string) == len(start_time_list_expressed_by_string):
+            for i in range(len(weekday_list_expressed_by_string)):
+                if i != 0:
+                    time += ', '
+                weekday_expressed_by_korean = WEEKDAY_CONVERT_TO_KOREAN[weekday_list_expressed_by_string[i]]
+                start_time = datetime.strptime(start_time_list_expressed_by_string[i], '%H:%M:%S').time()
+                end_time = (datetime.combine( datetime.today(), start_time) + \
+                          timedelta(hours=duration_time.hour, minutes=duration_time.minute)).time()
+
+                time += weekday_expressed_by_korean + start_time.strftime(' %H:%M-') + end_time.strftime('%H:%M')
+
+        else:
+            pass
+
+        start_datetime = purchase.class_start_datetime
+        end_datetime = purchase.class_end_datetime
+        current_state = purchase.state
+
+        nowtaking_item = {
+            'title': title,
+            'time': time,
+            'start_datetime': start_datetime.strftime("%Y-%m-%d") +
+                              WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[start_datetime.strftime("%w")]],
+            'end_datetime': end_datetime.strftime("%Y-%m-%d") +
+                            WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[end_datetime.strftime("%w")]],
+            'current_state': current_state
+        }
+
+        nowtaking_list.append(nowtaking_item)
+
+    return _http_json_response(None, nowtaking_list)
 
 
 

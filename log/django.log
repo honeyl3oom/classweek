@@ -883,3 +883,283 @@ Traceback (most recent call last):
   File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 246, in getClassesDetail_view
     timedelta_from_today = datetime.timedelta(days=timedelta_from_today.days+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j]]-(today+timedelta_from_today).weekday())
 AttributeError: type object 'datetime.datetime' has no attribute 'timedelta'
+[05/May/2014 12:58:23] ERROR [django.request:226] Internal Server Error: /classes/nowtaking
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 90, in get_response
+    response = middleware_method(request)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/middleware/common.py", line 71, in process_request
+    if (not urlresolvers.is_valid_path(request.path_info, urlconf) and
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 573, in is_valid_path
+    resolve(path, urlconf)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 453, in resolve
+    return get_resolver(urlconf).resolve(path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 320, in resolve
+    sub_match = pattern.resolve(new_path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 320, in resolve
+    sub_match = pattern.resolve(new_path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 222, in resolve
+    return ResolverMatch(self.callback, args, kwargs, self.name)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 229, in callback
+    self._callback = get_callable(self._callback_str)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/functional.py", line 32, in wrapper
+    result = func(*args)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 117, in get_callable
+    (lookup_view, mod_name))
+ViewDoesNotExist: Could not import classes.views.nowtaking_view. View does not exist in module classes.views.
+[05/May/2014 12:58:24] ERROR [django.request:226] Internal Server Error: /classes/nowtaking
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 90, in get_response
+    response = middleware_method(request)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/middleware/common.py", line 71, in process_request
+    if (not urlresolvers.is_valid_path(request.path_info, urlconf) and
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 573, in is_valid_path
+    resolve(path, urlconf)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 453, in resolve
+    return get_resolver(urlconf).resolve(path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 320, in resolve
+    sub_match = pattern.resolve(new_path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 320, in resolve
+    sub_match = pattern.resolve(new_path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 222, in resolve
+    return ResolverMatch(self.callback, args, kwargs, self.name)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 229, in callback
+    self._callback = get_callable(self._callback_str)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/functional.py", line 32, in wrapper
+    result = func(*args)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 117, in get_callable
+    (lookup_view, mod_name))
+ViewDoesNotExist: Could not import classes.views.nowtaking_view. View does not exist in module classes.views.
+[05/May/2014 14:52:00] ERROR [django.request:226] Internal Server Error: /admin/foradmin/purchase/
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/contrib/admin/options.py", line 432, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/decorators.py", line 99, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/cache.py", line 52, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/contrib/admin/sites.py", line 198, in inner
+    return view(request, *args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/decorators.py", line 29, in _wrapper
+    return bound_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/decorators.py", line 99, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/decorators.py", line 25, in bound_func
+    return func(self, *args2, **kwargs2)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/contrib/admin/options.py", line 1306, in changelist_view
+    self)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/contrib/admin/views/main.py", line 106, in __init__
+    self.get_results(request)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/contrib/admin/views/main.py", line 220, in get_results
+    result_count = paginator.count
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/paginator.py", line 72, in _get_count
+    self._count = self.object_list.count()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/models/query.py", line 291, in count
+    return self.query.get_count(using=self.db)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/models/sql/query.py", line 390, in get_count
+    number = obj.get_aggregation(using=using)[None]
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/models/sql/query.py", line 356, in get_aggregation
+    result = query.get_compiler(using).execute_sql(SINGLE)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/models/sql/compiler.py", line 782, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/backends/util.py", line 69, in execute
+    return super(CursorDebugWrapper, self).execute(sql, params)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/backends/util.py", line 53, in execute
+    return self.cursor.execute(sql, params)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/utils.py", line 99, in __exit__
+    six.reraise(dj_exc_type, dj_exc_value, traceback)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/backends/util.py", line 53, in execute
+    return self.cursor.execute(sql, params)
+ProgrammingError: relation "foradmin_purchase" does not exist
+LINE 1: SELECT COUNT(*) FROM "foradmin_purchase"
+                             ^
+
+[06/May/2014 00:13:07] ERROR [django.request:226] Internal Server Error: /classes/nowtaking
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 359, in nowtaking_view
+    print purchases.class_end_datetime, datetime.now()
+AttributeError: 'QuerySet' object has no attribute 'class_end_datetime'
+[06/May/2014 00:13:16] ERROR [django.request:226] Internal Server Error: /classes/nowtaking
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 90, in get_response
+    response = middleware_method(request)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/middleware/common.py", line 71, in process_request
+    if (not urlresolvers.is_valid_path(request.path_info, urlconf) and
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 573, in is_valid_path
+    resolve(path, urlconf)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 453, in resolve
+    return get_resolver(urlconf).resolve(path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 320, in resolve
+    sub_match = pattern.resolve(new_path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 320, in resolve
+    sub_match = pattern.resolve(new_path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 222, in resolve
+    return ResolverMatch(self.callback, args, kwargs, self.name)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 229, in callback
+    self._callback = get_callable(self._callback_str)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/functional.py", line 32, in wrapper
+    result = func(*args)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 96, in get_callable
+    mod = import_module(mod_name)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/importlib.py", line 40, in import_module
+    __import__(name)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 358
+    purchases = Purchase.objects.filter(Purchase.class_end_datetime__gte=datetime.now()).all()
+SyntaxError: keyword can't be an expression
+[06/May/2014 00:13:17] ERROR [django.request:226] Internal Server Error: /classes/nowtaking
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 90, in get_response
+    response = middleware_method(request)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/middleware/common.py", line 71, in process_request
+    if (not urlresolvers.is_valid_path(request.path_info, urlconf) and
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 573, in is_valid_path
+    resolve(path, urlconf)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 453, in resolve
+    return get_resolver(urlconf).resolve(path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 320, in resolve
+    sub_match = pattern.resolve(new_path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 320, in resolve
+    sub_match = pattern.resolve(new_path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 222, in resolve
+    return ResolverMatch(self.callback, args, kwargs, self.name)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 229, in callback
+    self._callback = get_callable(self._callback_str)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/functional.py", line 32, in wrapper
+    result = func(*args)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 96, in get_callable
+    mod = import_module(mod_name)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/importlib.py", line 40, in import_module
+    __import__(name)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 358
+    purchases = Purchase.objects.filter(Purchase.class_end_datetime__gte=datetime.now()).all()
+SyntaxError: keyword can't be an expression
+[06/May/2014 00:14:04] ERROR [django.request:226] Internal Server Error: /classes/nowtaking
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 359, in nowtaking_view
+    print purchases.class_end_datetime, datetime.now()
+AttributeError: 'QuerySet' object has no attribute 'class_end_datetime'
+[06/May/2014 00:14:26] ERROR [django.request:226] Internal Server Error: /classes/nowtaking
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 358, in nowtaking_view
+    purchases = Purchase.objects.get(class_end_datetime__lte=datetime.now())
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/models/manager.py", line 151, in get
+    return self.get_queryset().get(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/models/query.py", line 307, in get
+    self.model._meta.object_name)
+DoesNotExist: Purchase matching query does not exist.
+[06/May/2014 00:14:30] ERROR [django.request:226] Internal Server Error: /classes/nowtaking
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 358, in nowtaking_view
+    purchases = Purchase.objects.get(class_end_datetime__lte=datetime.now())
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/models/manager.py", line 151, in get
+    return self.get_queryset().get(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/models/query.py", line 307, in get
+    self.model._meta.object_name)
+DoesNotExist: Purchase matching query does not exist.
+[06/May/2014 00:21:23] ERROR [django.request:226] Internal Server Error: /classes/nowtaking
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 359, in nowtaking_view
+    datetime.combine(created_value, time.min)
+NameError: global name 'created_value' is not defined
+[06/May/2014 00:21:37] ERROR [django.request:226] Internal Server Error: /classes/nowtaking
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 360, in nowtaking_view
+    print purchases.class_end_datetime >= datetime.now()
+TypeError: can't compare offset-naive and offset-aware datetimes
+[06/May/2014 00:29:54] ERROR [django.request:226] Internal Server Error: /classes/drum
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 90, in get_response
+    response = middleware_method(request)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/middleware/common.py", line 71, in process_request
+    if (not urlresolvers.is_valid_path(request.path_info, urlconf) and
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 573, in is_valid_path
+    resolve(path, urlconf)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 453, in resolve
+    return get_resolver(urlconf).resolve(path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 320, in resolve
+    sub_match = pattern.resolve(new_path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 320, in resolve
+    sub_match = pattern.resolve(new_path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 222, in resolve
+    return ResolverMatch(self.callback, args, kwargs, self.name)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 229, in callback
+    self._callback = get_callable(self._callback_str)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/functional.py", line 32, in wrapper
+    result = func(*args)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 96, in get_callable
+    mod = import_module(mod_name)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/importlib.py", line 40, in import_module
+    __import__(name)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 359
+    for item in purchaes
+                       ^
+SyntaxError: invalid syntax
+[06/May/2014 00:30:00] ERROR [django.request:226] Internal Server Error: /classes/music
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 90, in get_response
+    response = middleware_method(request)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/middleware/common.py", line 71, in process_request
+    if (not urlresolvers.is_valid_path(request.path_info, urlconf) and
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 573, in is_valid_path
+    resolve(path, urlconf)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 453, in resolve
+    return get_resolver(urlconf).resolve(path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 320, in resolve
+    sub_match = pattern.resolve(new_path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 320, in resolve
+    sub_match = pattern.resolve(new_path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 222, in resolve
+    return ResolverMatch(self.callback, args, kwargs, self.name)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 229, in callback
+    self._callback = get_callable(self._callback_str)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/functional.py", line 32, in wrapper
+    result = func(*args)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 96, in get_callable
+    mod = import_module(mod_name)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/importlib.py", line 40, in import_module
+    __import__(name)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 359
+    for item in purchaes
+                       ^
+SyntaxError: invalid syntax
+[06/May/2014 00:30:18] ERROR [django.request:226] Internal Server Error: /classes/music
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 90, in get_response
+    response = middleware_method(request)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/middleware/common.py", line 71, in process_request
+    if (not urlresolvers.is_valid_path(request.path_info, urlconf) and
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 573, in is_valid_path
+    resolve(path, urlconf)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 453, in resolve
+    return get_resolver(urlconf).resolve(path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 320, in resolve
+    sub_match = pattern.resolve(new_path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 320, in resolve
+    sub_match = pattern.resolve(new_path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 222, in resolve
+    return ResolverMatch(self.callback, args, kwargs, self.name)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 229, in callback
+    self._callback = get_callable(self._callback_str)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/functional.py", line 32, in wrapper
+    result = func(*args)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 96, in get_callable
+    mod = import_module(mod_name)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/importlib.py", line 40, in import_module
+    __import__(name)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 359
+    for item in purchaes
+                       ^
+SyntaxError: invalid syntax

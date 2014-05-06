@@ -52,6 +52,9 @@ class PaymentLog(models.Model):
     p_vact_bank_code = models.CharField(max_length=2, default='')
     created = models.DateTimeField(null=False, auto_now=True, default=datetime.now)
 
+    def __unicode__(self):
+        return 'PaymentLog : (p_tid)%r' % self.p_tid
+
 
 class Purchase(models.Model):
     payment_log = models.OneToOneField(PaymentLog, primary_key=True)
@@ -64,3 +67,6 @@ class Purchase(models.Model):
     price = models.IntegerField(null=False, default=0)
     state = models.IntegerField(null=False, default=0) # 0:대기, 1:승인, 2:미승인
     created = models.DateTimeField(null=False, auto_now=True)
+
+    def __unicode__(self):
+        return 'Purchase: (payment_log)%r' % self.payment_log
