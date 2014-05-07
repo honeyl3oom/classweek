@@ -54,6 +54,7 @@ def before_payment_view(request):
         P_NOTI_URL = request.build_absolute_uri(reverse('payment_noti', args=[]))
         P_RETURN_URL = request.build_absolute_uri(reverse('payment_return', args=[]))
         P_GOODS = classes.title
+        print P_GOODS
 
         return HttpResponse(json.dumps(
             {
@@ -69,14 +70,14 @@ def before_payment_view(request):
                 'error_code': 0,
                 'error_message': None,
                 'result': 'success'
-            }, ensure_ascii=False), content_type='"application/json; charset=utf-8"')
+            }, ensure_ascii=False), content_type="application/json; charset=utf-8")
     else:
         return HttpResponse(json.dumps(
             {
                 'error_code': error_code,
                 'error_message': error,
                 'result': 'fail'
-            }, ensure_ascii=False), content_type='"application/json; charset=utf-8"')
+            }, ensure_ascii=False), content_type="application/json; charset=utf-8")
 
 def payment_startweb_test_view(request):
 

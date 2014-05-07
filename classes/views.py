@@ -67,53 +67,59 @@ def get_sub_category_list_view(request, category_name ):
 
 # location, weekday, time( morning, .. ), price ( by month )
 @csrf_exempt
-def getClassesList_view( request, category_name, subcategory_name, page_num = 1 ):
-
-    print category_name, subcategory_name
+def get_classes_list_view(request, category_name, subcategory_name, page_num='1'):
 
     page_num = int(page_num)
 
-    subcategory = SubCategory.objects.filter( name = subcategory_name ).select_related( 'get_classes' )
-    if subcategory.exists():
-        classes = subcategory.first().get_classes
+    try:
+        classes = SubCategory.objects.select_related('get_classes', ).get(name=subcategory_name).get_classes
+
+        location_filter = request.POST.get('location', None)
+        price_filter = request.POST.get('price', None)
+        weekday_filter = request.POST.get('weekday', None)
 
         # filter out only if there is any in 'location' param
-        if request.POST.get('location', None) is not None:
-            classes = classes.filter( company__zone = request.POST.get('location', None))
+        if location_filter is not None:
+            classes = classes.filter(company__zone=request.POST.get('location', None))
 
         # filter out only if there is any in 'price' param
-        if request.POST.get('price', None) is not None:
-            classes = classes.filter( priceOfMonth__lte = request.POST.get('price', None) )
+        if price_filter is not None:
+            classes = classes.filter(priceOfMonth__lte=request.POST.get('price', None))
 
         classes = classes.select_related('get_schedules', 'company', ).all()
+
         classes_list = []
 
         for classes_item in classes:
+
+            company = classes_item.company
+            schedules = classes_item.get_schedules.all()
+
             item = {}
             item.update({
                 'id': classes_item.id,
                 'title': classes_item.title,
-                'company': classes_item.company.name,
-                'nearby_station': classes_item.company.nearby_station,
+                'company': company.name,
+                'nearby_station': company.nearby_station,
                 'price_of_day': classes_item.priceOfDay,
                 'count_of_month': classes_item.countOfMonth,
                 'original_price_of_month': classes_item.priceOfDay*classes_item.countOfMonth,
                 'discount_price_of_month': classes_item.priceOfMonth,
-                'image_url': 'http://' + request.get_host() + classes_item.company.thumbnail_image_url,
+                'image_url': 'http://' + request.get_host() +
+                             company.thumbnail_image_url if company.thumbnail_image_url is not None else 'no.jpg',
                 'discount_rate': round(100 - classes_item.priceOfMonth*100.0/(classes_item.priceOfDay*classes_item.countOfMonth))
-                })
-            schedules = classes_item.get_schedules.all()
+            })
+
             for schedule in schedules:
                 item_detail = item.copy()
 
-                # get weekday
-                weekday_express_by_string_list = schedule.dayOfWeek.split(',')
+                weekday_list_express_by_string = schedule.dayOfWeek.split(',')
                 # filter out only if there is any in 'weekday' param
                 weekday_filter = request.POST.get('weekday', None)
                 is_excluded_by_weekday = False
                 if weekday_filter is not None:
-                    for i in range(len(weekday_express_by_string_list)):
-                        if not(str(weekday_filter).__contains__(str(WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[i]]))):
+                    for i in range(len(weekday_list_express_by_string)):
+                        if not(str(weekday_filter).__contains__(str(WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_list_express_by_string[i]]))):
                             is_excluded_by_weekday = True
                             break
                 if is_excluded_by_weekday:
@@ -150,8 +156,8 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
 
                 times = []
 
-                for i in range(len(weekday_express_by_string_list)):
-                    times.append(WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i]].decode('utf-8') + " : " +
+                for i in range(len(weekday_list_express_by_string)):
+                    times.append(WEEKDAY_CONVERT_TO_KOREAN[weekday_list_express_by_string[i]].decode('utf-8') + " : " +
                                  time.strftime('%p %I시 %M분', time.strptime(start_time_list[i], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전').decode('utf-8'))
 
                 item_detail.update({
@@ -163,8 +169,105 @@ def getClassesList_view( request, category_name, subcategory_name, page_num = 1 
                 classes_list.append(item_detail)
 
         return _http_json_response( None, classes_list[ (page_num-1)*ITEM_COUNT_IN_PAGE : page_num*ITEM_COUNT_IN_PAGE ] )
-    else:
-        return _http_json_response( const.ERROR_SUBCATEGORY_NAME_DOES_NOT_EXIST, None , const.CODE_ERROR_SUBCATEGORY_NAME_DOES_NOT_EXIST )
+        # else:
+        #     return _http_json_response( const.ERROR_SUBCATEGORY_NAME_DOES_NOT_EXIST, None , const.CODE_ERROR_SUBCATEGORY_NAME_DOES_NOT_EXIST )
+
+
+    except ObjectDoesNotExist as e:
+        return HttpResponse(repr(e))
+
+    # subcategory = SubCategory.objects.filter(name=subcategory_name).select_related('get_classes')
+    # if subcategory.exists():
+    #     classes = subcategory.first().get_classes
+    #
+    #     # filter out only if there is any in 'location' param
+    #     if request.POST.get('location', None) is not None:
+    #         classes = classes.filter( company__zone = request.POST.get('location', None))
+    #
+    #     # filter out only if there is any in 'price' param
+    #     if request.POST.get('price', None) is not None:
+    #         classes = classes.filter( priceOfMonth__lte = request.POST.get('price', None) )
+    #
+    #     classes = classes.select_related('get_schedules', 'company', ).all()
+    #     classes_list = []
+    #
+    #     for classes_item in classes:
+    #         item = {}
+    #         item.update({
+    #             'id': classes_item.id,
+    #             'title': classes_item.title,
+    #             'company': classes_item.company.name,
+    #             'nearby_station': classes_item.company.nearby_station,
+    #             'price_of_day': classes_item.priceOfDay,
+    #             'count_of_month': classes_item.countOfMonth,
+    #             'original_price_of_month': classes_item.priceOfDay*classes_item.countOfMonth,
+    #             'discount_price_of_month': classes_item.priceOfMonth,
+    #             'image_url': 'http://' + request.get_host() + classes_item.company.thumbnail_image_url,
+    #             'discount_rate': round(100 - classes_item.priceOfMonth*100.0/(classes_item.priceOfDay*classes_item.countOfMonth))
+    #             })
+    #         schedules = classes_item.get_schedules.all()
+    #         for schedule in schedules:
+    #             item_detail = item.copy()
+    #
+    #             # get weekday
+    #             weekday_express_by_string_list = schedule.dayOfWeek.split(',')
+    #             # filter out only if there is any in 'weekday' param
+    #             weekday_filter = request.POST.get('weekday', None)
+    #             is_excluded_by_weekday = False
+    #             if weekday_filter is not None:
+    #                 for i in range(len(weekday_express_by_string_list)):
+    #                     if not(str(weekday_filter).__contains__(str(WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[i]]))):
+    #                         is_excluded_by_weekday = True
+    #                         break
+    #             if is_excluded_by_weekday:
+    #                 continue
+    #
+    #             # get start time
+    #             start_time_list = schedule.startTime.split(',')
+    #             # filter out only if there is any in 'time' param
+    #             start_time_filter_express_by_string = request.POST.get('time', None)
+    #             is_excluded_by_start_time = False
+    #             if start_time_filter_express_by_string is not None:
+    #                 for i in range(len(start_time_list)):
+    #                     time_object = time.strptime( start_time_list[i], "%H:%M:%S")
+    #
+    #                     is_contains_in_time_filter = False
+    #
+    #                     if "0" in start_time_filter_express_by_string:
+    #                         if 6 <= time_object.tm_hour < 12:
+    #                             is_contains_in_time_filter = True
+    #
+    #                     if is_contains_in_time_filter is False and "1" in start_time_filter_express_by_string:
+    #                         if 12 <= time_object.tm_hour < 18:
+    #                             is_contains_in_time_filter = True
+    #
+    #                     if is_contains_in_time_filter is False and "2" in start_time_filter_express_by_string:
+    #                         if 18 <= time_object.tm_hour < 24:
+    #                             is_contains_in_time_filter = True
+    #
+    #                     if is_contains_in_time_filter is False:
+    #                         is_excluded_by_start_time = True
+    #                         break
+    #             if is_excluded_by_start_time:
+    #                 continue
+    #
+    #             times = []
+    #
+    #             for i in range(len(weekday_express_by_string_list)):
+    #                 times.append(WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i]].decode('utf-8') + " : " +
+    #                              time.strftime('%p %I시 %M분', time.strptime(start_time_list[i], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전').decode('utf-8'))
+    #
+    #             item_detail.update({
+    #                 'times': times,
+    #                 'duration': schedule.duration.strftime("%H시간%M분").decode('utf-8'),
+    #                 'schedule_id': schedule.id
+    #             })
+    #
+    #             classes_list.append(item_detail)
+    #
+    #     return _http_json_response( None, classes_list[ (page_num-1)*ITEM_COUNT_IN_PAGE : page_num*ITEM_COUNT_IN_PAGE ] )
+    # else:
+    #     return _http_json_response( const.ERROR_SUBCATEGORY_NAME_DOES_NOT_EXIST, None , const.CODE_ERROR_SUBCATEGORY_NAME_DOES_NOT_EXIST )
 
 @csrf_exempt
 def getClassesDetail_view( request, classes_id, schedule_id ):
