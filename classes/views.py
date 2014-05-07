@@ -407,7 +407,7 @@ def now_taking_view(request):
 
     return _http_json_response(None, now_taking_list)
 
-
+@csrf_exempt
 def before_taking_view(request):
     purchase_list = Purchase.objects.filter(class_end_datetime__lt=datetime.now()).all()
 
