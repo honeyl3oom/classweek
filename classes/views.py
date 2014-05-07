@@ -356,10 +356,10 @@ def recommend_classes_view(request):
     return _http_json_response(None, classes_list)
 
 @csrf_exempt
-def nowtaking_view(request):
+def now_taking_view(request):
     purchases = Purchase.objects.filter(class_end_datetime__gte=datetime.now()).all()
 
-    nowtaking_list = []
+    now_taking_list = []
 
     for purchase in purchases:
         classes = purchase.classes
@@ -373,18 +373,18 @@ def nowtaking_view(request):
         start_time_list_expressed_by_string = start_time_before_split_expressed_by_string.split(',')
         duration_time = schedule.duration
 
-        time = ''
+        time_string = ''
 
         if len(weekday_list_expressed_by_string) == len(start_time_list_expressed_by_string):
             for i in range(len(weekday_list_expressed_by_string)):
                 if i != 0:
-                    time += ', '
+                    time_string += ', '
                 weekday_expressed_by_korean = WEEKDAY_CONVERT_TO_KOREAN[weekday_list_expressed_by_string[i]]
                 start_time = datetime.strptime(start_time_list_expressed_by_string[i], '%H:%M:%S').time()
-                end_time = (datetime.combine( datetime.today(), start_time) + \
-                          timedelta(hours=duration_time.hour, minutes=duration_time.minute)).time()
+                end_time = (datetime.combine( datetime.today(), start_time) +
+                            timedelta(hours=duration_time.hour, minutes=duration_time.minute)).time()
 
-                time += weekday_expressed_by_korean + start_time.strftime(' %H:%M-') + end_time.strftime('%H:%M')
+                time_string += weekday_expressed_by_korean + start_time.strftime(' %H:%M-') + end_time.strftime('%H:%M')
 
         else:
             pass
@@ -393,21 +393,70 @@ def nowtaking_view(request):
         end_datetime = purchase.class_end_datetime
         current_state = purchase.state
 
-        nowtaking_item = {
+        now_taking_item = {
             'title': title,
-            'time': time.decode('utf-8'),
-            'start_datetime': (start_datetime.strftime("%Y-%m-%d") +
+            'time': time_string.decode('utf-8'),
+            'start_datetime': (start_datetime.strftime("%Y-%m-%d ") +
                               WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[int(start_datetime.strftime("%w"))]]).decode('utf-8'),
-            'end_datetime': (end_datetime.strftime("%Y-%m-%d") +
+            'end_datetime': (end_datetime.strftime("%Y-%m-%d ") +
                             WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[int(end_datetime.strftime("%w"))]]).decode('utf-8'),
             'current_state': PAYMENT_STATE_TO_KOREAN[current_state].decode('utf-8')
         }
 
-        nowtaking_list.append(nowtaking_item)
+        now_taking_list.append(now_taking_item)
 
-    return _http_json_response(None, nowtaking_list)
+    return _http_json_response(None, now_taking_list)
 
 
+def before_taking_view(request):
+    purchase_list = Purchase.objects.filter(class_end_datetime__lt=datetime.now()).all()
+
+    before_taking_list = []
+
+    for purchase in purchase_list:
+        classes = purchase.classes
+        schedule = purchase.schedule
+
+        title = classes.title
+        weekday_before_split_expressed_by_string = schedule.dayOfWeek
+        weekday_list_expressed_by_string = weekday_before_split_expressed_by_string.split(',')
+        start_time_before_split_expressed_by_string = schedule.startTime
+        start_time_list_expressed_by_string = start_time_before_split_expressed_by_string.split(',')
+        duration_time = schedule.duration
+
+        time_string = ''
+
+        if len(weekday_list_expressed_by_string) == len(start_time_list_expressed_by_string):
+            for i in range(len(weekday_list_expressed_by_string)):
+                if i != 0:
+                    time_string += ', '
+                weekday_expressed_by_korean = WEEKDAY_CONVERT_TO_KOREAN[weekday_list_expressed_by_string[i]]
+                start_time = datetime.strptime(start_time_list_expressed_by_string[i], '%H:%M:%S').time()
+                end_time = (datetime.combine( datetime.today(), start_time) +
+                            timedelta(hours=duration_time.hour, minutes=duration_time.minute)).time()
+
+                time_string += weekday_expressed_by_korean + start_time.strftime(' %H:%M-') + end_time.strftime('%H:%M')
+
+        else:
+            pass
+
+        start_datetime = purchase.class_start_datetime
+        end_datetime = purchase.class_end_datetime
+        current_state = purchase.state
+
+        before_taking_item = {
+            'title': title,
+            'time': time_string.decode('utf-8'),
+            'start_datetime': (start_datetime.strftime("%Y-%m-%d ") +
+                              WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[int(start_datetime.strftime("%w"))]]).decode('utf-8'),
+            'end_datetime': (end_datetime.strftime("%Y-%m-%d ") +
+                            WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[int(end_datetime.strftime("%w"))]]).decode('utf-8'),
+            'current_state': PAYMENT_STATE_TO_KOREAN[current_state].decode('utf-8')
+        }
+
+        before_taking_list.append(before_taking_item)
+
+    return _http_json_response(None, before_taking_list)
 
 def import_all_view(request):
     import_category_csv_file_view(request)
