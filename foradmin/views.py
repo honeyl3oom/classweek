@@ -54,7 +54,6 @@ def before_payment_view(request):
         P_NOTI_URL = request.build_absolute_uri(reverse('payment_noti', args=[]))
         P_RETURN_URL = request.build_absolute_uri(reverse('payment_return', args=[]))
         P_GOODS = classes.title
-        print P_GOODS
 
         return HttpResponse(json.dumps(
             {
