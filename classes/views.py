@@ -326,7 +326,7 @@ def recommend_classes_view(request):
             'nearby_station': classes_item.company.nearby_station,
             'count_of_month': classes_item.countOfMonth,
             'price_of_day': classes_item.priceOfDay,
-            'original_price_of_month': classes_item.priceOfDay*classes_item.priceOfDay,
+            'original_price_of_month': classes_item.priceOfDay*classes_item.countOfMonth,
             'discount_price_of_month': classes_item.priceOfMonth,
             'image_url': 'http://' + request.get_host() + classes_item.company.thumbnail_image_url,
             'discount_rate': round(100 - classes_item.priceOfMonth*100.0/(classes_item.priceOfDay*classes_item.countOfMonth))
