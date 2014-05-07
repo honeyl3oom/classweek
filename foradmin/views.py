@@ -53,7 +53,7 @@ def before_payment_view(request):
         P_NEXT_URL = request.build_absolute_uri(reverse('payment_next', args=[]))
         P_NOTI_URL = request.build_absolute_uri(reverse('payment_noti', args=[]))
         P_RETURN_URL = request.build_absolute_uri(reverse('payment_return', args=[]))
-        P_GOODS = 'blackpigstudio'+","+str(classes_id)+","+str(schedule_id)
+        P_GOODS = classes.title
 
         return HttpResponse(json.dumps(
             {
