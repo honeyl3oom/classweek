@@ -1573,3 +1573,18 @@ Traceback (most recent call last):
     'duration': schedule.duration.strftime("%H시간%M분").decode('utf-8'),
               ^
 SyntaxError: invalid syntax
+[08/May/2014 10:40:55] ERROR [django.request:226] Internal Server Error: /classes/20/340
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 396, in getClassesDetail_view
+    return _http_json_response(None, classes_detail )
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 51, in _http_json_response
+    return HttpResponse(json.dumps( _make_json_response( True, None, error_code, data ) , ensure_ascii=False ), content_type="application/json; charset=utf-8" )
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/__init__.py", line 250, in dumps
+    sort_keys=sort_keys, **kw).encode(obj)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/encoder.py", line 210, in encode
+    return ''.join(chunks)
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xed in position 6: ordinal not in range(128)

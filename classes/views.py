@@ -363,9 +363,9 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
                 end_date = start_date + timedelta(days=28+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j-1]] - start_date.weekday())
 
             one_month_schedule.append( {
-                'start_date_time':str(start_date.month)+"-"+str(start_date.day)+"("+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[start_date.weekday()]+") " + str(start_time_express_by_string_list[j]),
+                'start_date_time':str(start_date.month)+"-"+str(start_date.day)+"("+WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[start_date.weekday()]].decode('utf-8')+") " + str(start_time_express_by_string_list[j]),
                 'start_date_time_unprocessed': str(start_date),
-                'end_date_time':str(end_date.month)+"-"+str(end_date.day)+"("+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[end_date.weekday()]+") " + str(start_time_express_by_string_list[j]),
+                'end_date_time':str(end_date.month)+"-"+str(end_date.day)+"("+WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[end_date.weekday()]].decode('utf-8')+") " + str(start_time_express_by_string_list[j]),
                 'end_date_time_unprocessed': str(end_date)
             })
 
@@ -382,9 +382,9 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
                 end_date = start_date + timedelta(days=28+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j-1]] - start_date.weekday())
 
             one_month_schedule.append( {
-                'start_date_time':str(start_date.month)+"-"+str(start_date.day)+"("+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[start_date.weekday()]+") " + str(start_time_express_by_string_list[j]),
+                'start_date_time':str(start_date.month)+"-"+str(start_date.day)+"("+WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[start_date.weekday()]].decode('utf-8')+") " + str(start_time_express_by_string_list[j]),
                 'start_date_time_unprocessed': str(start_date),
-                'end_date_time':str(end_date.month)+"-"+str(end_date.day)+"("+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[end_date.weekday()]+") " + str(start_time_express_by_string_list[j]),
+                'end_date_time':str(end_date.month)+"-"+str(end_date.day)+"("+WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[end_date.weekday()]].decode('utf-8')+") " + str(start_time_express_by_string_list[j]),
                 'end_date_time_unprocessed': str(end_date)
             })
 
