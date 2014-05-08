@@ -2,6 +2,7 @@
 import json
 from datetime import datetime, timedelta
 import time
+import calendar
 
 from classweek import const
 from classweek.const import ITEM_COUNT_IN_PAGE, \
@@ -14,7 +15,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from classes.models import Category, Company, CompanyImage,\
     SubCategory, Classes, ClassesInquire, Schedule, SubCategoryRecommend, ClassesRecommend
-from foradmin.models import Purchase
+from foradmin.models import Purchase, ApiLog
 
 import logging
 
@@ -77,6 +78,7 @@ def get_classes_list_view(request, category_name, subcategory_name, page_num='1'
         location_filter = request.POST.get('location', None)
         price_filter = request.POST.get('price', None)
         weekday_filter = request.POST.get('weekday', None)
+        start_time_filter_express_by_string = request.POST.get('time', None)
 
         # filter out only if there is any in 'location' param
         if location_filter is not None:
@@ -114,8 +116,8 @@ def get_classes_list_view(request, category_name, subcategory_name, page_num='1'
                 item_detail = item.copy()
 
                 weekday_list_express_by_string = schedule.dayOfWeek.split(',')
+
                 # filter out only if there is any in 'weekday' param
-                weekday_filter = request.POST.get('weekday', None)
                 is_excluded_by_weekday = False
                 if weekday_filter is not None:
                     for i in range(len(weekday_list_express_by_string)):
@@ -128,7 +130,6 @@ def get_classes_list_view(request, category_name, subcategory_name, page_num='1'
                 # get start time
                 start_time_list = schedule.startTime.split(',')
                 # filter out only if there is any in 'time' param
-                start_time_filter_express_by_string = request.POST.get('time', None)
                 is_excluded_by_start_time = False
                 if start_time_filter_express_by_string is not None:
                     for i in range(len(start_time_list)):
@@ -162,13 +163,16 @@ def get_classes_list_view(request, category_name, subcategory_name, page_num='1'
 
                 item_detail.update({
                     'times': times,
+                    'item_for_order': calendar.timegm(datetime.strptime(start_time_list[0], '%H:%M:%S').timetuple()),
                     'duration': schedule.duration.strftime("%H시간%M분").decode('utf-8'),
                     'schedule_id': schedule.id
                 })
 
                 classes_list.append(item_detail)
 
-        return _http_json_response( None, classes_list[ (page_num-1)*ITEM_COUNT_IN_PAGE : page_num*ITEM_COUNT_IN_PAGE ] )
+        classes_list = sorted(classes_list, key=lambda k: k['item_for_order'])
+
+        return _http_json_response( None, classes_list[(page_num-1)*ITEM_COUNT_IN_PAGE: page_num*ITEM_COUNT_IN_PAGE ] )
         # else:
         #     return _http_json_response( const.ERROR_SUBCATEGORY_NAME_DOES_NOT_EXIST, None , const.CODE_ERROR_SUBCATEGORY_NAME_DOES_NOT_EXIST )
 
@@ -446,7 +450,8 @@ def recommend_classes_view(request):
 
             times = []
             for i in range(len(weekday_express_by_string_list)):
-                times.append(weekday_express_by_string_list[i] + " : " + start_time_list[i])
+                weekday_express_by_korean = WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i]]
+                times.append(weekday_express_by_korean.decode('utf-8') + " : " + start_time_list[i])
 
             classes_list_item_detail.update({
                 'times': times,
@@ -511,7 +516,7 @@ def now_taking_view(request):
     return _http_json_response(None, now_taking_list)
 
 @csrf_exempt
-def before_taking_view(request):
+def took_before_view(request):
     purchase_list = Purchase.objects.filter(class_end_datetime__lt=datetime.now()).all()
 
     before_taking_list = []
