@@ -62,6 +62,7 @@ def before_payment_view(request):
                     'P_AMT': P_AMT,
                     'P_UNAME': P_UNAME,
                     'P_NOTI': P_NOTI,
+                    # 'P_NOTI': json.dumps(P_NOTI, ensure_ascii=False),
                     'P_NEXT_URL': P_NEXT_URL,
                     'P_NOTI_URL': P_NOTI_URL,
                     'P_RETURN_URL': P_RETURN_URL,
@@ -230,6 +231,12 @@ def payment_next_view(request):
                 class_end_datetime=datetime.strptime(payment_item_info_json.get('class_end_datetime', ''),'%Y-%m-%d %H:%M:%S.%f'),
                 price=payment_item_info_json.get('price', 0)
             )
+
+        return render(request, 'payment_next.html',
+                  {'is_success': True})
+    else:
+        return render(request, 'payment_next.html',
+                  {'is_success': False})
 
     return HttpResponse('payment_next_view')
 
