@@ -363,9 +363,9 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
                 end_date = start_date + timedelta(days=28+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j-1]] - start_date.weekday())
 
             one_month_schedule.append( {
-                'start_date_time':str(start_date.month)+"-"+str(start_date.day)+"("+WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[start_date.weekday()]].decode('utf-8')+") " + str(start_time_express_by_string_list[j]),
+                'start_date_time': str(start_date.month)+"-"+str(start_date.day)+"("+WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[start_date.weekday()]].decode('utf-8')+") " + time.strftime('%p %I시 %M분', time.strptime(start_time_express_by_string_list[j], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전').decode('utf-8'),
                 'start_date_time_unprocessed': str(start_date),
-                'end_date_time':str(end_date.month)+"-"+str(end_date.day)+"("+WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[end_date.weekday()]].decode('utf-8')+") " + str(start_time_express_by_string_list[j]),
+                'end_date_time': str(end_date.month)+"-"+str(end_date.day)+"("+WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[end_date.weekday()]].decode('utf-8')+") " + time.strftime('%p %I시 %M분', time.strptime(start_time_express_by_string_list[j], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전').decode('utf-8'),
                 'end_date_time_unprocessed': str(end_date)
             })
 
@@ -382,9 +382,9 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
                 end_date = start_date + timedelta(days=28+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j-1]] - start_date.weekday())
 
             one_month_schedule.append( {
-                'start_date_time':str(start_date.month)+"-"+str(start_date.day)+"("+WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[start_date.weekday()]].decode('utf-8')+") " + str(start_time_express_by_string_list[j]),
+                'start_date_time':str(start_date.month)+"-"+str(start_date.day)+"("+WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[start_date.weekday()]].decode('utf-8')+") " + time.strftime('%p %I시 %M분', time.strptime(start_time_express_by_string_list[j], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전').decode('utf-8'),
                 'start_date_time_unprocessed': str(start_date),
-                'end_date_time':str(end_date.month)+"-"+str(end_date.day)+"("+WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[end_date.weekday()]].decode('utf-8')+") " + str(start_time_express_by_string_list[j]),
+                'end_date_time':str(end_date.month)+"-"+str(end_date.day)+"("+WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[end_date.weekday()]].decode('utf-8')+") " + time.strftime('%p %I시 %M분', time.strptime(start_time_express_by_string_list[j], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전').decode('utf-8'),
                 'end_date_time_unprocessed': str(end_date)
             })
 
@@ -451,7 +451,8 @@ def recommend_classes_view(request):
             times = []
             for i in range(len(weekday_express_by_string_list)):
                 weekday_express_by_korean = WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i]]
-                times.append(weekday_express_by_korean.decode('utf-8') + " : " + start_time_list[i])
+                start_time_string_expressed_by_custom_style = time.strftime('%p %I시 %M분', time.strptime(start_time_list[i], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전').decode('utf-8')
+                times.append(weekday_express_by_korean.decode('utf-8') + " : " + start_time_string_expressed_by_custom_style)
 
             classes_list_item_detail.update({
                 'times': times,
