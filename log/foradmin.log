@@ -10,3 +10,6 @@
 [30/Apr/2014 09:40:21] DEBUG [foradmin.views:17] 서비스 사용불가 가맹점
 [30/Apr/2014 12:55:41] DEBUG [foradmin.views:15] def payment_startweb_test_view(request):
 [05/May/2014 10:41:10] DEBUG [foradmin.views:74] def payment_startweb_test_view(request):
+[08/May/2014 23:26:49] DEBUG [foradmin.views:372] def payment_return_view(request):
+[08/May/2014 23:26:49] DEBUG [foradmin.views:373] <QueryDict: {}>
+[08/May/2014 23:26:49] DEBUG [foradmin.views:374] <QueryDict: {}>
