@@ -237,10 +237,10 @@ def payment_next_view(request):
             )
 
         return render(request, 'payment_next.html',
-                      {'is_success': True})
+                      {'is_success': 'true'})
     else:
         return render(request, 'payment_next.html',
-                      {'is_success': False})
+                      {'is_success': 'false'})
 
     return HttpResponse('payment_next_view')
 
@@ -378,9 +378,9 @@ def payment_return_view(request):
         try:
             payment_log =PaymentLog.objects.get(p_oid=p_oid)
             return render(request, 'payment_return.html',
-                          {'is_success': True})
+                          {'is_success': 'true'})
         except ObjectDoesNotExist as e:
             pass
 
     return render(request, 'payment_return.html',
-                  {'is_success': False})
+                  {'is_success': 'false'})
