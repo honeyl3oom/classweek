@@ -351,7 +351,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
     for i in range(4):
 
         for j in range(current_weekday_position, len(weekday_express_by_string_list ) ):
-            if (today+timedelta_from_today).weekday() <= WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j]]:
+            if (today+timedelta_from_today).weekday() < WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j]]:
                 timedelta_from_today = timedelta(days=timedelta_from_today.days+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j]]-(today+timedelta_from_today).weekday())
             else:
                 timedelta_from_today = timedelta(days=7+timedelta_from_today.days+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j]]-(today+timedelta_from_today).weekday())
@@ -369,8 +369,8 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
                 'end_date_time_unprocessed': str(end_date)
             })
 
-        for j in range( 0, current_weekday_position+1 ):
-            if (today+timedelta_from_today).weekday() <= WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j]]:
+        for j in range( 0, current_weekday_position ):
+            if (today+timedelta_from_today).weekday() < WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j]]:
                 timedelta_from_today = timedelta(days=timedelta_from_today.days+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j]]-(today+timedelta_from_today).weekday())
             else:
                 timedelta_from_today = timedelta(days=7+timedelta_from_today.days+WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[j]]-(today+timedelta_from_today).weekday())
