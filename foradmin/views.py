@@ -233,10 +233,10 @@ def payment_next_view(request):
             )
 
         return render(request, 'payment_next.html',
-                  {'is_success': True})
+                      {'is_success': True})
     else:
         return render(request, 'payment_next.html',
-                  {'is_success': False})
+                      {'is_success': False})
 
     return HttpResponse('payment_next_view')
 
@@ -366,7 +366,8 @@ def payment_noti_view(request):
 def payment_return_view(request):
 
     logger.debug('def payment_return_view(request):')
-    logger.debug( request.GET )
-    logger.debug( request.POST )
+    logger.debug(request.GET)
+    logger.debug(request.POST)
 
-    return HttpResponse('payment_return_view')
+    return render(request, 'payment_next.html',
+                      {'is_success': True})

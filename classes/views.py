@@ -474,6 +474,7 @@ def now_taking_view(request):
         schedule = purchase.schedule
 
         title = classes.title
+        image_url = 'http://' + request.get_host() + classes.company.thumbnail_image_url
 
         weekday_before_split_expressed_by_string = schedule.dayOfWeek
         weekday_list_expressed_by_string = weekday_before_split_expressed_by_string.split(',')
@@ -503,6 +504,7 @@ def now_taking_view(request):
 
         now_taking_item = {
             'title': title,
+            'image_url': image_url,
             'time': time_string.decode('utf-8'),
             'start_datetime': (start_datetime.strftime("%Y-%m-%d ") +
                               WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[int(start_datetime.strftime("%w"))]]).decode('utf-8'),
@@ -526,6 +528,7 @@ def took_before_view(request):
         schedule = purchase.schedule
 
         title = classes.title
+        image_url = 'http://' + request.get_host() + classes.company.thumbnail_image_url
         weekday_before_split_expressed_by_string = schedule.dayOfWeek
         weekday_list_expressed_by_string = weekday_before_split_expressed_by_string.split(',')
         start_time_before_split_expressed_by_string = schedule.startTime
@@ -554,6 +557,7 @@ def took_before_view(request):
 
         before_taking_item = {
             'title': title,
+            'image_url': image_url,
             'time': time_string.decode('utf-8'),
             'start_datetime': (start_datetime.strftime("%Y-%m-%d ") +
                               WEEKDAY_CONVERT_TO_KOREAN[WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[int(start_datetime.strftime("%w"))]]).decode('utf-8'),
