@@ -31,7 +31,7 @@ class PaymentLog(models.Model):
     p_type = models.CharField(max_length=10, default='') # ISP(신용카드 ISP), CARD(신용카드 안심클릭), HPMN(해피머니), CULTURE(문화상품권), MOBILE(휴대폰), VBANK(가상계좌), BANK(계좌이체)
     p_auth_dt = models.CharField(max_length=14, default='') # YYYYmmddHHmmss
     p_mid = models.CharField(max_length=10, default='')
-    p_oid = models.CharField(max_length=100, default='')
+    p_oid = models.CharField(max_length=100, default='', unique=True)
     p_amt = models.CharField(max_length=8, default='')
     p_uname = models.CharField(max_length=30, default='')
     p_rmesg1 = models.CharField(max_length=500, default='')

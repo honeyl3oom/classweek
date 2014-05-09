@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.core.exceptions import ObjectDoesNotExist
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -11,6 +12,7 @@ from classweek.const import *
 from datetime import datetime
 import requests
 import json
+import time
 
 import logging
 
@@ -39,6 +41,7 @@ def before_payment_view(request):
     if error is None:
         classes = Classes.objects.get(id=classes_id)
         P_MID = INICIS_MARKET_ID
+        P_OID = str(int(time.time()))+str(request.user.id)
         P_AMT = classes.priceOfMonth if day_or_month == 'month' else classes.priceOfDay
         P_UNAME = request.user.username
         P_NOTI = {
@@ -52,13 +55,14 @@ def before_payment_view(request):
         }
         P_NEXT_URL = request.build_absolute_uri(reverse('payment_next', args=[]))
         P_NOTI_URL = request.build_absolute_uri(reverse('payment_noti', args=[]))
-        P_RETURN_URL = request.build_absolute_uri(reverse('payment_return', args=[]))
+        P_RETURN_URL = request.build_absolute_uri(reverse('payment_return', args=[])) + "?OID=" + P_OID
         P_GOODS = classes.title
 
         return HttpResponse(json.dumps(
             {
                 'data': {
                     'P_MID': P_MID,
+                    'P_OID': P_OID,
                     'P_AMT': P_AMT,
                     'P_UNAME': P_UNAME,
                     'P_NOTI': P_NOTI,
@@ -369,5 +373,14 @@ def payment_return_view(request):
     logger.debug(request.GET)
     logger.debug(request.POST)
 
-    return render(request, 'payment_next.html',
-                      {'is_success': True})
+    p_oid = request.GET.get('OID', None)
+    if p_oid is not None:
+        try:
+            payment_log =PaymentLog.objects.get(p_oid=p_oid)
+            return render(request, 'payment_return.html',
+                          {'is_success': True})
+        except ObjectDoesNotExist as e:
+            pass
+
+    return render(request, 'payment_return.html',
+                  {'is_success': False})
