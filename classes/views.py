@@ -466,9 +466,13 @@ def recommend_classes_view(request):
 
 @csrf_exempt
 def now_taking_view(request):
-    purchases = Purchase.objects.filter(class_end_datetime__gte=datetime.now()).all()
 
     now_taking_list = []
+
+    if request.user.is_authenticated():
+        purchases = Purchase.objects.filter(user=request.user, class_end_datetime__gte=datetime.now()).all()
+    else:
+        return _http_json_response(None, now_taking_list)
 
     for purchase in purchases:
         classes = purchase.classes
@@ -520,9 +524,16 @@ def now_taking_view(request):
 
 @csrf_exempt
 def took_before_view(request):
-    purchase_list = Purchase.objects.filter(class_end_datetime__lt=datetime.now()).all()
 
     before_taking_list = []
+
+
+    if request.user.is_authenticated():
+        purchase_list = Purchase.objects.filter(user=request.user, class_end_datetime__lt=datetime.now()).all()
+    else:
+        return _http_json_response(None, before_taking_list)
+
+
 
     for purchase in purchase_list:
         classes = purchase.classes

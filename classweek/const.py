@@ -36,7 +36,8 @@ WEEKDAY_CONVERT_TO_KOREAN = {
 PAYMENT_STATE_TO_KOREAN = {
     0: '대기',
     1: '승인',
-    2: '미승인'
+    2: '미승인',
+    3: '환불완료'
 }
 
 INICIS_MARKET_ID = 'CAEblac956'

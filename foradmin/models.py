@@ -65,7 +65,7 @@ class Purchase(models.Model):
     class_start_datetime = models.DateTimeField(null=False, default=datetime.now)
     class_end_datetime = models.DateTimeField(null=False, default=datetime.now)
     price = models.IntegerField(null=False, default=0)
-    state = models.IntegerField(null=False, default=0) # 0:대기, 1:승인, 2:미승인
+    state = models.IntegerField(null=False, default=0) # 0:대기, 1:승인, 2:미승인, 3:환불
     created = models.DateTimeField(null=False, auto_now=True)
 
     def __unicode__(self):
