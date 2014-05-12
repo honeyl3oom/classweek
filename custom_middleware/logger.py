@@ -25,7 +25,6 @@ class ApiLogger(object):
         if hasattr(request, 'user') and request.user.is_authenticated():
             try:
                 user_session = UserSession.objects.get(user=request.user)
-
                 user_session_id = request.session.get('user_session_id', None)
                 if user_session_id is not None and user_session_id != user_session.user_session_id:
                     user_session_id_have_to_combine = user_session_id
@@ -69,10 +68,22 @@ class ApiLogger(object):
 
     @staticmethod
     def process_response(request, response):
-        user_session_id = request.session.get('user_session_id', None)
         if hasattr(request, 'user') and request.user.is_authenticated():
+            user_session_id_have_to_combine = None
+            try:
+                user_session = UserSession.objects.get(user=request.user)
+                user_session_id = request.session.get('user_session_id', None)
+                if user_session_id is not None and user_session_id != user_session.user_session_id:
+                    user_session_id_have_to_combine = user_session_id
+
+                user_sessoin_id = user_session.user_session_id
+            except:
+                user_session_id = request.session.get('user_session_id', None)
+
+
             UserSession.objects.get_or_create(
                 user=request.user,
                 user_session_id=user_session_id
             )
+            
         return response
