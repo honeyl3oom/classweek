@@ -47,7 +47,7 @@ class ApiLogger(object):
             ApiLog.objects.filter(user_session_id=user_session_id_have_to_combine).\
                 update(user_session_id=user_session_id)
 
-        ApiLog.objects.get_or_create(
+        ApiLog.objects.create(
             user_session_id=user_session_id,
             path_name=path_name,
             view_name=view_name,
