@@ -12,9 +12,7 @@ from django.contrib.auth.models import User, AnonymousUser
 from django.db import IntegrityError
 from classweek import const
 
-from forcompany.forms import CompanyInfoForm
-
-from user.models import UserProfile
+from user.models import UserProfile, UserInquire
 
 # response_data = {}
 # response_data['result'] = 'success'
@@ -130,9 +128,20 @@ def update_view(request):
 
     return _HttpJsonResponse( error, error_code )
 
-# @csrf_exempt
-# @login_required
-# def login_test(request):
-#     print request.user
-#     return HttpResponse( request.user.username )
+@csrf_exempt
+def inquire_view(request):
+    (error, error_code ) = (None, 0)
+    inquire_content = request.POST.get('inquire_content', None)
+    if inquire_content is not None:
+        if hasattr(request, 'user') and request.user.is_authenticated():
+            try:
+                UserInquire.objects.create(
+                    user=request.user,
+                    inquire_content=inquire_content
+                )
+            except IntegrityError as e:
+                pass
+        else:
+            (error, error_code) = (const.ERROR_HAVE_TO_LOGIN, const.CODE_ERROR_HAVE_TO_LOGIN )
 
+    return _HttpJsonResponse( error, error_code )

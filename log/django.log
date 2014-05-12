@@ -1628,3 +1628,19 @@ Traceback (most recent call last):
   File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/datastructures.py", line 301, in __getitem__
     raise MultiValueDictKeyError(repr(key))
 MultiValueDictKeyError: "'email'"
+[12/May/2014 02:21:31] ERROR [django.request:226] Internal Server Error: /user/login
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/user/views.py", line 89, in login_view
+    email = request.POST['email']
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/datastructures.py", line 301, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+MultiValueDictKeyError: "'email'"
+[12/May/2014 02:21:36] ERROR [django.request:226] Internal Server Error: /user/inquire
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 132, in get_response
+    raise ValueError("The view %s.%s didn't return an HttpResponse object." % (callback.__module__, view_name))
+ValueError: The view user.views.inquire_view didn't return an HttpResponse object.
