@@ -42,7 +42,7 @@ def _get_userinfo( request, error_code ):
         return (
             request.user.profile.name,
             None if request.user.profile.birthday is None else request.user.profile.birthday.strftime("%Y%m%d").decode('utf-8'),
-            request.user.profile.phonenumber.replace('-',''),
+            request.user.profile.phonenumber.replace('-','') if request.user.profile.phonenumber is not None else None,
             request.user.profile.gender )
     else:
         return (None, None, None, None )
