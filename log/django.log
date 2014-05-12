@@ -1617,3 +1617,14 @@ Traceback (most recent call last):
                                                                                                                                                                                                  ^
 SyntaxError: EOL while scanning string literal
 [09/May/2014 03:30:38] INFO [classes.views:421] def recommend_classes_view(request):
+[12/May/2014 00:32:24] ERROR [django.request:226] Internal Server Error: /user/login
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/user/views.py", line 91, in login_view
+    email = request.POST['email']
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/datastructures.py", line 301, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+MultiValueDictKeyError: "'email'"

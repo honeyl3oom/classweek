@@ -58,8 +58,6 @@ MIDDLEWARE_CLASSES = (
     'custom_middleware.logger.ApiLogger',
 )
 
-SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
-
 TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.debug",

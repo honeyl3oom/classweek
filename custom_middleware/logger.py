@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import base64, M2Crypto
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 
 from foradmin.models import ApiLog, UserSession
@@ -11,41 +12,57 @@ def generate_session_id(num_bytes = 16):
 class ApiLogger(object):
     @staticmethod
     def process_view(request, view_func, view_args, view_kwargs):
-        params_dict = {}
-        for key, value in request.POST.iteritems():
-            params_dict[key] = value
 
         path_name = request.path
         view_name = view_func.func_name
-        user_session_id = request.session.get('user_session_id', None)
-        if user_session_id is None:
-            user_session_id = generate_session_id()
-            request.session['user_session_id'] = user_session_id
-            request.session.set_expiry(60 * 60 * 24 * 10000)
+
+        params_dict = {}
+        for key, value in request.POST.iteritems():
+            params_dict[key] = value
         request_params = repr(params_dict).decode('unicode-escape').replace("u'","'")
 
-        if hasattr(request, 'user'):
-            if request.user.is_authenticated():
-                user_session = UserSession(user=request.user, user_session_id=user_session_id)
-                try:
-                    user_session.save()
-                except IntegrityError as e:
-                    pass
+        user_session_id_have_to_combine = None
+        if hasattr(request, 'user') and request.user.is_authenticated():
+            try:
+                user_session = UserSession.objects.get(user=request.user)
+            except ObjectDoesNotExist as e:
+                user_session = None
+            #    raise error!!!!!
 
-        api_log = ApiLog( user_session_id=user_session_id, path_name=path_name, view_name=view_name, request_params=request_params )
-        api_log.save()
+            user_session_id = request.session.get('user_session_id', None)
+            if user_session_id is not None and user_session_id != user_session.user_session_id:
+                user_session_id_have_to_combine = user_session_id
+
+            user_sessoin_id = user_session.user_session_id
+        else:
+            user_session_id = request.session.get('user_session_id', None)
+            if user_session_id is None:
+                user_session_id = generate_session_id()
+
+
+        request.session['user_session_id'] = user_session_id
+        request.session.set_expiry(60 * 60 * 24 * 10000)
+
+        if user_session_id_have_to_combine is not None:
+            ApiLog.objects.filter(user_session_id=user_session_id_have_to_combine).\
+                update(user_session_id=user_session_id)
+
+        ApiLog.objects.get_or_create(
+            user_session_id=user_session_id,
+            path_name=path_name,
+            view_name=view_name,
+            request_params=request_params
+        )
+
+        if hasattr(request, 'user') and request.user.is_authenticated():
+            UserSession.objects.get_or_create(
+                user=request.user,
+                user_session_id=user_session_id
+            )
 
         return None
 
     @staticmethod
     def process_response(request, response):
-
-        if hasattr(request, 'user'):
-            if request.user.is_authenticated() and request.session.get('user_session_id', None) is not None:
-                user_session = UserSession(user=request.user, user_session_id=request.session.get('user_session_id', None))
-                try:
-                    user_session.save()
-                except IntegrityError as e:
-                    pass
 
         return response
