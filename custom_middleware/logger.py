@@ -64,5 +64,10 @@ class ApiLogger(object):
 
     @staticmethod
     def process_response(request, response):
-
+        user_session_id = request.session.get('user_session_id', None)
+        if hasattr(request, 'user') and request.user.is_authenticated():
+            UserSession.objects.get_or_create(
+                user=request.user,
+                user_session_id=user_session_id
+            )
         return response
