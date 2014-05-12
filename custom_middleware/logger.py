@@ -59,10 +59,13 @@ class ApiLogger(object):
         )
 
         if hasattr(request, 'user') and request.user.is_authenticated():
-            UserSession.objects.get_or_create(
-                user=request.user,
-                user_session_id=user_session_id
-            )
+            try:
+                UserSession.objects.get(user=request.user).update(user_session_id=user_session_id)
+            except ObjectDoesNotExist as e:
+                UserSession.objects.create(
+                    user=request.user,
+                    user_session_id=user_session_id
+                )
 
         return None
 
@@ -81,9 +84,12 @@ class ApiLogger(object):
                 user_session_id = request.session.get('user_session_id', None)
 
 
-            UserSession.objects.get_or_create(
-                user=request.user,
-                user_session_id=user_session_id
-            )
-            
+            try:
+                UserSession.objects.get(user=request.user).update(user_session_id=user_session_id)
+            except ObjectDoesNotExist as e:
+                UserSession.objects.create(
+                    user=request.user,
+                    user_session_id=user_session_id
+                )
+
         return response
