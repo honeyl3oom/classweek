@@ -16,6 +16,7 @@ from django.db import IntegrityError
 from classes.models import Category, Company, CompanyImage,\
     SubCategory, Classes, ClassesInquire, Schedule, SubCategoryRecommend, ClassesRecommend
 from foradmin.models import Purchase, ApiLog
+from classweek.common_method import send_email
 
 import logging
 
@@ -405,6 +406,9 @@ def inquire_view(request, classes_id):
             classes_inquire.save()
         except IntegrityError:
             return HttpResponse( json.dumps( _make_json_response( False, const.ERROR_CLASSES_INQUIRE_FAIL, const.CODE_ERROR_CLASSES_INQUIRE_FAIL ) ), content_type="application/json" )
+
+        send_email('classweek:inquire',
+                   'username:' + request.user.username + '\ncontent:' + request.POST.get('content'))
         return HttpResponse( json.dumps( _make_json_response( True, None ) ), content_type="application/json" )
 
 @csrf_exempt

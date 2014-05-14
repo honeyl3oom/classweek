@@ -6,10 +6,10 @@ from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
-from django.core.mail import send_mail
 from foradmin.models import Purchase, PaymentLog
 from classes.models import Classes, Schedule
 from classweek.const import *
+from classweek.common_method import send_email
 from datetime import datetime
 import requests
 import json
@@ -388,7 +388,6 @@ def payment_return_view(request):
 
 @csrf_exempt
 def send_mail_test_view(request):
-    send_mail('제목테스트!!!', '메시지내용테스트  ㄴㅁㅇ러ㅏㅣㅁ드피ㅏㅁㄴ ㅇㄹㅁㄴ ㅇㄹㅈ', 'parkjuram@naver.com',
-              ['parkjuram@gmail.com'], fail_silently=False)
+    send_email('test','test content\ntttt', ['parkjuram@gmail.com', 'bsgunn.soma@gmail.com', 'continueing@gmail.com'])
 
     return HttpResponse('ttt')
