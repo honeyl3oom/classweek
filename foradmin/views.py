@@ -237,6 +237,11 @@ def payment_next_view(request):
                 price=payment_item_info_json.get('price', 0)
             )
 
+            send_email('classweek:purchase',
+                       'username:\n' + user.username +
+                       '\nclasses_title:\n' + classes.title +
+                       '\nday_or_month:\n' + payment_item_info_json.get('day_or_month', '') )
+
         return render(request, 'payment_next.html',
                       {'is_success': 'true'})
     else:
@@ -362,6 +367,10 @@ def payment_noti_view(request):
                 class_end_datetime=datetime.strptime(payment_item_info_json.get('class_end_datetime', ''),'%Y-%m-%d %H:%M:%S.%f'),
                 price=payment_item_info_json.get('price', 0)
             )
+            send_email('classweek:purchase',
+                   'username:\n' + user.username +
+                   '\nclasses_title:\n' + classes.title +
+                   '\nday_or_month:\n' + payment_item_info_json.get('day_or_month', '') )
 
 
 

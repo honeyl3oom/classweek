@@ -408,7 +408,7 @@ def inquire_view(request, classes_id):
             return HttpResponse( json.dumps( _make_json_response( False, const.ERROR_CLASSES_INQUIRE_FAIL, const.CODE_ERROR_CLASSES_INQUIRE_FAIL ) ), content_type="application/json" )
 
         send_email('classweek:inquire',
-                   'username:' + request.user.username + '\ncontent:' + request.POST.get('content'))
+                   'username:\n' + request.user.username + '\ncontent:\n' + request.POST.get('content'))
         return HttpResponse( json.dumps( _make_json_response( True, None ) ), content_type="application/json" )
 
 @csrf_exempt

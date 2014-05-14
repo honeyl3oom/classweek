@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, AnonymousUser
 from django.db import IntegrityError
 from classweek import const
+from classweek.common_method import send_email
 
 from user.models import UserProfile, UserInquire
 
@@ -139,6 +140,8 @@ def inquire_view(request):
                     user=request.user,
                     inquire_content=inquire_content
                 )
+                send_email('classweek:inquire',
+                   'username:\n' + request.user.username + '\ncontent:\n' + inquire_content)
             except IntegrityError as e:
                 pass
         else:
