@@ -388,6 +388,6 @@ def payment_return_view(request):
 
 @csrf_exempt
 def send_mail_test_view(request):
-    send_email('test','test content\ntttt', ['parkjuram@gmail.com', 'bsgunn.soma@gmail.com', 'continueing@gmail.com'])
+    send_email('test','aaaaatest content\ntttt', ['parkjuram@gmail.com', 'bsgunn.soma@gmail.com', 'continueing@gmail.com'])
 
     return HttpResponse('ttt')

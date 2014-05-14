@@ -189,9 +189,8 @@ LOGIN_URL = '/user/login'
 SOUTH_TESTS_MIGRATE = False # To disable migrations and use syncdb instead
 SKIP_SOUTH_TESTS = True # To disable South's own unit tests
 
-
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smtp.mandrillapp.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'blackpigstudio2014@gmail.com'
-EMAIL_HOST_PASSWORD = 'bestStartup2014!'
+EMAIL_HOST_USER = 'parkjuram@gmail.com'
+EMAIL_HOST_PASSWORD = '5OxPtrdEVEer03KbvS1wRQ'
+# EMAIL_USE_TLS = True
