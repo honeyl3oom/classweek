@@ -1644,3 +1644,587 @@ Traceback (most recent call last):
   File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 132, in get_response
     raise ValueError("The view %s.%s didn't return an HttpResponse object." % (callback.__module__, view_name))
 ValueError: The view user.views.inquire_view didn't return an HttpResponse object.
+[13/May/2014 22:29:38] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 90, in get_response
+    response = middleware_method(request)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/middleware/common.py", line 71, in process_request
+    if (not urlresolvers.is_valid_path(request.path_info, urlconf) and
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 573, in is_valid_path
+    resolve(path, urlconf)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 453, in resolve
+    return get_resolver(urlconf).resolve(path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 320, in resolve
+    sub_match = pattern.resolve(new_path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 320, in resolve
+    sub_match = pattern.resolve(new_path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 222, in resolve
+    return ResolverMatch(self.callback, args, kwargs, self.name)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 229, in callback
+    self._callback = get_callable(self._callback_str)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/functional.py", line 32, in wrapper
+    result = func(*args)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/urlresolvers.py", line 117, in get_callable
+    (lookup_view, mod_name))
+ViewDoesNotExist: Could not import foradmin.views.send_mail_test_view. View does not exist in module foradmin.views.
+[13/May/2014 22:30:12] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 48, in open
+    local_hostname=DNS_NAME.get_fqdn())
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 250, in __init__
+    (code, msg) = self.connect(host, port)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 310, in connect
+    self.sock = self._get_socket(host, port, self.timeout)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 285, in _get_socket
+    return socket.create_connection((host, port), timeout)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/socket.py", line 571, in create_connection
+    raise err
+error: [Errno 61] Connection refused
+[13/May/2014 22:30:19] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 48, in open
+    local_hostname=DNS_NAME.get_fqdn())
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 250, in __init__
+    (code, msg) = self.connect(host, port)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 310, in connect
+    self.sock = self._get_socket(host, port, self.timeout)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 285, in _get_socket
+    return socket.create_connection((host, port), timeout)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/socket.py", line 571, in create_connection
+    raise err
+error: [Errno 61] Connection refused
+[13/May/2014 22:30:38] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 48, in open
+    local_hostname=DNS_NAME.get_fqdn())
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 250, in __init__
+    (code, msg) = self.connect(host, port)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 310, in connect
+    self.sock = self._get_socket(host, port, self.timeout)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 285, in _get_socket
+    return socket.create_connection((host, port), timeout)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/socket.py", line 571, in create_connection
+    raise err
+error: [Errno 61] Connection refused
+[13/May/2014 23:15:09] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 48, in open
+    local_hostname=DNS_NAME.get_fqdn())
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 250, in __init__
+    (code, msg) = self.connect(host, port)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 310, in connect
+    self.sock = self._get_socket(host, port, self.timeout)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 285, in _get_socket
+    return socket.create_connection((host, port), timeout)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/socket.py", line 571, in create_connection
+    raise err
+error: [Errno 61] Connection refused
+[13/May/2014 23:16:06] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 94, in send_messages
+    sent = self._send(message)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 110, in _send
+    self.connection.sendmail(from_email, recipients, message.as_bytes())
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 723, in sendmail
+    raise SMTPSenderRefused(code, resp, from_addr)
+SMTPSenderRefused: (530, 'Authentication required', u'parkjuram@naver.com')
+[13/May/2014 23:17:51] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 54, in open
+    self.connection.login(self.username, self.password)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 614, in login
+    raise SMTPAuthenticationError(code, resp)
+SMTPAuthenticationError: (530, 'Must issue a STARTTLS command first')
+[13/May/2014 23:18:41] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 51, in open
+    self.connection.starttls()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 636, in starttls
+    raise SMTPException("STARTTLS extension not supported by server.")
+SMTPException: STARTTLS extension not supported by server.
+[13/May/2014 23:19:12] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 132, in get_response
+    raise ValueError("The view %s.%s didn't return an HttpResponse object." % (callback.__module__, view_name))
+ValueError: The view foradmin.views.send_mail_test_view didn't return an HttpResponse object.
+[13/May/2014 23:20:04] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 51, in open
+    self.connection.starttls()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 636, in starttls
+    raise SMTPException("STARTTLS extension not supported by server.")
+SMTPException: STARTTLS extension not supported by server.
+[13/May/2014 23:22:16] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 51, in open
+    self.connection.starttls()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 636, in starttls
+    raise SMTPException("STARTTLS extension not supported by server.")
+SMTPException: STARTTLS extension not supported by server.
+[13/May/2014 23:22:18] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 51, in open
+    self.connection.starttls()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 636, in starttls
+    raise SMTPException("STARTTLS extension not supported by server.")
+SMTPException: STARTTLS extension not supported by server.
+[13/May/2014 23:22:20] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 51, in open
+    self.connection.starttls()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 636, in starttls
+    raise SMTPException("STARTTLS extension not supported by server.")
+SMTPException: STARTTLS extension not supported by server.
+[13/May/2014 23:22:21] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 51, in open
+    self.connection.starttls()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 636, in starttls
+    raise SMTPException("STARTTLS extension not supported by server.")
+SMTPException: STARTTLS extension not supported by server.
+[13/May/2014 23:22:24] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 51, in open
+    self.connection.starttls()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 636, in starttls
+    raise SMTPException("STARTTLS extension not supported by server.")
+SMTPException: STARTTLS extension not supported by server.
+[13/May/2014 23:22:27] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 51, in open
+    self.connection.starttls()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 636, in starttls
+    raise SMTPException("STARTTLS extension not supported by server.")
+SMTPException: STARTTLS extension not supported by server.
+[13/May/2014 23:22:30] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 51, in open
+    self.connection.starttls()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 636, in starttls
+    raise SMTPException("STARTTLS extension not supported by server.")
+SMTPException: STARTTLS extension not supported by server.
+[13/May/2014 23:22:37] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 51, in open
+    self.connection.starttls()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 636, in starttls
+    raise SMTPException("STARTTLS extension not supported by server.")
+SMTPException: STARTTLS extension not supported by server.
+[13/May/2014 23:23:13] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 54, in open
+    self.connection.login(self.username, self.password)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 614, in login
+    raise SMTPAuthenticationError(code, resp)
+SMTPAuthenticationError: (530, 'Must issue a STARTTLS command first')
+[13/May/2014 23:23:36] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 54, in open
+    self.connection.login(self.username, self.password)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 614, in login
+    raise SMTPAuthenticationError(code, resp)
+SMTPAuthenticationError: (530, 'Must issue a STARTTLS command first')
+[13/May/2014 23:24:31] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 51, in open
+    self.connection.starttls()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 636, in starttls
+    raise SMTPException("STARTTLS extension not supported by server.")
+SMTPException: STARTTLS extension not supported by server.
+[13/May/2014 23:24:33] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 51, in open
+    self.connection.starttls()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 636, in starttls
+    raise SMTPException("STARTTLS extension not supported by server.")
+SMTPException: STARTTLS extension not supported by server.
+[13/May/2014 23:24:45] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 51, in open
+    self.connection.starttls()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 636, in starttls
+    raise SMTPException("STARTTLS extension not supported by server.")
+SMTPException: STARTTLS extension not supported by server.
+[13/May/2014 23:24:48] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 51, in open
+    self.connection.starttls()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 636, in starttls
+    raise SMTPException("STARTTLS extension not supported by server.")
+SMTPException: STARTTLS extension not supported by server.
+[13/May/2014 23:24:50] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 51, in open
+    self.connection.starttls()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 636, in starttls
+    raise SMTPException("STARTTLS extension not supported by server.")
+SMTPException: STARTTLS extension not supported by server.
+[13/May/2014 23:25:14] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 48, in send_mail
+    fail_silently=fail_silently)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 29, in get_connection
+    klass = import_by_path(backend or settings.EMAIL_BACKEND)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/module_loading.py", line 26, in import_by_path
+    sys.exc_info()[2])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/module_loading.py", line 21, in import_by_path
+    module = import_module(module_path)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/importlib.py", line 40, in import_module
+    __import__(name)
+ImproperlyConfigured: Error importing module django_smtp_ssl: "No module named django_smtp_ssl"
+[13/May/2014 23:25:30] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 51, in open
+    self.connection.starttls()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 636, in starttls
+    raise SMTPException("STARTTLS extension not supported by server.")
+SMTPException: STARTTLS extension not supported by server.
+[13/May/2014 23:29:03] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 51, in open
+    self.connection.starttls()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 636, in starttls
+    raise SMTPException("STARTTLS extension not supported by server.")
+SMTPException: STARTTLS extension not supported by server.
+[13/May/2014 23:30:43] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 51, in open
+    self.connection.starttls()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 636, in starttls
+    raise SMTPException("STARTTLS extension not supported by server.")
+SMTPException: STARTTLS extension not supported by server.
+[13/May/2014 23:34:28] ERROR [django.request:226] Internal Server Error: /foradmin/send_mail_test
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/foradmin/views.py", line 392, in send_mail_test_view
+    ['parkjuram@gmail.com'], fail_silently=False)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/__init__.py", line 50, in send_mail
+    connection=connection).send()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/message.py", line 274, in send
+    return self.get_connection(fail_silently).send_messages([self])
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 87, in send_messages
+    new_conn_created = self.open()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/mail/backends/smtp.py", line 51, in open
+    self.connection.starttls()
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/smtplib.py", line 636, in starttls
+    raise SMTPException("STARTTLS extension not supported by server.")
+SMTPException: STARTTLS extension not supported by server.

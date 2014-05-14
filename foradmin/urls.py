@@ -6,4 +6,5 @@ urlpatterns = patterns('',
     url(r'^payment_next', 'foradmin.views.payment_next_view', name='payment_next'),
     url(r'^payment_return', 'foradmin.views.payment_return_view', name='payment_return'),
     url(r'^payment_noti', 'foradmin.views.payment_noti_view', name='payment_noti'),
+    url(r'^send_mail_test', 'foradmin.views.send_mail_test_view', name='send_mail_test'),
 )

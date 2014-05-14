@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
 from foradmin.models import Purchase, PaymentLog
 from classes.models import Classes, Schedule
 from classweek.const import *
@@ -384,3 +385,10 @@ def payment_return_view(request):
 
     return render(request, 'payment_return.html',
                   {'is_success': 'false'})
+
+@csrf_exempt
+def send_mail_test_view(request):
+    send_mail('제목테스트!!!', '메시지내용테스트  ㄴㅁㅇ러ㅏㅣㅁ드피ㅏㅁㄴ ㅇㄹㅁㄴ ㅇㄹㅈ', 'parkjuram@naver.com',
+              ['parkjuram@gmail.com'], fail_silently=False)
+
+    return HttpResponse('ttt')

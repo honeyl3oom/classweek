@@ -188,3 +188,9 @@ LOGIN_URL = '/user/login'
 
 SOUTH_TESTS_MIGRATE = False # To disable migrations and use syncdb instead
 SKIP_SOUTH_TESTS = True # To disable South's own unit tests
+
+EMAIL_HOST = 'email-smtp.us-west-2.amazonaws.com'
+EMAIL_PORT = 25
+EMAIL_HOST_USER = 'AKIAIP2GYH4LI5KH7ZBQ'
+EMAIL_HOST_PASSWORD = 'AsoitwfpdD6EAIxHAFWI5iNV84QsghawWbStYGPr5y1o'
+EMAIL_USE_TLS = True
