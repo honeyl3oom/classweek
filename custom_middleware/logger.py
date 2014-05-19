@@ -9,10 +9,12 @@ from foradmin.models import ApiLog, UserSession
 def generate_session_id(num_bytes = 16):
     return str(base64.b64encode(M2Crypto.m2.rand_bytes(num_bytes)))
 
-class ApiLogger(object):
+class ApiCallLogger(object):
     @staticmethod
     def process_view(request, view_func, view_args, view_kwargs):
 
+
+        # create api log items
         path_name = request.path
         view_name = view_func.func_name
 
@@ -21,35 +23,27 @@ class ApiLogger(object):
             params_dict[key] = value
         request_params = repr(params_dict).decode('unicode-escape').replace("u'","'")
 
-        user_session_id_have_to_combine = None
+        user_session_id = request.session.get('user_session_id', None)
+        if user_session_id is None:
+            user_session_id = generate_session_id()
+
         if hasattr(request, 'user') and request.user.is_authenticated():
             try:
                 user_session = UserSession.objects.get(user=request.user)
-                user_session_id = request.session.get('user_session_id', None)
-                if user_session_id is not None and user_session_id != user_session.user_session_id:
-                    user_session_id_have_to_combine = user_session_id
+                user_session_real_id = user_session.user_session_id
+                ApiLog.objects.filter(user_session_id=user_session_id).\
+                    update(user_session_id=user_session_real_id)
 
-                user_sessoin_id = user_session.user_session_id
+                user_session_id = user_session_real_id
 
             except ObjectDoesNotExist as e:
-                user_session = None
-            #    raise error!!!!!
-                user_session_id = request.session.get('user_session_id', None)
-                if user_session_id is None:
-                    user_session_id = generate_session_id()
-
-        else:
-            user_session_id = request.session.get('user_session_id', None)
-            if user_session_id is None:
-                user_session_id = generate_session_id()
-
+                UserSession.objects.create(
+                    user=request.user,
+                    user_session_id=user_session_id
+                )
 
         request.session['user_session_id'] = user_session_id
         request.session.set_expiry(60 * 60 * 24 * 10000)
-
-        if user_session_id_have_to_combine is not None:
-            ApiLog.objects.filter(user_session_id=user_session_id_have_to_combine).\
-                update(user_session_id=user_session_id)
 
         ApiLog.objects.create(
             user_session_id=user_session_id,
@@ -58,42 +52,25 @@ class ApiLogger(object):
             request_params=request_params
         )
 
-        if hasattr(request, 'user') and request.user.is_authenticated():
-            try:
-                user_session = UserSession.objects.get(user=request.user)
-                user_session.user_session_id=user_session_id
-                user_session.save()
-            except ObjectDoesNotExist as e:
-                UserSession.objects.create(
-                    user=request.user,
-                    user_session_id=user_session_id
-                )
-
         return None
 
     @staticmethod
     def process_response(request, response):
-        if hasattr(request, 'user') and request.user.is_authenticated():
-            user_session_id_have_to_combine = None
-            try:
-                user_session = UserSession.objects.get(user=request.user)
-                user_session_id = request.session.get('user_session_id', None)
-                if user_session_id is not None and user_session_id != user_session.user_session_id:
-                    user_session_id_have_to_combine = user_session_id
+        user_session_id = request.session.get('user_session_id', None)
+        if user_session_id is not None:
+            if hasattr(request, 'user') and request.user.is_authenticated():
+                try:
+                    user_session = UserSession.objects.get(user=request.user)
+                    user_session_real_id = user_session.user_session_id
 
-                user_sessoin_id = user_session.user_session_id
-            except:
-                user_session_id = request.session.get('user_session_id', None)
+                    ApiLog.objects.filter(user_session_id=user_session_id).\
+                        update(user_session_id=user_session_real_id)
+                    user_session_id = user_session_real_id
 
+                    request.session['user_session_id'] = user_session_id
+                    request.session.set_expiry(60 * 60 * 24 * 10000)
 
-            try:
-                user_session = UserSession.objects.get(user=request.user)
-                user_session.user_session_id=user_session_id
-                user_session.save()
-            except ObjectDoesNotExist as e:
-                UserSession.objects.create(
-                    user=request.user,
-                    user_session_id=user_session_id
-                )
+                except ObjectDoesNotExist as e:
+                    pass
 
         return response

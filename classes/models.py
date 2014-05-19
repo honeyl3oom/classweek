@@ -7,6 +7,7 @@ class Company(models.Model):
     phone_number = models.TextField( null=True )
     location = models.TextField()
     zone = models.TextField( null=False, blank=True, default='' )
+    naver_object_id = models.TextField(null=True)
     nearby_station = models.TextField( null=True )
     facilitiesInformation = models.TextField( null=False, blank=True, default='')
     thumbnail_image_url = models.TextField(null=False, blank=True, default='')
@@ -17,6 +18,13 @@ class Company(models.Model):
 
     def __unicode__(self):
         return 'Company : %s' % self.name
+
+class CompanyReview(models.Model):
+    company = models.ForeignKey(Company, related_name='get_company_reviews')
+    source = models.TextField(default='naver')
+    content = models.TextField()
+    score = models.FloatField(default=0.0)
+    created = models.DateTimeField(auto_now_add=True, default=datetime.datetime.now )
 
 class CompanyImage(models.Model):
     company = models.ForeignKey(Company, related_name='get_company_images')
