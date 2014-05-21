@@ -87,8 +87,8 @@ def _HttpJsonResponse( error, error_code, name = None , birthday = None , phonen
 
 @csrf_exempt
 def login_view( request ):
-    email = request.POST['email']
-    password = request.POST['password']
+    email = request.POST.get('email')
+    password = request.POST.get('password')
 
     (error, error_code ) = _login(request, email, password)
     (name, birthday, phonenumber, gender) = _get_userinfo(request, error_code )

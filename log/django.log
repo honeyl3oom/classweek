@@ -3004,3 +3004,36 @@ Traceback (most recent call last):
   File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/backends/__init__.py", line 365, in validate_no_broken_transaction
     "An error occurred in the current transaction. You can't "
 TransactionManagementError: An error occurred in the current transaction. You can't execute queries until the end of the 'atomic' block.
+[18/May/2014 23:40:10] ERROR [django.request:226] Internal Server Error: /user/login
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/user/views.py", line 90, in login_view
+    email = request.POST['email']
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/datastructures.py", line 301, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+MultiValueDictKeyError: "'email'"
+[18/May/2014 23:40:12] ERROR [django.request:226] Internal Server Error: /user/login
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/user/views.py", line 90, in login_view
+    email = request.POST['email']
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/datastructures.py", line 301, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+MultiValueDictKeyError: "'email'"
+[18/May/2014 23:40:32] ERROR [django.request:226] Internal Server Error: /user/login
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/user/views.py", line 91, in login_view
+    password = request.POST['password']
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/utils/datastructures.py", line 301, in __getitem__
+    raise MultiValueDictKeyError(repr(key))
+MultiValueDictKeyError: "'password'"

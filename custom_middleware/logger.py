@@ -19,6 +19,7 @@ class ApiCallLogger(object):
         view_name = view_func.func_name
 
         params_dict = {}
+
         for key, value in request.POST.iteritems():
             params_dict[key] = value
         request_params = repr(params_dict).decode('unicode-escape').replace("u'","'")

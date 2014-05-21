@@ -3,28 +3,47 @@ from django.contrib.auth.models import User
 import datetime
 
 class Company(models.Model):
-    name = models.TextField( unique=True )
-    phone_number = models.TextField( null=True )
-    location = models.TextField()
-    zone = models.TextField( null=False, blank=True, default='' )
+    name = models.TextField(null=False, unique=True)
+    contact = models.TextField(null=True)
+    address = models.TextField(null=True)
+    zone = models.TextField(null=True)
+    nearby_station = models.TextField(null=True)
+    introduction = models.TextField(null=True)
+    refund_information = models.TextField(null=True)
+    facility_information = models.TextField(null=True)
     naver_object_id = models.TextField(null=True)
-    nearby_station = models.TextField( null=True )
-    facilitiesInformation = models.TextField( null=False, blank=True, default='')
-    thumbnail_image_url = models.TextField(null=False, blank=True, default='')
-    # toilet, fitting_room, shower_stall, locker, parking_lot, practice_room, instrument_rental
-
-    def __str__(self):
-        return 'Company : %s' % self.name
 
     def __unicode__(self):
         return 'Company : %s' % self.name
 
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
+# before 20140521
+# class Company(models.Model):
+#     name = models.TextField( unique=True )
+#     phone_number = models.TextField( null=True )
+#     location = models.TextField()
+#     zone = models.TextField( null=False, blank=True, default='' )
+#     naver_object_id = models.TextField(null=True)
+#     nearby_station = models.TextField( null=True )
+#     facilitiesInformation = models.TextField( null=False, blank=True, default='')
+#     thumbnail_image_url = models.TextField(null=False, blank=True, default='')
+#     # toilet, fitting_room, shower_stall, locker, parking_lot, practice_room, instrument_rental
+#
+#     def __str__(self):
+#         return 'Company : %s' % self.name
+#
+#     def __unicode__(self):
+#         return 'Company : %s' % self.name
+
 class CompanyReview(models.Model):
     company = models.ForeignKey(Company, related_name='get_company_reviews')
-    source = models.TextField(default='naver')
+    user = models.ForeignKey(User, related_name='get_company_reviews', null=True)
+    source = models.TextField(null=False, default='naver')
     content = models.TextField()
     score = models.FloatField(default=0.0)
-    created = models.DateTimeField(auto_now_add=True, default=datetime.datetime.now )
+    created = models.DateTimeField(auto_now_add=True, default=datetime.datetime.now)
 
 class CompanyImage(models.Model):
     company = models.ForeignKey(Company, related_name='get_company_images')
@@ -56,6 +75,25 @@ class SubCategory(models.Model):
 class SubCategoryRecommend(models.Model):
     image_url = models.TextField( null=True )
 
+# class Classes(models.Model):
+#     title = models.TextField(null=False)
+#     sub_category = models.ForeignKey(SubCategory, related_name='get_classes')
+#     company = models.ForeignKey(Company)
+#     description = models.TextField(null=True)
+#     personal_or_group = models.TextField(null=False,default='personal') # personal or group
+#     is_allowed_one_day = models.BooleanField(null=False,default=False)
+#     price_of_one_day = models.IntegerField(null=False,default=0)
+#     count_of_month = models.IntegerField(null=False,default=0)
+#     price_of_month = models.IntegerField(null=False,default=0)
+#     preparation = models.TextField(null=True)
+#     maximum_number_of_enrollment = models.IntegerField(null=False,default=0)
+#     curriculum_in_first_week = models.TextField(null=True)
+#     curriculum_in_second_week = models.TextField(null=True)
+#     curriculum_in_third_week = models.TextField(null=True)
+#     curriculum_in_fourth = models.TextField(null=True)
+#     curriculum_in_fifth = models.TextField(null=True)
+
+# before 20140521
 class Classes(models.Model):
     title = models.TextField( null=True )
     thumbnail_image_url = models.TextField( null=True )

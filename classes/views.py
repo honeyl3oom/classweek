@@ -400,6 +400,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
 
 @csrf_exempt
 def inquire_view(request, classes_id):
+    print request.user
     if not(request.user.is_authenticated()):
         return HttpResponse(json.dumps(_make_json_response( False, const.ERROR_HAVE_TO_LOGIN, const.CODE_ERROR_HAVE_TO_LOGIN)), content_type="application/json")
     else:
@@ -647,19 +648,23 @@ def import_company_csv_file_view(request):
 
             company, created = Company.objects.get_or_create(
                 name=unicode(row[0], 'euc-kr'),
-                phone_number=unicode(row[1], 'euc-kr'),
-                location=unicode(row[2], 'euc-kr'),
+                contact=unicode(row[1], 'euc-kr'),
+                address=unicode(row[2], 'euc-kr'),
                 zone=unicode(row[3], 'euc-kr'),
                 nearby_station=unicode(row[4], 'euc-kr'),
-                facilitiesInformation=unicode(row[5], 'euc-kr'),
-                thumbnail_image_url=unicode(row[6], 'euc-kr'))
+                introduction=unicode(row[5], 'euc-kr'),
+                refund_information=unicode(row[6], 'euc-kr'),
+                facility_information=unicode(row[7], 'euc-kr'),
+                naver_object_id=unicode(row[8], 'euc-kr'))
 
-            for i in range(7, len(row)):
+            for i in range(9, len(row)):
                 if len(row[i]) > 0:
                     CompanyImage.objects.get_or_create(
                         company=company,
                         image_url=unicode(row[i], 'euc-kr')
                     )
+                else:
+                    break
 
     return HttpResponse('success')
 
