@@ -264,7 +264,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'curriculum_in_fifth_week': classes.curriculum_in_fifth_week.replace('\\n', '\n'),
         'lesson_type': lesson_type.decode('utf-8'),
         'preparation': classes.preparation,
-        'refund_information': company.refund_information,
+        'refund_info': company.refund_information,
         'company_introduction': company.introduction,
         ### facility_infomation ###
         'toilet': facilities_information.__contains__('toilet'),
