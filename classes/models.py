@@ -157,6 +157,13 @@ class Schedule(models.Model):
     start_time_list = models.TextField(null=True)
     duration = models.TimeField(default='00:00:00')
 
+    def __unicode__(self):
+        return '(%r)Schedule class_id(%r) weekday_list(%r) start_time_list(%r) duration(%r) ' \
+               % (self.id, self.classes_id, self.weekday_list, self.start_time_list, self.duration)
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
 # before 20140521
 # class Schedule(models.Model):
 #     classes = models.ForeignKey( Classes , related_name='get_schedules')
