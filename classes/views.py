@@ -152,6 +152,7 @@ def get_classes_list_view(request, category_name, subcategory_name, page_num='1'
                 'nearby_station': company.nearby_station,
                 'price_of_day': classes_item.price_of_one_day,
                 'count_of_month': classes_item.count_of_month,
+                'thumbnail_image_url': 'http://' + request.get_host() + classes_item.company.thumbnail_image_url,
                 'original_price_of_month': classes_item.price_of_one_day*classes_item.count_of_month,
                 'discount_price_of_month': classes_item.price_of_month,
                 'discount_rate': round(100 - classes_item.price_of_month*100.0/(classes_item.price_of_one_day*classes_item.count_of_month))
