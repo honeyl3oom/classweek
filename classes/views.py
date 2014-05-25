@@ -634,7 +634,8 @@ def import_company_csv_file_view(request):
                     introduction=unicode(row[5], 'euc-kr'),
                     refund_information=unicode(row[6], 'euc-kr'),
                     facility_information=unicode(row[7], 'euc-kr'),
-                    naver_object_id=unicode(row[8], 'euc-kr'))
+                    naver_object_id=unicode(row[8], 'euc-kr'),
+                    thumbnail_image_url=unicode(row[9], 'euc-kr'))
             else:
                 Company.objects.get_or_create(
                     name=unicode(row[0], 'euc-kr'),
@@ -645,11 +646,12 @@ def import_company_csv_file_view(request):
                     introduction=unicode(row[5], 'euc-kr'),
                     refund_information=unicode(row[6], 'euc-kr'),
                     facility_information=unicode(row[7], 'euc-kr'),
-                    naver_object_id=unicode(row[8], 'euc-kr'))
+                    naver_object_id=unicode(row[8], 'euc-kr'),
+                    thumbnail_image_url=unicode(row[9], 'euc-kr'))
 
             company = Company.objects.get(name=unicode(row[0], 'euc-kr'))
 
-            for i in range(9, len(row)):
+            for i in range(10, len(row)):
                 if len(row[i]) > 0:
                     CompanyImage.objects.get_or_create(
                         company=company,
