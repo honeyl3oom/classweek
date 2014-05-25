@@ -246,12 +246,14 @@ def payment_next_view(request):
             )
 
             promotion_obj, promotion_resp, promotion_percentage = _check_promotion()
-            
+
             PromotionDetail.objects.create(promotion=promotion_obj, purchase=purchase)
 
             send_email('classweek:purchase',
                        'username:\n' + user.username +
+                       '\nclasses_id:\n' + str(classes.id) +
                        '\nclasses_title:\n' + classes.title +
+                       '\nuser_id:\n' + user.id +
                        '\nphone_number:\n' + user.profile.phonenumber +
                        '\nday_or_month:\n' + payment_item_info_json.get('day_or_month', '') )
 
