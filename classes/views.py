@@ -449,6 +449,15 @@ def recommend_classes_view(request):
             'image_url': 'http://' + request.get_host() + classes_item.company.thumbnail_image_url,
             'discount_rate': round(100 - classes_item.price_of_month*100.0/(classes_item.price_of_one_day*classes_item.count_of_month))
         })
+
+        promotion_resp, promotion_percentage = _check_promotion()
+        if promotion_resp is const.CODE_IN_PROMOTION:
+            classes_list_item.update({
+                'original_price_of_month': classes.price_of_month,
+                'discount_price_of_month': math.ceil(classes.price_of_month*promotion_percentage/100/1000.0)*1000,
+                'discount_rate': promotion_percentage
+            })
+
         schedules = classes_item.get_schedules.filter(pk__in=schedule_pks).all()
         for schedule in schedules:
             classes_list_item_detail = classes_list_item.copy()
