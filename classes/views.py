@@ -251,6 +251,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'company': company.name,
         'price_of_day': classes.price_of_one_day,
         'count_of_week': classes.count_of_week,
+        'count_of_month': classes.count_of_month,
         'original_price_of_month': classes.price_of_one_day * classes.count_of_month,
         'discount_price_of_month': classes.price_of_month,
         'discount_rate': round(100 - classes.price_of_month*100.0/(classes.price_of_one_day*classes.count_of_month)),
