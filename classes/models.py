@@ -11,6 +11,7 @@ class Company(models.Model):
     introduction = models.TextField(null=True)
     refund_information = models.TextField(null=True)
     facility_information = models.TextField(null=True)
+    thumbnail_image_url = models.URLField(null=False, blank=True, default='')
     # toilet, fitting_room, shower_stall, locker, parking_lot, practice_room, instrument_rental
     naver_object_id = models.TextField(null=True)
 
