@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from foradmin.models import Purchase, PaymentLog
-from classes.models import Classes, Schedule
+from classes.models import Classes, Schedule, Promotion, PromotionDetail
 from classes.views import _check_promotion
 from classweek.const import *
 from classweek.common_method import send_email
@@ -51,6 +51,7 @@ def before_payment_view(request):
             P_AMT = math.ceil(classes.price_of_month*promotion_percentage/100/1000.0)*1000
         else:
             P_AMT = classes.priceOfMonth if day_or_month == 'month' else classes.priceOfDay
+
         P_UNAME = request.user.username
         P_NOTI = {
             'username': request.user.username,
@@ -243,6 +244,10 @@ def payment_next_view(request):
                 class_end_datetime=datetime.strptime(payment_item_info_json.get('class_end_datetime', ''),'%Y-%m-%d %H:%M:%S.%f'),
                 price=payment_item_info_json.get('price', 0)
             )
+
+            promotion_obj, promotion_resp, promotion_percentage = _check_promotion()
+            
+            PromotionDetail.objects.create(promotion=promotion_obj, purchase=purchase)
 
             send_email('classweek:purchase',
                        'username:\n' + user.username +

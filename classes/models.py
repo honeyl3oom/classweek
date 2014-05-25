@@ -198,4 +198,4 @@ class Promotion(models.Model):
 class PromotionDetail(models.Model):
     promotion = models.ForeignKey(Promotion, related_name='get_promotion_details')
     purchase = models.ForeignKey('foradmin.Purchase')
-    created = models.DateTimeField(default=datetime.datetime.now)
+    created = models.DateTimeField(auto_now_add=True, default=datetime.datetime.now)
