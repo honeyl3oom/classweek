@@ -453,8 +453,8 @@ def recommend_classes_view(request):
         promotion_resp, promotion_percentage = _check_promotion()
         if promotion_resp is const.CODE_IN_PROMOTION:
             classes_list_item.update({
-                'original_price_of_month': classes.price_of_month,
-                'discount_price_of_month': math.ceil(classes.price_of_month*promotion_percentage/100/1000.0)*1000,
+                'original_price_of_month': classes_item.price_of_month,
+                'discount_price_of_month': math.ceil(classes_item.price_of_month*promotion_percentage/100/1000.0)*1000,
                 'discount_rate': promotion_percentage
             })
 
