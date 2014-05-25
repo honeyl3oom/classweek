@@ -4596,3 +4596,35 @@ ProgrammingError: column classes_company.thumbnail_image_url does not exist
 LINE 1: ...ation", "classes_company"."facility_information", "classes_c...
                                                              ^
 
+[26/May/2014 01:09:26] ERROR [django.request:226] Internal Server Error: /classes/2/2
+Traceback (most recent call last):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/core/handlers/base.py", line 114, in get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/views/decorators/csrf.py", line 57, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/classweek/classes/views.py", line 231, in getClassesDetail_view
+    classes = Classes.objects.select_related('company', 'get_images', ).get(id=classes_id)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/models/query.py", line 301, in get
+    num = len(clone)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/models/query.py", line 77, in __len__
+    self._fetch_all()
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/models/query.py", line 854, in _fetch_all
+    self._result_cache = list(self.iterator())
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/models/query.py", line 220, in iterator
+    for row in compiler.results_iter():
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/models/sql/compiler.py", line 709, in results_iter
+    for rows in self.execute_sql(MULTI):
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/models/sql/compiler.py", line 782, in execute_sql
+    cursor.execute(sql, params)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/backends/util.py", line 69, in execute
+    return super(CursorDebugWrapper, self).execute(sql, params)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/backends/util.py", line 53, in execute
+    return self.cursor.execute(sql, params)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/utils.py", line 99, in __exit__
+    six.reraise(dj_exc_type, dj_exc_value, traceback)
+  File "/Users/ramju/Documents/workspace/django/project_classweek/virtualenv/lib/python2.7/site-packages/django/db/backends/util.py", line 53, in execute
+    return self.cursor.execute(sql, params)
+ProgrammingError: column classes_company.thumbnail_image_url does not exist
+LINE 1: ...ation", "classes_company"."facility_information", "classes_c...
+                                                             ^
+

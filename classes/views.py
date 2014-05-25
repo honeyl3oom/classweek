@@ -247,6 +247,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'schedule_id': schedule.id,
         'title': classes.title,
         'description': classes.description,
+        'company': company.name,
         'count_of_week': classes.count_of_week,
         'original_price_of_month': classes.price_of_one_day * classes.count_of_month,
         'discount_price_of_month': classes.price_of_month,
