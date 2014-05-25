@@ -249,6 +249,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'image_url': 'http://' + request.get_host() + company.thumbnail_image_url,
         'description': classes.description,
         'company': company.name,
+        'person_or_group': classes.personal_or_group,
         'price_of_day': classes.price_of_one_day,
         'count_of_week': classes.count_of_week,
         'count_of_month': classes.count_of_month,
