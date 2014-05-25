@@ -22,7 +22,7 @@ from datetime import datetime
 from foradmin.models import Purchase, ApiLog
 from classweek.common_method import send_email
 import urllib, urllib2
-
+import math
 import logging
 
 logger = logging.getLogger(__name__)
@@ -72,12 +72,10 @@ def _http_response_by_json(error, json_={}):
 
     return HttpResponse(json.dumps(json_, ensure_ascii=False), content_type="application/json; charset=utf-8")
 
-@csrf_exempt
-def promotion_view(request):
+def _check_promotion():
     now_ = datetime.now()
-    print now_
-    print now_.day
     promotions = Promotion.objects.filter( start_date__lte=now_, end_date__gte=now_, daily_start_time__lte=now_, daily_end_time__gte=now_).all()
+
     if len(promotions)>0:
         promotion = promotions[0]
 
@@ -85,19 +83,21 @@ def promotion_view(request):
         today_count = promotion.get_promotion_details.filter(created__day=now_.day).count()
 
         if promotion.total_maximum_count>total_count and promotion.daily_maximum_count>today_count:
-            return _http_response_by_json(None, {
-                'data_code': 0,
-                'data_message': 'in promotion'
-            })
+            return const.CODE_IN_PROMOTION, promotion.discount_percentage
         else:
-            return _http_response_by_json(None, {
-                'data_code': 1,
-                'data_message': 'today promotion is end'
-            })
+            return const.CODE_TODAY_PROMOTION_END, 0
+
+    return const.CODE_NOT_IN_PROMOTION, 0
+
+
+@csrf_exempt
+def promotion_view(request):
+
+    resp, percentage = _check_promotion()
 
     return _http_response_by_json(None, {
-        'data_code': 2,
-        'data_message': 'not in promotion'
+        'data_code': resp,
+        'data_message': const.PROMOTION_CODE_AND_MESSAGE_DICT[resp]
     })
 
 @csrf_exempt
@@ -139,6 +139,8 @@ def get_classes_list_view(request, category_name, subcategory_name, page_num='1'
 
         classes_list = []
 
+        promotion_resp, promotion_percentage = _check_promotion()
+
         for classes_item in classes:
 
             company = classes_item.company
@@ -157,6 +159,13 @@ def get_classes_list_view(request, category_name, subcategory_name, page_num='1'
                 'discount_price_of_month': classes_item.price_of_month,
                 'discount_rate': round(100 - classes_item.price_of_month*100.0/(classes_item.price_of_one_day*classes_item.count_of_month))
             })
+
+            if promotion_resp is const.CODE_IN_PROMOTION:
+                item.update({
+                    'original_price_of_month': classes_item.price_of_month,
+                    'discount_price_of_month': math.ceil(classes_item.price_of_month*promotion_percentage/100/1000.0)*1000,
+                    'discount_rate': promotion_percentage
+                })
 
             for schedule in schedules:
                 item_detail = item.copy()
@@ -276,6 +285,14 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'practice_room': facilities_information.__contains__('practice_room'),
         'instrument_rental': facilities_information.__contains__('instrument_rental')
     })
+
+    promotion_resp, promotion_percentage = _check_promotion()
+    if promotion_resp is const.CODE_IN_PROMOTION:
+        classes_detail.update({
+            'original_price_of_month': classes.price_of_month,
+            'discount_price_of_month': math.ceil(classes.price_of_month*promotion_percentage/100/1000.0)*1000,
+            'discount_rate': promotion_percentage
+        })
 
     ### good and bad review ###
     good_representing_reviews = company.get_company_reviews.filter(is_representing_reivew=True, score__gt=3).order_by('-score').all()[:3]

@@ -51,6 +51,16 @@ ERROR_CODE_AND_MESSAGE_DICT = {
     11: 'subcategory name does not exist'
 }
 
+CODE_IN_PROMOTION = 0
+CODE_TODAY_PROMOTION_END = 1
+CODE_NOT_IN_PROMOTION = 2
+
+PROMOTION_CODE_AND_MESSAGE_DICT = {
+    0: 'in promotion',
+    1: 'today promotion is end',
+    2: 'not in promotion'
+}
+
 ERROR_PASSWORD_CONFIRM_NOT_IDENTICAL = 'password confirm not identical'
 CODE_ERROR_PASSWORD_CONFIRM_NOT_IDENTICAL = 1
 
