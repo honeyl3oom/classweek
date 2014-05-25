@@ -8,12 +8,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from foradmin.models import Purchase, PaymentLog
 from classes.models import Classes, Schedule
+from classes.views import _check_promotion
 from classweek.const import *
 from classweek.common_method import send_email
 from datetime import datetime
 import requests
 import json
-import time
+import time, math
+from classweek import const
 
 import logging
 
@@ -43,7 +45,12 @@ def before_payment_view(request):
         classes = Classes.objects.get(id=classes_id)
         P_MID = INICIS_MARKET_ID
         P_OID = str(int(time.time()))+str(request.user.id)
-        P_AMT = classes.priceOfMonth if day_or_month == 'month' else classes.priceOfDay
+
+        promotion_resp, promotion_percentage = _check_promotion()
+        if promotion_resp is const.CODE_IN_PROMOTION:
+            P_AMT = math.ceil(classes.price_of_month*promotion_percentage/100/1000.0)*1000
+        else:
+            P_AMT = classes.priceOfMonth if day_or_month == 'month' else classes.priceOfDay
         P_UNAME = request.user.username
         P_NOTI = {
             'username': request.user.username,
