@@ -83,17 +83,17 @@ def _check_promotion():
         today_count = promotion.get_promotion_details.filter(created__day=now_.day).count()
 
         if promotion.total_maximum_count>total_count and promotion.daily_maximum_count>today_count:
-            return const.CODE_IN_PROMOTION, promotion.discount_percentage
+            return promotion, const.CODE_IN_PROMOTION, promotion.discount_percentage
         else:
-            return const.CODE_TODAY_PROMOTION_END, 0
+            return promotion, const.CODE_TODAY_PROMOTION_END, 0
 
-    return const.CODE_NOT_IN_PROMOTION, 0
+    return None, const.CODE_NOT_IN_PROMOTION, 0
 
 
 @csrf_exempt
 def promotion_view(request):
 
-    resp, percentage = _check_promotion()
+    promotion_obj, resp, percentage = _check_promotion()
 
     return _http_response_by_json(None, {
         'data_code': resp,
@@ -139,7 +139,7 @@ def get_classes_list_view(request, category_name, subcategory_name, page_num='1'
 
         classes_list = []
 
-        promotion_resp, promotion_percentage = _check_promotion()
+        promotion_obj, promotion_resp, promotion_percentage = _check_promotion()
 
         for classes_item in classes:
 
@@ -154,7 +154,7 @@ def get_classes_list_view(request, category_name, subcategory_name, page_num='1'
                 'nearby_station': company.nearby_station,
                 'price_of_day': classes_item.price_of_one_day,
                 'count_of_month': classes_item.count_of_month,
-                'thumbnail_image_url': 'http://' + request.get_host() + classes_item.company.thumbnail_image_url,
+                'image_url': 'http://' + request.get_host() + classes_item.company.thumbnail_image_url,
                 'original_price_of_month': classes_item.price_of_one_day*classes_item.count_of_month,
                 'discount_price_of_month': classes_item.price_of_month,
                 'discount_rate': round(100 - classes_item.price_of_month*100.0/(classes_item.price_of_one_day*classes_item.count_of_month))
@@ -247,7 +247,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
     if personal_or_group == 'personal':
         lesson_type = '개인 레슨'
     elif personal_or_group == 'group':
-        lesson_type = '그룹 레슨(' + str(classes.maximum_number_of_enrollment) + ')'
+        lesson_type = '그룹 레슨(정원 ' + str(classes.maximum_number_of_enrollment) + '명)'
 
     facilities_information = company.facility_information
 
@@ -286,7 +286,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'instrument_rental': facilities_information.__contains__('instrument_rental')
     })
 
-    promotion_resp, promotion_percentage = _check_promotion()
+    promotion_obj, promotion_resp, promotion_percentage = _check_promotion()
     if promotion_resp is const.CODE_IN_PROMOTION:
         classes_detail.update({
             'original_price_of_month': classes.price_of_month,
@@ -450,7 +450,7 @@ def recommend_classes_view(request):
             'discount_rate': round(100 - classes_item.price_of_month*100.0/(classes_item.price_of_one_day*classes_item.count_of_month))
         })
 
-        promotion_resp, promotion_percentage = _check_promotion()
+        promotion_obj, promotion_resp, promotion_percentage = _check_promotion()
         if promotion_resp is const.CODE_IN_PROMOTION:
             classes_list_item.update({
                 'original_price_of_month': classes_item.price_of_month,

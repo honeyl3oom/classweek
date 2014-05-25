@@ -46,7 +46,7 @@ def before_payment_view(request):
         P_MID = INICIS_MARKET_ID
         P_OID = str(int(time.time()))+str(request.user.id)
 
-        promotion_resp, promotion_percentage = _check_promotion()
+        promotion_obj, promotion_resp, promotion_percentage = _check_promotion()
         if promotion_resp is const.CODE_IN_PROMOTION:
             P_AMT = math.ceil(classes.price_of_month*promotion_percentage/100/1000.0)*1000
         else:
@@ -247,6 +247,7 @@ def payment_next_view(request):
             send_email('classweek:purchase',
                        'username:\n' + user.username +
                        '\nclasses_title:\n' + classes.title +
+                       '\nphone_number:\n' + user.profile.phonenumber +
                        '\nday_or_month:\n' + payment_item_info_json.get('day_or_month', '') )
 
         return render(request, 'payment_next.html',
