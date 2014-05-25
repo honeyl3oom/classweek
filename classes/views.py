@@ -252,6 +252,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'original_price_of_month': classes.price_of_one_day * classes.count_of_month,
         'discount_price_of_month': classes.price_of_month,
         'address': company.address,
+        'nearby_station': company.nearby_station,
         'curriculum_in_first_week': classes.curriculum_in_first_week.replace('\\n', '\n'),
         'curriculum_in_second_week': classes.curriculum_in_second_week.replace('\\n', '\n'),
         'curriculum_in_third_week': classes.curriculum_in_third_week.replace('\\n', '\n'),
