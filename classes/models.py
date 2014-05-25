@@ -11,6 +11,7 @@ class Company(models.Model):
     introduction = models.TextField(null=True)
     refund_information = models.TextField(null=True)
     facility_information = models.TextField(null=True)
+    # toilet, fitting_room, shower_stall, locker, parking_lot, practice_room, instrument_rental
     naver_object_id = models.TextField(null=True)
 
     def __unicode__(self):
@@ -39,11 +40,22 @@ class Company(models.Model):
 
 class CompanyReview(models.Model):
     company = models.ForeignKey(Company, related_name='get_company_reviews')
-    user = models.ForeignKey(User, related_name='get_company_reviews', null=True)
+    user = models.ForeignKey(User, related_name='get_company_reviews', null=True, blank=True)
     source = models.TextField(null=False, default='naver')
-    content = models.TextField()
+    contents = models.TextField(null=True)
     score = models.FloatField(default=0.0)
-    created = models.DateTimeField(auto_now_add=True, default=datetime.datetime.now)
+    created = models.DateTimeField(default=datetime.datetime.now)
+    is_representing_reivew = models.BooleanField(null=False,default=False)
+
+    class Meta:
+        unique_together = (("company", "source", "contents", "created"),)
+
+    def __unicode__(self):
+        return '(%r)CompanyReview(%r) : (%r) %s / %s' % (self.id, self.is_representing_reivew, self.score,
+                                                         self.company.name, self.contents)
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
 
 class CompanyImage(models.Model):
     company = models.ForeignKey(Company, related_name='get_company_images')
@@ -73,77 +85,109 @@ class SubCategory(models.Model):
         return 'SubCategory : %s' % self.name
 
 class SubCategoryRecommend(models.Model):
-    image_url = models.TextField( null=True )
+    image_url = models.TextField(null=True)
 
-# class Classes(models.Model):
-#     title = models.TextField(null=False)
-#     sub_category = models.ForeignKey(SubCategory, related_name='get_classes')
-#     company = models.ForeignKey(Company)
-#     description = models.TextField(null=True)
-#     personal_or_group = models.TextField(null=False,default='personal') # personal or group
-#     is_allowed_one_day = models.BooleanField(null=False,default=False)
-#     price_of_one_day = models.IntegerField(null=False,default=0)
-#     count_of_month = models.IntegerField(null=False,default=0)
-#     price_of_month = models.IntegerField(null=False,default=0)
-#     preparation = models.TextField(null=True)
-#     maximum_number_of_enrollment = models.IntegerField(null=False,default=0)
-#     curriculum_in_first_week = models.TextField(null=True)
-#     curriculum_in_second_week = models.TextField(null=True)
-#     curriculum_in_third_week = models.TextField(null=True)
-#     curriculum_in_fourth = models.TextField(null=True)
-#     curriculum_in_fifth = models.TextField(null=True)
-
-# before 20140521
 class Classes(models.Model):
-    title = models.TextField( null=True )
-    thumbnail_image_url = models.TextField( null=True )
-    subCategory = models.ForeignKey( SubCategory, related_name='get_classes' )
-    company = models.ForeignKey( Company )
-    description = models.TextField( null=True )
-    preparation = models.TextField( null=True )
-    personalOrGroup = models.TextField( null=True )
-    refundInformation = models.TextField( null=True )
-    # countOfDay = models.IntegerField( null=True )
-    priceOfDay = models.IntegerField( null=True )
-    countOfMonth = models.IntegerField( null=True )
-    priceOfMonth = models.IntegerField( null=True )
-    image_url = models.TextField( null=True )
+    title = models.TextField(null=False)
+    sub_category = models.ForeignKey(SubCategory, related_name='get_classes')
+    company = models.ForeignKey(Company)
+    description = models.TextField(null=True)
+    personal_or_group = models.TextField(null=False,default='personal') # personal or group
+    is_allowed_one_day = models.BooleanField(null=False,default=False)
+    price_of_one_day = models.IntegerField(null=False,default=0)
+    count_of_week = models.IntegerField(null=False,default=0)
+    count_of_month = models.IntegerField(null=False,default=0)
+    price_of_month = models.IntegerField(null=False,default=0)
+    preparation = models.TextField(null=True)
+    maximum_number_of_enrollment = models.IntegerField(null=False,default=0)
+    curriculum_in_first_week = models.TextField(null=True)
+    curriculum_in_second_week = models.TextField(null=True)
+    curriculum_in_third_week = models.TextField(null=True)
+    curriculum_in_fourth_week = models.TextField(null=True)
+    curriculum_in_fifth_week = models.TextField(null=True)
 
     class Meta:
-        unique_together = (("title", "thumbnail_image_url", "subCategory", "company", "description", "preparation", "personalOrGroup", "refundInformation", "priceOfDay", "countOfMonth", "priceOfMonth", "image_url"),)
-
-    def __str__(self):
-        return '(%d)Classes : %s / %s' % (self.id, self.title, self.description )
+        unique_together = (("title", "sub_category", "company", "personal_or_group"),)
 
     def __unicode__(self):
-        return '(%d)Classes : %s / %s' % (self.id, self.title, self.description )
+        return 'Classes(%r) : %s' % (self.sub_category.name, self.title)
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
+
+# before 20140521
+# class Classes(models.Model):
+#     title = models.TextField( null=True )
+#     thumbnail_image_url = models.TextField( null=True )
+#     subCategory = models.ForeignKey( SubCategory, related_name='get_classes' )
+#     company = models.ForeignKey( Company )
+#     description = models.TextField( null=True )
+#     preparation = models.TextField( null=True )
+#     personalOrGroup = models.TextField( null=True )
+#     refundInformation = models.TextField( null=True )
+#     # countOfDay = models.IntegerField( null=True )
+#     priceOfDay = models.IntegerField( null=True )
+#     countOfMonth = models.IntegerField( null=True )
+#     priceOfMonth = models.IntegerField( null=True )
+#     image_url = models.TextField( null=True )
+#
+#     class Meta:
+#         unique_together = (("title", "thumbnail_image_url", "subCategory", "company", "description", "preparation", "personalOrGroup", "refundInformation", "priceOfDay", "countOfMonth", "priceOfMonth", "image_url"),)
+#
+#     def __str__(self):
+#         return '(%d)Classes : %s / %s' % (self.id, self.title, self.description )
+#
+#     def __unicode__(self):
+#         return '(%d)Classes : %s / %s' % (self.id, self.title, self.description )
 
 class ClassesImage(models.Model):
-    classes = models.ForeignKey( Classes, related_name='get_images' )
+    classes = models.ForeignKey(Classes, related_name='get_images')
     image_url = models.TextField()
 
 class ClassesInquire(models.Model):
-    classes = models.ForeignKey( Classes )
-    user = models.ForeignKey( User )
-    content = models.TextField( null=False, blank=True, default='' )
-    created = models.DateTimeField(auto_now_add=True, default=datetime.datetime.now )
+    classes = models.ForeignKey(Classes)
+    user = models.ForeignKey(User)
+    content = models.TextField(null=False, blank=True, default='')
+    created = models.DateTimeField(auto_now_add=True, default=datetime.datetime.now)
 
 class Schedule(models.Model):
-    classes = models.ForeignKey( Classes , related_name='get_schedules')
-    # Mon=1, Tue=2, Wed, Thu, Fri, Sat, Sun
-    dayOfWeek = models.CharField( max_length=27 )
-    startTime = models.TextField( null=True )
-    duration = models.TimeField( default='00:00:00')
+    classes = models.ForeignKey(Classes , related_name='get_schedules')
+    weekday_list = models.CharField(max_length=27) # Mon=1, Tue=2, Wed, Thu, Fri, Sat, Sun
+    start_time_list = models.TextField(null=True)
+    duration = models.TimeField(default='00:00:00')
 
-    def __str__(self):
-        return 'class_id=(%d), (%d)Schedule : %s %r' % (self.classes_id, self.id, self.dayOfWeek, self.startTime )
-
-    def __unicode__(self):
-        return 'class_id=(%d), (%d)Schedule : %s %r' % (self.classes_id, self.id, self.dayOfWeek, self.startTime )
+# before 20140521
+# class Schedule(models.Model):
+#     classes = models.ForeignKey( Classes , related_name='get_schedules')
+#     # Mon=1, Tue=2, Wed, Thu, Fri, Sat, Sun
+#     dayOfWeek = models.CharField( max_length=27 )
+#     startTime = models.TextField( null=True )
+#     duration = models.TimeField( default='00:00:00')
+#
+#     def __str__(self):
+#         return 'class_id=(%d), (%d)Schedule : %s %r' % (self.classes_id, self.id, self.dayOfWeek, self.startTime )
+#
+#     def __unicode__(self):
+#         return 'class_id=(%d), (%d)Schedule : %s %r' % (self.classes_id, self.id, self.dayOfWeek, self.startTime )
 
 class ClassesRecommend(models.Model):
-    classes = models.ForeignKey( Classes, related_name='get_recommends')
-    schedule = models.ForeignKey( Schedule, related_name='get_recommends')
+    classes = models.ForeignKey(Classes, related_name='get_recommends')
+    schedule = models.ForeignKey(Schedule, related_name='get_recommends')
 
     def __str__(self):
-        return 'ClassesRecommend : %d %r %r' % (self.id, self.classes, self.schedule )
+        return 'ClassesRecommend : %d %r %r' % (self.id, self.classes, self.schedule)
+
+class Promotion(models.Model):
+    start_date = models.DateField(null=False)
+    daily_start_time = models.TimeField(null=False)
+    end_date = models.DateField(null=False)
+    daily_end_time = models.TimeField(null=False)
+    discount_percentage = models.IntegerField(null=False, default=0)
+    total_maximum_count = models.IntegerField(null=False, default=0)
+    daily_maximum_count = models.IntegerField(null=False, default=0)
+
+class PromotionDetail(models.Model):
+    promotion = models.ForeignKey(Promotion, related_name='get_promotion_details')
+    purchase = models.ForeignKey('foradmin.Purchase')
+    created = models.DateTimeField(default=datetime.datetime.now)

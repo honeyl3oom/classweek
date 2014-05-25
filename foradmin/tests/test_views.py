@@ -10,20 +10,29 @@ SAMPLE_PASSWORD = 'test'
 
 class UserSessionTest(TestCase):
 
-    default_setup_api_log_count = 2
+    default_setup_api_log_count = 7
 
     def setUp(self):
-        self.assertTrue(self.helper_registration())
+        self.assertTrue(self.helper_registration(self))
         self.assertTrue(self.helper_check_api_log_count(1))
         self.assertTrue(self.helper_check_api_log_distinct_user_session_id_count(1))
-        self.assertTrue(self.helper_login())
+        self.assertTrue(self.helper_login(self))
         self.assertTrue(self.helper_check_api_log_count(2))
         self.assertTrue(self.helper_check_api_log_distinct_user_session_id_count(1))
 
+        # insert dummy data
+        self.assertTrue(self.helper_check_response_result(self.client.get('/classes/import/category')))
+        self.assertTrue(self.helper_check_response_result(self.client.get('/classes/import/subcategory')))
+        self.assertTrue(self.helper_check_response_result(self.client.get('/classes/import/company')))
+        self.assertTrue(self.helper_check_response_result(self.client.get('/classes/import/classes')))
+        self.assertTrue(self.helper_check_response_result(self.client.get('/classes/import/schedule')))
+
+
 
     # helper function part ----- start
-    def helper_registration(self, id=SAMPLE_ID, password=SAMPLE_PASSWORD):
-        response = self.client.post('/user/registration',
+    @staticmethod
+    def helper_registration(test_object, id=SAMPLE_ID, password=SAMPLE_PASSWORD):
+        response = test_object.client.post('/user/registration',
                                     {'email':SAMPLE_ID,
                                      'password':SAMPLE_PASSWORD,
                                      'password_confirm':SAMPLE_PASSWORD })
@@ -33,21 +42,27 @@ class UserSessionTest(TestCase):
         else:
             return False
 
-    def helper_logout(self):
-        response = self.client.post('/user/logout')
+    @staticmethod
+    def helper_logout(test_object):
+        response = test_object.client.post('/user/logout')
         response_dict = json.loads(response.content)
         if response_dict['result'] == 'success':
             return True
         else:
             return False
 
-    def helper_login(self):
-        response = self.client.post('/user/login', {'email':SAMPLE_ID, 'password':SAMPLE_PASSWORD})
+    @staticmethod
+    def helper_login(test_object):
+        response = test_object.client.post('/user/login', {'email':SAMPLE_ID, 'password':SAMPLE_PASSWORD})
         response_dict = json.loads(response.content)
         if response_dict['result'] == 'success':
             return True
         else:
             return False
+
+    def helper_check_response_result(self, response, result_string='success'):
+        response_dict = json.loads(response.content)
+        return response_dict['result']==result_string
 
     def helper_check_api_log_count(self, count):
         api_log_count = ApiLog.objects.count()
@@ -63,17 +78,17 @@ class UserSessionTest(TestCase):
 
     # helper function part ----- end
 
-    def test_user_anonymous_session_created(self):
+    def test_user_session_created(self):
         self.assertTrue(self.helper_check_api_log_distinct_user_session_id_count(1))
+        self.assertTrue(self.helper_check_response_result(self.client.post('/classes/music')))
 
-    def test_user_anonymous_session_equal_after_re_login(self):
-        self.assertTrue(self.helper_logout())
+    def test_user_session_equal_after_re_login(self):
+        self.assertTrue(self.helper_logout(self))
         self.assertTrue(self.helper_check_api_log_count(self.default_setup_api_log_count+1))
         self.assertTrue(self.helper_check_api_log_distinct_user_session_id_count(1))
-        self.assertTrue(self.helper_login())
+        self.assertTrue(self.helper_login(self))
         self.assertTrue(self.helper_check_api_log_count(self.default_setup_api_log_count+2))
         self.assertTrue(self.helper_check_api_log_distinct_user_session_id_count(1))
-        
 
 
     # def helper_response_result_success( self, response ):

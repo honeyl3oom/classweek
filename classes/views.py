@@ -13,11 +13,14 @@ from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 
 from django.db import IntegrityError
-from classes.models import Category, Company, CompanyImage,\
-    SubCategory, Classes, ClassesInquire, Schedule, SubCategoryRecommend, ClassesRecommend
+from classes.models import Category, Company, CompanyReview, CompanyImage,\
+    SubCategory, Classes, ClassesInquire, Schedule, SubCategoryRecommend, ClassesRecommend,\
+    Promotion, PromotionDetail
+
+from datetime import datetime
+
 from foradmin.models import Purchase, ApiLog
 from classweek.common_method import send_email
-from bs4 import BeautifulSoup
 import urllib, urllib2
 
 import logging
@@ -49,12 +52,53 @@ def _make_json_response(is_success, error_message, error_code = 0 , data = None)
     return return_value
 
 
-def _http_json_response(error, data, error_code = 0):
+def _http_json_response(error, data=[], error_code = 0):
     if error is None:
         return HttpResponse(json.dumps( _make_json_response( True, None, error_code, data ) , ensure_ascii=False ), content_type="application/json; charset=utf-8" )
     else:
         return HttpResponse(json.dumps( _make_json_response( False, error, error_code, data ) , ensure_ascii=False ), content_type="application/json; charset=utf-8" )
 
+def _http_response_by_json(error, json_={}):
+    if error is None:
+        json_.update({
+            'result': 'success'
+        })
+    else:
+        json_.update({
+            'result': 'fail',
+            'error_code': error,
+            'error_message': const.ERROR_CODE_AND_MESSAGE_DICT[error]
+        })
+
+    return HttpResponse(json.dumps(json_, ensure_ascii=False), content_type="application/json; charset=utf-8")
+
+@csrf_exempt
+def promotion_view(request):
+    now_ = datetime.now()
+    print now_
+    print now_.day
+    promotions = Promotion.objects.filter( start_date__lte=now_, end_date__gte=now_, daily_start_time__lte=now_, daily_end_time__gte=now_).all()
+    if len(promotions)>0:
+        promotion = promotions[0]
+
+        total_count = promotion.get_promotion_details.count()
+        today_count = promotion.get_promotion_details.filter(created__day=now_.day).count()
+
+        if promotion.total_maximum_count>total_count and promotion.daily_maximum_count>today_count:
+            return _http_response_by_json(None, {
+                'data_code': 0,
+                'data_message': 'in promotion'
+            })
+        else:
+            return _http_response_by_json(None, {
+                'data_code': 1,
+                'data_message': 'today promotion is end'
+            })
+
+    return _http_response_by_json(None, {
+        'data_code': 2,
+        'data_message': 'not in promotion'
+    })
 
 @csrf_exempt
 def get_sub_category_list_view(request, category_name ):
@@ -69,7 +113,7 @@ def get_sub_category_list_view(request, category_name ):
     except ObjectDoesNotExist:
         return _http_json_response(const.ERROR_CATEGORY_NAME_DOES_NOT_EXIST, None , const.CODE_ERROR_CATEGORY_NAME_DOES_NOT_EXIST)
 
-# location, weekday, time( morning, .. ), price ( by month )
+# address, weekday, time( morning, .. ), price ( by month )
 @csrf_exempt
 def get_classes_list_view(request, category_name, subcategory_name, page_num='1'):
 
@@ -89,7 +133,7 @@ def get_classes_list_view(request, category_name, subcategory_name, page_num='1'
 
         # filter out only if there is any in 'price' param
         if price_filter is not None:
-            classes = classes.filter(priceOfMonth__lte=request.POST.get('price', None))
+            classes = classes.filter(price_of_month__lte=request.POST.get('price', None))
 
         classes = classes.select_related('get_schedules', 'company', ).all()
 
@@ -106,19 +150,17 @@ def get_classes_list_view(request, category_name, subcategory_name, page_num='1'
                 'title': classes_item.title,
                 'company': company.name,
                 'nearby_station': company.nearby_station,
-                'price_of_day': classes_item.priceOfDay,
-                'count_of_month': classes_item.countOfMonth,
-                'original_price_of_month': classes_item.priceOfDay*classes_item.countOfMonth,
-                'discount_price_of_month': classes_item.priceOfMonth,
-                'image_url': 'http://' + request.get_host() +
-                             company.thumbnail_image_url if company.thumbnail_image_url is not None else 'no.jpg',
-                'discount_rate': round(100 - classes_item.priceOfMonth*100.0/(classes_item.priceOfDay*classes_item.countOfMonth))
+                'price_of_day': classes_item.price_of_one_day,
+                'count_of_month': classes_item.count_of_month,
+                'original_price_of_month': classes_item.price_of_one_day*classes_item.count_of_month,
+                'discount_price_of_month': classes_item.price_of_month,
+                'discount_rate': round(100 - classes_item.price_of_month*100.0/(classes_item.price_of_one_day*classes_item.count_of_month))
             })
 
             for schedule in schedules:
                 item_detail = item.copy()
 
-                weekday_list_express_by_string = schedule.dayOfWeek.split(',')
+                weekday_list_express_by_string = schedule.weekday_list.split(',')
 
                 # filter out only if there is any in 'weekday' param
                 is_excluded_by_weekday = False
@@ -131,7 +173,7 @@ def get_classes_list_view(request, category_name, subcategory_name, page_num='1'
                     continue
 
                 # get start time
-                start_time_list = schedule.startTime.split(',')
+                start_time_list = schedule.start_time_list.split(',')
                 # filter out only if there is any in 'time' param
                 is_excluded_by_start_time = False
                 if start_time_filter_express_by_string is not None:
@@ -181,129 +223,43 @@ def get_classes_list_view(request, category_name, subcategory_name, page_num='1'
 
 
     except ObjectDoesNotExist as e:
-        return HttpResponse(repr(e))
-
-    # subcategory = SubCategory.objects.filter(name=subcategory_name).select_related('get_classes')
-    # if subcategory.exists():
-    #     classes = subcategory.first().get_classes
-    #
-    #     # filter out only if there is any in 'location' param
-    #     if request.POST.get('location', None) is not None:
-    #         classes = classes.filter( company__zone = request.POST.get('location', None))
-    #
-    #     # filter out only if there is any in 'price' param
-    #     if request.POST.get('price', None) is not None:
-    #         classes = classes.filter( priceOfMonth__lte = request.POST.get('price', None) )
-    #
-    #     classes = classes.select_related('get_schedules', 'company', ).all()
-    #     classes_list = []
-    #
-    #     for classes_item in classes:
-    #         item = {}
-    #         item.update({
-    #             'id': classes_item.id,
-    #             'title': classes_item.title,
-    #             'company': classes_item.company.name,
-    #             'nearby_station': classes_item.company.nearby_station,
-    #             'price_of_day': classes_item.priceOfDay,
-    #             'count_of_month': classes_item.countOfMonth,
-    #             'original_price_of_month': classes_item.priceOfDay*classes_item.countOfMonth,
-    #             'discount_price_of_month': classes_item.priceOfMonth,
-    #             'image_url': 'http://' + request.get_host() + classes_item.company.thumbnail_image_url,
-    #             'discount_rate': round(100 - classes_item.priceOfMonth*100.0/(classes_item.priceOfDay*classes_item.countOfMonth))
-    #             })
-    #         schedules = classes_item.get_schedules.all()
-    #         for schedule in schedules:
-    #             item_detail = item.copy()
-    #
-    #             # get weekday
-    #             weekday_express_by_string_list = schedule.dayOfWeek.split(',')
-    #             # filter out only if there is any in 'weekday' param
-    #             weekday_filter = request.POST.get('weekday', None)
-    #             is_excluded_by_weekday = False
-    #             if weekday_filter is not None:
-    #                 for i in range(len(weekday_express_by_string_list)):
-    #                     if not(str(weekday_filter).__contains__(str(WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[i]]))):
-    #                         is_excluded_by_weekday = True
-    #                         break
-    #             if is_excluded_by_weekday:
-    #                 continue
-    #
-    #             # get start time
-    #             start_time_list = schedule.startTime.split(',')
-    #             # filter out only if there is any in 'time' param
-    #             start_time_filter_express_by_string = request.POST.get('time', None)
-    #             is_excluded_by_start_time = False
-    #             if start_time_filter_express_by_string is not None:
-    #                 for i in range(len(start_time_list)):
-    #                     time_object = time.strptime( start_time_list[i], "%H:%M:%S")
-    #
-    #                     is_contains_in_time_filter = False
-    #
-    #                     if "0" in start_time_filter_express_by_string:
-    #                         if 6 <= time_object.tm_hour < 12:
-    #                             is_contains_in_time_filter = True
-    #
-    #                     if is_contains_in_time_filter is False and "1" in start_time_filter_express_by_string:
-    #                         if 12 <= time_object.tm_hour < 18:
-    #                             is_contains_in_time_filter = True
-    #
-    #                     if is_contains_in_time_filter is False and "2" in start_time_filter_express_by_string:
-    #                         if 18 <= time_object.tm_hour < 24:
-    #                             is_contains_in_time_filter = True
-    #
-    #                     if is_contains_in_time_filter is False:
-    #                         is_excluded_by_start_time = True
-    #                         break
-    #             if is_excluded_by_start_time:
-    #                 continue
-    #
-    #             times = []
-    #
-    #             for i in range(len(weekday_express_by_string_list)):
-    #                 times.append(WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i]].decode('utf-8') + " : " +
-    #                              time.strftime('%p %I시 %M분', time.strptime(start_time_list[i], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전').decode('utf-8'))
-    #
-    #             item_detail.update({
-    #                 'times': times,
-    #                 'duration': schedule.duration.strftime("%H시간%M분").decode('utf-8'),
-    #                 'schedule_id': schedule.id
-    #             })
-    #
-    #             classes_list.append(item_detail)
-    #
-    #     return _http_json_response( None, classes_list[ (page_num-1)*ITEM_COUNT_IN_PAGE : page_num*ITEM_COUNT_IN_PAGE ] )
-    # else:
-    #     return _http_json_response( const.ERROR_SUBCATEGORY_NAME_DOES_NOT_EXIST, None , const.CODE_ERROR_SUBCATEGORY_NAME_DOES_NOT_EXIST )
+        return _http_response_by_json(const.CODE_ERROR_SUBCATEGORY_NAME_DOES_NOT_EXIST)
 
 @csrf_exempt
 def getClassesDetail_view( request, classes_id, schedule_id ):
-    classes = Classes.objects.select_related('company', 'get_images' ).get( id = classes_id )
-    schedule = Schedule.objects.get( id = schedule_id )
+    classes = Classes.objects.select_related('company', 'get_images', ).get(id=classes_id)
+    company = classes.company
+    schedule = Schedule.objects.get(id = schedule_id)
 
     classes_detail = {}
 
-    classes_detail.update( {
-        'id': classes.id,
-        'title': classes.title,
-        'company': classes.company.name,
-        'nearby_station': classes.company.nearby_station,
-        'address': classes.company.location,
-        'person_or_group': classes.personalOrGroup,
-        'description': classes.description,
-        'preparation': classes.preparation,
-        'refund_info': classes.refundInformation.replace('\\n', '\n'),
-        'price_of_day': classes.priceOfDay,
-        'original_price_of_month': classes.priceOfDay*classes.countOfMonth,
-        'discount_price_of_month': classes.priceOfMonth,
-        'count_of_month': classes.countOfMonth,
-        'discount_rate': round(100 - classes.priceOfMonth*100.0/(classes.priceOfDay*classes.countOfMonth)),
-        'image_url': 'http://' + request.get_host() + classes.company.thumbnail_image_url
-    })
+    personal_or_group = classes.personal_or_group
+    if personal_or_group == 'personal':
+        lesson_type = '개인 레슨'
+    elif personal_or_group == 'group':
+        lesson_type = '그룹 레슨(' + str(classes.maximum_number_of_enrollment) + ')'
 
-    facilities_information = classes.company.facilitiesInformation
+    facilities_information = company.facility_information
 
     classes_detail.update({
+        'id': classes.id,
+        'schedule_id': schedule.id,
+        'title': classes.title,
+        'description': classes.description,
+        'count_of_week': classes.count_of_week,
+        'original_price_of_month': classes.price_of_one_day * classes.count_of_month,
+        'discount_price_of_month': classes.price_of_month,
+        'address': company.address,
+        'curriculum_in_first_week': classes.curriculum_in_first_week.replace('\\n', '\n'),
+        'curriculum_in_second_week': classes.curriculum_in_second_week.replace('\\n', '\n'),
+        'curriculum_in_third_week': classes.curriculum_in_third_week.replace('\\n', '\n'),
+        'curriculum_in_fourth_week': classes.curriculum_in_fourth_week.replace('\\n', '\n'),
+        'curriculum_in_fifth_week': classes.curriculum_in_fifth_week.replace('\\n', '\n'),
+        'lesson_type': lesson_type.decode('utf-8'),
+        'preparation': classes.preparation,
+        'refund_information': company.refund_information,
+        'company_introduction': company.introduction,
+        ### facility_infomation ###
         'toilet': facilities_information.__contains__('toilet'),
         'fitting_room': facilities_information.__contains__('fitting_room'),
         'shower_stall': facilities_information.__contains__('shower_stall'),
@@ -313,7 +269,34 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'instrument_rental': facilities_information.__contains__('instrument_rental')
     })
 
-    images = classes.company.get_company_images.all()
+    ### good and bad review ###
+    good_representing_reviews = company.get_company_reviews.filter(is_representing_reivew=True, score__gt=3).order_by('-score').all()[:3]
+    bad_representing_reviews = company.get_company_reviews.filter(is_representing_reivew=True, score__lte=3).order_by('score').all()[:3]
+
+    good_reviews = []
+    for good_representing_review in good_representing_reviews:
+        good_reviews.append({
+            'contents':good_representing_review.contents.replace('\r',''),
+            'score':good_representing_review.score,
+            'datetime': good_representing_review.created.strftime('%p %I시 %M분').decode('utf-8')
+        })
+
+    bad_reviews = []
+    for bad_representing_review in bad_representing_reviews:
+        bad_reviews.append({
+            'contents': bad_representing_review.contents.replace('\r',''),
+            'score': bad_representing_review.score,
+            'datetime': bad_representing_review.created.strftime('%p %I시 %M분').decode('utf-8')
+        })
+
+    classes_detail.update({
+        'good_reviews': good_reviews,
+        'bad_reviews': bad_reviews
+    })
+
+
+    ### detail image list ###
+    images = company.get_company_images.all()
     detail_images = []
     for image in images:
         if len(image.image_url) > 0:
@@ -323,8 +306,9 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'detail_image_url': detail_images
     })
 
-    weekday_express_by_string_list = schedule.dayOfWeek.split(',')
-    start_time_express_by_string_list = schedule.startTime.split(',')
+    ### time list, duration ###
+    weekday_express_by_string_list = schedule.weekday_list.split(',')
+    start_time_express_by_string_list = schedule.start_time_list.split(',')
 
     times = []
     for i in range(len(weekday_express_by_string_list)):
@@ -333,14 +317,11 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
 
     classes_detail.update({
         'times': times,
-        'duration': schedule.duration.strftime("%H시간%M분").decode('utf-8'),
-        'schedule_id': schedule.id
+        'duration': schedule.duration.strftime("%H시간%M분").decode('utf-8')
     })
 
+    ### create one month schedule ###
     today = datetime.today()
-    today_year = today.year
-    today_month = today.month
-    today_day = today.day
     timedelta_from_today = timedelta()
     today_weekday = today.weekday()
 
@@ -395,12 +376,10 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'one_month_schedule':one_month_schedule
     })
 
-    # print repr(classes)
     return _http_json_response(None, classes_detail )
 
 @csrf_exempt
 def inquire_view(request, classes_id):
-    print request.user
     if not(request.user.is_authenticated()):
         return HttpResponse(json.dumps(_make_json_response( False, const.ERROR_HAVE_TO_LOGIN, const.CODE_ERROR_HAVE_TO_LOGIN)), content_type="application/json")
     else:
@@ -438,22 +417,22 @@ def recommend_classes_view(request):
             'title': classes_item.title,
             'company': classes_item.company.name,
             'nearby_station': classes_item.company.nearby_station,
-            'count_of_month': classes_item.countOfMonth,
-            'price_of_day': classes_item.priceOfDay,
-            'original_price_of_month': classes_item.priceOfDay*classes_item.countOfMonth,
-            'discount_price_of_month': classes_item.priceOfMonth,
+            'count_of_month': classes_item.count_of_month,
+            'price_of_day': classes_item.price_of_one_day,
+            'original_price_of_month': classes_item.price_of_one_day*classes_item.count_of_month,
+            'discount_price_of_month': classes_item.price_of_month,
             'image_url': 'http://' + request.get_host() + classes_item.company.thumbnail_image_url,
-            'discount_rate': round(100 - classes_item.priceOfMonth*100.0/(classes_item.priceOfDay*classes_item.countOfMonth))
+            'discount_rate': round(100 - classes_item.price_of_month*100.0/(classes_item.price_of_one_day*classes_item.count_of_month))
         })
         schedules = classes_item.get_schedules.filter(pk__in=schedule_pks).all()
         for schedule in schedules:
             classes_list_item_detail = classes_list_item.copy()
 
             # get weekday
-            weekday_express_by_string_list = schedule.dayOfWeek.split(',')
+            weekday_express_by_string_list = schedule.weekday_list.split(',')
 
             # get start time
-            start_time_list = schedule.startTime.split(',')
+            start_time_list = schedule.start_time_list.split(',')
 
             times = []
             for i in range(len(weekday_express_by_string_list)):
@@ -488,9 +467,9 @@ def now_taking_view(request):
         title = classes.title
         image_url = 'http://' + request.get_host() + classes.company.thumbnail_image_url
 
-        weekday_before_split_expressed_by_string = schedule.dayOfWeek
+        weekday_before_split_expressed_by_string = schedule.weekday_list
         weekday_list_expressed_by_string = weekday_before_split_expressed_by_string.split(',')
-        start_time_before_split_expressed_by_string = schedule.startTime
+        start_time_before_split_expressed_by_string = schedule.start_time_list
         start_time_list_expressed_by_string = start_time_before_split_expressed_by_string.split(',')
         duration_time = schedule.duration
 
@@ -548,9 +527,9 @@ def took_before_view(request):
 
         title = classes.title
         image_url = 'http://' + request.get_host() + classes.company.thumbnail_image_url
-        weekday_before_split_expressed_by_string = schedule.dayOfWeek
+        weekday_before_split_expressed_by_string = schedule.weekday_list
         weekday_list_expressed_by_string = weekday_before_split_expressed_by_string.split(',')
-        start_time_before_split_expressed_by_string = schedule.startTime
+        start_time_before_split_expressed_by_string = schedule.start_time_list
         start_time_list_expressed_by_string = start_time_before_split_expressed_by_string.split(',')
         duration_time = schedule.duration
 
@@ -597,7 +576,7 @@ def import_all_view(request):
     import_schedule_csv_file_view(request)
     import_sub_category_recommend_csv_file_view(request)
 
-    return HttpResponse('success')
+    return _http_json_response(None)
 
 import csv
 
@@ -613,7 +592,7 @@ def import_category_csv_file_view(request):
             Category.objects.get_or_create(
                 name=row[0])
 
-    return HttpResponse('success')
+    return _http_json_response(None)
 
 
 def import_sub_category_csv_file_view(request):
@@ -633,7 +612,7 @@ def import_sub_category_csv_file_view(request):
                 description=unicode(row[3], 'euc-kr'),
                 image_url=unicode(row[4], 'euc-kr'))
 
-    return HttpResponse('success')
+    return _http_json_response(None)
 
 
 def import_company_csv_file_view(request):
@@ -646,16 +625,29 @@ def import_company_csv_file_view(request):
                 is_first = False
                 continue
 
-            company, created = Company.objects.get_or_create(
-                name=unicode(row[0], 'euc-kr'),
-                contact=unicode(row[1], 'euc-kr'),
-                address=unicode(row[2], 'euc-kr'),
-                zone=unicode(row[3], 'euc-kr'),
-                nearby_station=unicode(row[4], 'euc-kr'),
-                introduction=unicode(row[5], 'euc-kr'),
-                refund_information=unicode(row[6], 'euc-kr'),
-                facility_information=unicode(row[7], 'euc-kr'),
-                naver_object_id=unicode(row[8], 'euc-kr'))
+            if Company.objects.filter(name=unicode(row[0], 'euc-kr')).count()>0 :
+                Company.objects.filter(name=unicode(row[0], 'euc-kr')).update(
+                    contact=unicode(row[1], 'euc-kr'),
+                    address=unicode(row[2], 'euc-kr'),
+                    zone=unicode(row[3], 'euc-kr'),
+                    nearby_station=unicode(row[4], 'euc-kr'),
+                    introduction=unicode(row[5], 'euc-kr'),
+                    refund_information=unicode(row[6], 'euc-kr'),
+                    facility_information=unicode(row[7], 'euc-kr'),
+                    naver_object_id=unicode(row[8], 'euc-kr'))
+            else:
+                Company.objects.get_or_create(
+                    name=unicode(row[0], 'euc-kr'),
+                    contact=unicode(row[1], 'euc-kr'),
+                    address=unicode(row[2], 'euc-kr'),
+                    zone=unicode(row[3], 'euc-kr'),
+                    nearby_station=unicode(row[4], 'euc-kr'),
+                    introduction=unicode(row[5], 'euc-kr'),
+                    refund_information=unicode(row[6], 'euc-kr'),
+                    facility_information=unicode(row[7], 'euc-kr'),
+                    naver_object_id=unicode(row[8], 'euc-kr'))
+
+            company = Company.objects.get(name=unicode(row[0], 'euc-kr'))
 
             for i in range(9, len(row)):
                 if len(row[i]) > 0:
@@ -666,7 +658,10 @@ def import_company_csv_file_view(request):
                 else:
                     break
 
-    return HttpResponse('success')
+            if len(company.naver_object_id)>0:
+                scrap_company_review_in_naver(company.naver_object_id)
+
+    return _http_json_response(None)
 
 
 def import_classes_csv_file_view(request):
@@ -680,33 +675,63 @@ def import_classes_csv_file_view(request):
                 continue
 
             try:
-                sub_category = SubCategory.objects.get(name=unicode(row[2], 'euc-kr'))
+                sub_category = SubCategory.objects.get(name=unicode(row[1], 'euc-kr'))
+            except Exception, e:
+                print unicode(row[1], 'euc-kr'), e
+
+            try:
+                company = Company.objects.get(name=unicode(row[2], 'euc-kr'))
             except Exception, e:
                 print unicode(row[2], 'euc-kr'), e
 
-            try:
-                company = Company.objects.get(name=unicode(row[3], 'euc-kr'))
-            except Exception, e:
-                print unicode(row[3], 'euc-kr'), e
-
-            Classes.objects.get_or_create(
+            if Classes.objects.filter(
                 title=unicode(row[0], 'euc-kr'),
-                thumbnail_image_url=unicode(row[1], 'euc-kr'),
-                subCategory=sub_category,
+                sub_category=sub_category,
                 company=company,
-                description=unicode(row[4], 'euc-kr'),
-                preparation=unicode(row[5], 'euc-kr'),
-                personalOrGroup=unicode(row[6], 'euc-kr'),
-                refundInformation=unicode(row[7], 'euc-kr'),
-                priceOfDay=unicode(row[8], 'euc-kr'),
-                countOfMonth=unicode(row[9], 'euc-kr'),
-                priceOfMonth=unicode(row[10], 'euc-kr'),
-                image_url=unicode(row[11], 'euc-kr'))
+                personal_or_group=unicode(row[4], 'euc-kr')).count()>0:
 
-    return HttpResponse('success')
+                Classes.objects.filter(
+                    title=unicode(row[0], 'euc-kr'),
+                    sub_category=sub_category,
+                    company=company,
+                    personal_or_group=unicode(row[4], 'euc-kr')).update(
+                    description=unicode(row[3], 'euc-kr'),
+                    is_allowed_one_day=unicode(row[5], 'euc-kr'),
+                    price_of_one_day=unicode(row[6], 'euc-kr'),
+                    count_of_week=unicode(row[7], 'euc-kr'),
+                    count_of_month=unicode(row[8], 'euc-kr'),
+                    price_of_month=unicode(row[9], 'euc-kr'),
+                    preparation=unicode(row[10], 'euc-kr'),
+                    maximum_number_of_enrollment=unicode(row[11], 'euc-kr'),
+                    curriculum_in_first_week=unicode(row[12], 'euc-kr'),
+                    curriculum_in_second_week=unicode(row[13], 'euc-kr'),
+                    curriculum_in_third_week=unicode(row[14], 'euc-kr'),
+                    curriculum_in_fourth_week=unicode(row[15], 'euc-kr'),
+                    curriculum_in_fifth_week=row[16] if row[16] is '' else unicode(row[16], 'euc-kr'))
+            else:
+                Classes.objects.get_or_create(
+                    title=unicode(row[0], 'euc-kr'),
+                    sub_category=sub_category,
+                    company=company,
+                    description=unicode(row[3], 'euc-kr'),
+                    personal_or_group=unicode(row[4], 'euc-kr'),
+                    is_allowed_one_day=unicode(row[5], 'euc-kr'),
+                    price_of_one_day=unicode(row[6], 'euc-kr'),
+                    count_of_week=unicode(row[7], 'euc-kr'),
+                    count_of_month=unicode(row[8], 'euc-kr'),
+                    price_of_month=unicode(row[9], 'euc-kr'),
+                    preparation=unicode(row[10], 'euc-kr'),
+                    maximum_number_of_enrollment=unicode(row[11], 'euc-kr'),
+                    curriculum_in_first_week=unicode(row[12], 'euc-kr'),
+                    curriculum_in_second_week=unicode(row[13], 'euc-kr'),
+                    curriculum_in_third_week=unicode(row[14], 'euc-kr'),
+                    curriculum_in_fourth_week=unicode(row[15], 'euc-kr'),
+                    curriculum_in_fifth_week=row[16] if row[16] is '' else unicode(row[16], 'euc-kr'))
+
+    return _http_json_response(None)
 
 def import_schedule_csv_file_view(request):
-    with open('./classes/resource/model/csv/schedule_model.csv', 'rb') as f:
+    with open('./classes/resource/model/csv/classes_model.csv', 'rb') as f:
         reader = csv.reader(f,  delimiter='|')
         is_first = True
 
@@ -716,39 +741,32 @@ def import_schedule_csv_file_view(request):
                 continue
 
             try:
-                sub_category = SubCategory.objects.get(name=unicode(row[2], 'euc-kr'))
+                sub_category = SubCategory.objects.get(name=unicode(row[1], 'euc-kr'))
+            except Exception, e:
+                print unicode(row[1], 'euc-kr'), e
+
+            try:
+                company = Company.objects.get(name=unicode(row[2], 'euc-kr'))
             except Exception, e:
                 print unicode(row[2], 'euc-kr'), e
 
             try:
-                company = Company.objects.get(name=unicode(row[3], 'euc-kr'))
-            except Exception, e:
-                print unicode(row[3], 'euc-kr'), e
-
-            try:
                 classes = Classes.objects.get(
                     title=unicode(row[0], 'euc-kr'),
-                    thumbnail_image_url=unicode(row[1], 'euc-kr'),
-                    subCategory=sub_category,
+                    sub_category=sub_category,
                     company=company,
-                    description=unicode(row[4], 'euc-kr'),
-                    preparation=unicode(row[5], 'euc-kr'),
-                    personalOrGroup=unicode(row[6], 'euc-kr'),
-                    refundInformation=unicode(row[7], 'euc-kr'),
-                    priceOfDay=unicode(row[8], 'euc-kr'),
-                    countOfMonth=unicode(row[9], 'euc-kr'),
-                    priceOfMonth=unicode(row[10], 'euc-kr'),
-                    image_url=unicode(row[11], 'euc-kr'))
+                    personal_or_group=unicode(row[4], 'euc-kr'))
+
             except Exception, e:
                 logger.info(e)
 
             Schedule.objects.get_or_create(
                 classes=classes,
-                dayOfWeek=unicode(row[12], 'euc-kr'),
-                startTime=unicode(row[13], 'euc-kr'),
-                duration=unicode(row[14], 'euc-kr'))
+                weekday_list=unicode(row[17], 'euc-kr'),
+                start_time_list=unicode(row[18], 'euc-kr'),
+                duration=unicode(row[19], 'euc-kr'))
 
-    return HttpResponse('success')
+    return _http_json_response(None)
 
 def import_sub_category_recommend_csv_file_view(request):
     with open('./classes/resource/model/csv/sub_category_recommend_model.csv', 'rb') as f:
@@ -765,6 +783,54 @@ def import_sub_category_recommend_csv_file_view(request):
             )
     pass
 
+def scrap_company_review_in_naver(object_id):
+    url = "http://map.naver.com/comments/list_comment.nhn"
+    headers = {'Referer': 'http://map.naver.com/',}
+    post_params = {
+        'ticket':'map1',
+        'object_id': object_id,
+        'page_size':'10'
+    }
+
+    page_no=1
+    total_count = None
+    comments = []
+    while True:
+
+        post_params.update({
+            'page_no':page_no
+        })
+        req = urllib2.Request(url=url, data=urllib.urlencode(post_params), headers=headers)
+        resp = urllib2.urlopen(req)
+
+        try:
+            resp_content = resp.read()
+            resp_content = resp_content.replace("\'","\"")
+            comment_dict = json.loads(resp_content)
+        except Exception as e:
+            logger.info(e)
+            break
+
+        comment_list = comment_dict.get('comment_list')
+        total_count = comment_dict.get('total_count') if total_count == None else total_count
+
+        comments += comment_list
+
+        if len(comments) >= total_count :
+            break
+
+        page_no=page_no+1
+
+    company = Company.objects.get(naver_object_id=object_id)
+    for i in range(total_count):
+        CompanyReview.objects.get_or_create(
+            company=company,
+            user=None,
+            source='naver',
+            contents=comments[i]['contents'],
+            score=float(comments[i]['object_score']),
+            created=datetime.strptime(comments[i]['registered_ymdt'][:19],"%Y-%m-%dT%H:%M:%S"))
+#
 @csrf_exempt
 def scrap_company_review_in_naver_view(request):
 
@@ -807,7 +873,7 @@ def scrap_company_review_in_naver_view(request):
     headers = {'Referer': 'http://map.naver.com/',}
     post_params = {
         'ticket':'map1',
-        'object_id': '34714061',
+        'object_id': '11869806',
         'page_size':'10'
         # 'page_no':'236'
     }

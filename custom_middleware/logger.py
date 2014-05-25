@@ -2,6 +2,7 @@
 
 import base64, M2Crypto
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import transaction
 from django.db import IntegrityError
 
 from foradmin.models import ApiLog, UserSession
@@ -27,6 +28,7 @@ class ApiCallLogger(object):
         user_session_id = request.session.get('user_session_id', None)
         if user_session_id is None:
             user_session_id = generate_session_id()
+
 
         if hasattr(request, 'user') and request.user.is_authenticated():
             try:
