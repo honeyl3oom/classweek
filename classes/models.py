@@ -110,7 +110,7 @@ class Classes(models.Model):
         unique_together = (("title", "sub_category", "company", "personal_or_group"),)
 
     def __unicode__(self):
-        return 'Classes(%r) : %s' % (self.sub_category.name, self.title)
+        return '(%r)Classes(%r) : %s' % (self.id, self.sub_category.name, self.title)
 
     def __str__(self):
         return unicode(self).encode('utf-8')
