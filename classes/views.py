@@ -404,6 +404,21 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
     return _http_json_response(None, classes_detail )
 
 @csrf_exempt
+def review_view(request, company_id):
+    reviews = Company.objects.get(id=company_id).get_company_reviews.all()
+    data = []
+    for review in reviews:
+        data.append({
+            'contents':review.contents.replace('\r',''),
+            'score':review.score,
+            'datetime': review.created.strftime('%p %I시 %M분').decode('utf-8')
+        })
+
+    return _http_response_by_json(None, {
+        'data': data
+    })
+
+@csrf_exempt
 def inquire_view(request, classes_id):
     if not(request.user.is_authenticated()):
         return HttpResponse(json.dumps(_make_json_response( False, const.ERROR_HAVE_TO_LOGIN, const.CODE_ERROR_HAVE_TO_LOGIN)), content_type="application/json")

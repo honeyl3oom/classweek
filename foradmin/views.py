@@ -253,7 +253,7 @@ def payment_next_view(request):
                        'username:\n' + user.username +
                        '\nclasses_id:\n' + str(classes.id) +
                        '\nclasses_title:\n' + classes.title +
-                       '\nuser_id:\n' + user.id +
+                       '\nuser_id:\n' + str(user.id) +
                        '\nphone_number:\n' + user.profile.phonenumber +
                        '\nday_or_month:\n' + payment_item_info_json.get('day_or_month', '') )
 
