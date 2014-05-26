@@ -68,15 +68,15 @@ def _update_database(source_folder):
     with settings(warn_only=True):
         # run('cd %s && ../virtualenv/bin/python manage.py schemamigration classes --initial' % (source_folder,))
         run('cd %s && sudo ../virtualenv/bin/python manage.py schemamigration classes --auto' % (source_folder,))
-        run('cd %s && ../virtualenv/bin/python manage.py migrate classes' % (source_folder,))
+        run('cd %s && sudo ../virtualenv/bin/python manage.py migrate classes' % (source_folder,))
 
         # run('cd %s && ../virtualenv/bin/python manage.py schemamigration user --initial' % (source_folder,))
         run('cd %s && sudo ../virtualenv/bin/python manage.py schemamigration user --auto' % (source_folder,))
-        run('cd %s && ../virtualenv/bin/python manage.py migrate user' % (source_folder,))
+        run('cd %s && sudo ../virtualenv/bin/python manage.py migrate user' % (source_folder,))
 
         # run('cd %s && ../virtualenv/bin/python manage.py schemamigration foradmin --initial' % (source_folder,))
         run('cd %s && sudo ../virtualenv/bin/python manage.py schemamigration foradmin --auto' % (source_folder,))
-        run('cd %s && ../virtualenv/bin/python manage.py migrate foradmin' % (source_folder,))
+        run('cd %s && sudo ../virtualenv/bin/python manage.py migrate foradmin' % (source_folder,))
 
     # one-off fake database migration. remove me before next deploy
     # run('cd %s && ../virtualenv/bin/python manage.py migrate lists --fake 0001' % (
