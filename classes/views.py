@@ -254,6 +254,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
     classes_detail.update({
         'id': classes.id,
         'schedule_id': schedule.id,
+        'company_id': company.id,
         'title': classes.title,
         'image_url': 'http://' + request.get_host() + company.thumbnail_image_url,
         'description': classes.description,
