@@ -740,7 +740,7 @@ def import_classes_csv_file_view(request):
                 logger.error(unicode(row[1], 'euc-kr'), e)
 
             try:
-                company = Company.objects.get(name=unicode(row[2], 'euc-kr'))
+                company = Company.objects.get(name=unicode(row[2], 'euc-kr').strip())
             except Exception, e:
                 logger.error(unicode(row[2], 'euc-kr'), e)
 
@@ -831,6 +831,10 @@ def import_schedule_csv_file_view(request):
                         duration=unicode(row[19], 'euc-kr'))
 
             except Exception, e:
+                logger.error(unicode(row[0], 'euc-kr'))
+                logger.error(unicode(row[4], 'euc-kr'))
+                logger.error(sub_category)
+                logger.error(company)
                 logger.error(e)
 
     return _http_json_response(None)
