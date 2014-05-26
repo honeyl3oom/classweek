@@ -247,7 +247,8 @@ def payment_next_view(request):
 
             promotion_obj, promotion_resp, promotion_percentage = _check_promotion()
 
-            PromotionDetail.objects.create(promotion=promotion_obj, purchase=purchase)
+            if promotion_obj is not None:
+                PromotionDetail.objects.create(promotion=promotion_obj, purchase=purchase)
 
             send_email('classweek:purchase',
                        'username:\n' + user.username +
