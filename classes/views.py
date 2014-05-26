@@ -306,7 +306,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         good_reviews.append({
             'contents':good_representing_review.contents.replace('\r',''),
             'score':good_representing_review.score,
-            'datetime': good_representing_review.created.strftime('%p %I시 %M분').decode('utf-8')
+            'datetime': good_representing_review.created.strftime('%p %I시 %M분').replace('AM', '오전').replace('PM', '오후').decode('utf-8')
         })
 
     bad_reviews = []
@@ -314,7 +314,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         bad_reviews.append({
             'contents': bad_representing_review.contents.replace('\r',''),
             'score': bad_representing_review.score,
-            'datetime': bad_representing_review.created.strftime('%p %I시 %M분').decode('utf-8')
+            'datetime': bad_representing_review.created.strftime('%p %I시 %M분').replace('AM', '오전').replace('PM', '오후').decode('utf-8')
         })
 
     classes_detail.update({
