@@ -454,7 +454,7 @@ def recommend_classes_view(request):
     logger.info( 'def recommend_classes_view(request):' )
     classes_pks = ClassesRecommend.objects.values_list('classes', flat=True)
     schedule_pks = ClassesRecommend.objects.values_list('schedule', flat=True)
-    classes = Classes.objects.filter(pk__in=classes_pks).select_related('get_schedules', 'company', ).all()
+    classes = Classes.objects.filter(pk__in=classes_pks).select_related('get_schedules', 'company', ).order_by('order_priority_number').all()
     classes_list = []
 
     for classes_item in classes:

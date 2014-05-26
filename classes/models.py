@@ -188,6 +188,7 @@ class Schedule(models.Model):
 class ClassesRecommend(models.Model):
     classes = models.ForeignKey(Classes, related_name='get_recommends')
     schedule = models.ForeignKey(Schedule, related_name='get_recommends')
+    order_priority_number = models.IntegerField(null=False, default=0)
 
     def __str__(self):
         return 'ClassesRecommend : %d %r %r' % (self.id, self.classes, self.schedule)
