@@ -308,7 +308,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
     for good_representing_review in good_representing_reviews:
         good_reviews.append({
             'contents':good_representing_review.contents.replace('\r',''),
-            'score':good_representing_review.score,
+            'score': math.ceil(good_representing_review.score),
             'datetime': good_representing_review.created.strftime('%y-%m-%d %H:%M').decode('utf-8')
         })
 
@@ -316,7 +316,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
     for bad_representing_review in bad_representing_reviews:
         bad_reviews.append({
             'contents': bad_representing_review.contents.replace('\r',''),
-            'score': bad_representing_review.score,
+            'score': math.ceil(bad_representing_review.score),
             'datetime': bad_representing_review.created.strftime('%y-%m-%d %H:%M').decode('utf-8')
         })
 
@@ -417,7 +417,7 @@ def review_view(request, company_id, page_num=1):
     for review in reviews:
         data.append({
             'contents':review.contents.replace('\r',''),
-            'score':review.score,
+            'score': math.ceil(review.score),
             'datetime': review.created.strftime('%y-%m-%d %H:%M').decode('utf-8')
         })
 
