@@ -107,7 +107,7 @@ def get_sub_category_list_view(request, category_name ):
                              get_subcategorys.order_by('order_priority_number').values('id', 'name', 'category_id', 'name_kor',
                                                                                        'description', 'image_url'))
         for sub_category in sub_categorys:
-            sub_category['image_url'] = 'http://' + request.get_host() + sub_category['image_url']
+            sub_category['image_url'] = 'http://' + request.get_host() + sub_category['image_url'] if len(sub_category['image_url'])>0 else ''
 
         return _http_json_response(None, sub_categorys)
     except ObjectDoesNotExist:
@@ -154,7 +154,7 @@ def get_classes_list_view(request, category_name, subcategory_name, page_num='1'
                 'nearby_station': company.nearby_station,
                 'price_of_day': classes_item.price_of_one_day,
                 'count_of_month': classes_item.count_of_month,
-                'image_url': 'http://' + request.get_host() + classes_item.company.thumbnail_image_url,
+                'image_url': 'http://' + request.get_host() + classes_item.company.thumbnail_image_url if len(classes_item.company.thumbnail_image_url)>0 else '',
                 'original_price_of_month': classes_item.price_of_one_day*classes_item.count_of_month,
                 'discount_price_of_month': classes_item.price_of_month,
                 'discount_rate': round(100 - classes_item.price_of_month*100.0/(classes_item.price_of_one_day*classes_item.count_of_month))
@@ -256,7 +256,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         'schedule_id': schedule.id,
         'company_id': company.id,
         'title': classes.title,
-        'image_url': 'http://' + request.get_host() + company.thumbnail_image_url,
+        'image_url': 'http://' + request.get_host() + company.thumbnail_image_url if len(company.thumbnail_image_url)>0 else '',
         'description': classes.description,
         'company': company.name,
         'person_or_group': classes.personal_or_group,
@@ -328,7 +328,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
     detail_images = []
     for image in images:
         if len(image.image_url) > 0:
-            detail_images.append('http://' + request.get_host() + image.image_url)
+            detail_images.append('http://' + request.get_host() + image.image_url) if len(image.image_url)>0 else ''
 
     classes_detail.update({
         'detail_image_url': detail_images
@@ -442,7 +442,7 @@ def recommend_subcategory_view(request):
     sub_category_recommends = list ( SubCategoryRecommend.objects.values('image_url'))
 
     for sub_category_recommend in sub_category_recommends:
-        sub_category_recommend['image_url'] = 'http://' + request.get_host() + sub_category_recommend['image_url']
+        sub_category_recommend['image_url'] = 'http://' + request.get_host() + sub_category_recommend['image_url'] if len(sub_category_recommend['image_url'])>0 else ''
 
     return _http_json_response(None, sub_category_recommends)
 
@@ -465,7 +465,7 @@ def recommend_classes_view(request):
             'price_of_day': classes_item.price_of_one_day,
             'original_price_of_month': classes_item.price_of_one_day*classes_item.count_of_month,
             'discount_price_of_month': classes_item.price_of_month,
-            'image_url': 'http://' + request.get_host() + classes_item.company.thumbnail_image_url,
+            'image_url': 'http://' + request.get_host() + classes_item.company.thumbnail_image_url if len(classes_item.company.thumbnail_image_url)>0 else '',
             'discount_rate': round(100 - classes_item.price_of_month*100.0/(classes_item.price_of_one_day*classes_item.count_of_month))
         })
 
@@ -518,7 +518,7 @@ def now_taking_view(request):
         schedule = purchase.schedule
 
         title = classes.title
-        image_url = 'http://' + request.get_host() + classes.company.thumbnail_image_url
+        image_url = 'http://' + request.get_host() + classes.company.thumbnail_image_url if len(classes.company.thumbnail_image_url)>0 else ''
 
         weekday_before_split_expressed_by_string = schedule.weekday_list
         weekday_list_expressed_by_string = weekday_before_split_expressed_by_string.split(',')
@@ -579,7 +579,7 @@ def took_before_view(request):
         schedule = purchase.schedule
 
         title = classes.title
-        image_url = 'http://' + request.get_host() + classes.company.thumbnail_image_url
+        image_url = 'http://' + request.get_host() + classes.company.thumbnail_image_url  if len(classes.company.thumbnail_image_url)>0 else ''
         weekday_before_split_expressed_by_string = schedule.weekday_list
         weekday_list_expressed_by_string = weekday_before_split_expressed_by_string.split(',')
         start_time_before_split_expressed_by_string = schedule.start_time_list
