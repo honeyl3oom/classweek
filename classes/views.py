@@ -313,12 +313,12 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         })
 
     bad_reviews = []
-    for bad_representing_review in bad_representing_reviews:
-        bad_reviews.append({
-            'contents': bad_representing_review.contents.replace('\r',''),
-            'score': math.ceil(bad_representing_review.score),
-            'datetime': bad_representing_review.created.strftime('%y-%m-%d %H:%M').decode('utf-8')
-        })
+    # for bad_representing_review in bad_representing_reviews:
+    #     bad_reviews.append({
+    #         'contents': bad_representing_review.contents.replace('\r',''),
+    #         'score': math.ceil(bad_representing_review.score),
+    #         'datetime': bad_representing_review.created.strftime('%y-%m-%d %H:%M').decode('utf-8')
+    #     })
 
     classes_detail.update({
         'good_reviews': good_reviews,
