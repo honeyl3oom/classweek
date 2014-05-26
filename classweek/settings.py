@@ -8,6 +8,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
+from datetime import datetime
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -103,41 +105,42 @@ LOGGING = {
         },
     },
     'handlers': {
-        'file': {
+        'file_all': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'log/django.log',
+            'filename': datetime.now().strftime('log/all_%H_%M_%d_%m_%Y.log'),
             'formatter': 'verbose'
         },
         'file_foradmin': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'log/foradmin.log',
+            'filename': datetime.now().strftime('log/foradmin_%H_%M_%d_%m_%Y.log'),
             'formatter': 'verbose'
         },
         'file_payment': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'log/payment.log',
+            'filename': datetime.now().strftime('log/payment_%H_%M_%d_%m_%Y.log'),
+            'formatter': 'verbose'
+        },
+        'file_classes':{
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': datetime.now().strftime('log/classes_%H_%M_%d_%m_%Y.log'),
             'formatter': 'verbose'
         }
     },
     'loggers': {
-        'django': {
-            'handlers': ['file'],
-            'propagate': True,
-            'level': 'ERROR',
-        },
         'foradmin': {
-            'handlers': ['file_foradmin'],
+            'handlers': ['file_all', 'file_foradmin'],
             'level': 'DEBUG',
         },
         'classes': {
-            'handlers': ['file'],
+            'handlers': ['file_all', 'file_classes'],
             'level': 'DEBUG',
         },
         'payment': {
-            'handlers': ['file_payment'],
+            'handlers': ['file_all', 'file_payment'],
             'level': 'DEBUG',
         },
     }

@@ -18,6 +18,7 @@ from classes.models import Category, Company, CompanyReview, CompanyImage,\
     Promotion, PromotionDetail
 
 from datetime import datetime
+from time import strftime
 
 from foradmin.models import Purchase, ApiLog
 from classweek.common_method import send_email
@@ -26,7 +27,6 @@ import math
 import logging
 
 logger = logging.getLogger(__name__)
-
 
 def helper_rename_list_of_dict_keys(list_object, rename_key_dict):
     for list_item in list_object:
@@ -665,6 +665,7 @@ def import_sub_category_csv_file_view(request):
 
 
 def import_company_csv_file_view(request):
+    logger.info('def import_company_csv_file_view(request):')
     with open('./classes/resource/model/csv/company_model.csv', 'rb') as f:
         reader = csv.reader(f,  delimiter='|')
         is_first = True
@@ -716,6 +717,7 @@ def import_company_csv_file_view(request):
 
 
 def import_classes_csv_file_view(request):
+    logger.info('def import_classes_csv_file_view(request):')
     with open('./classes/resource/model/csv/classes_model.csv', 'rb') as f:
         reader = csv.reader(f,  delimiter='|')
         is_first = True
@@ -728,12 +730,12 @@ def import_classes_csv_file_view(request):
             try:
                 sub_category = SubCategory.objects.get(name=unicode(row[1], 'euc-kr'))
             except Exception, e:
-                print unicode(row[1], 'euc-kr'), e
+                logger.error(unicode(row[1], 'euc-kr'), e)
 
             try:
                 company = Company.objects.get(name=unicode(row[2], 'euc-kr'))
             except Exception, e:
-                print unicode(row[2], 'euc-kr'), e
+                logger.error(unicode(row[2], 'euc-kr'), e)
 
             if Classes.objects.filter(
                 title=unicode(row[0], 'euc-kr'),
@@ -782,6 +784,7 @@ def import_classes_csv_file_view(request):
     return _http_json_response(None)
 
 def import_schedule_csv_file_view(request):
+    logger.info('def import_schedule_csv_file_view(request):')
     with open('./classes/resource/model/csv/classes_model.csv', 'rb') as f:
         reader = csv.reader(f,  delimiter='|')
         is_first = True
@@ -794,12 +797,12 @@ def import_schedule_csv_file_view(request):
             try:
                 sub_category = SubCategory.objects.get(name=unicode(row[1], 'euc-kr'))
             except Exception, e:
-                print unicode(row[1], 'euc-kr'), e
+                logger.error(unicode(row[1], 'euc-kr'), e)
 
             try:
                 company = Company.objects.get(name=unicode(row[2], 'euc-kr'))
             except Exception, e:
-                print unicode(row[2], 'euc-kr'), e
+                logger.error(unicode(row[2], 'euc-kr'), e)
 
             try:
                 classes = Classes.objects.get(
@@ -808,14 +811,19 @@ def import_schedule_csv_file_view(request):
                     company=company,
                     personal_or_group=unicode(row[4], 'euc-kr'))
 
-            except Exception, e:
-                logger.info(e)
+                weekday_list=unicode(row[17], 'euc-kr')
+                start_time_list=unicode(row[18], 'euc-kr')
+                if len(weekday_list.split(',')) is not len(start_time_list.split(',')):
+                    logger.error('weekday_list and start_time_list item count is not matched')
+                else:
+                    Schedule.objects.get_or_create(
+                        classes=classes,
+                        weekday_list=weekday_list,
+                        start_time_list=start_time_list,
+                        duration=unicode(row[19], 'euc-kr'))
 
-            Schedule.objects.get_or_create(
-                classes=classes,
-                weekday_list=unicode(row[17], 'euc-kr'),
-                start_time_list=unicode(row[18], 'euc-kr'),
-                duration=unicode(row[19], 'euc-kr'))
+            except Exception, e:
+                logger.error(e)
 
     return _http_json_response(None)
 
