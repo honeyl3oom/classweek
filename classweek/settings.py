@@ -108,25 +108,25 @@ LOGGING = {
         'file_all': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': datetime.now().strftime('log/all_%H_%M_%d_%m_%Y.log'),
+            'filename': datetime.now().strftime('log/all_%d_%m_%Y.log'),
             'formatter': 'verbose'
         },
         'file_foradmin': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': datetime.now().strftime('log/foradmin_%H_%M_%d_%m_%Y.log'),
+            'filename': datetime.now().strftime('log/foradmin_%d_%m_%Y.log'),
             'formatter': 'verbose'
         },
         'file_payment': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': datetime.now().strftime('log/payment_%H_%M_%d_%m_%Y.log'),
+            'filename': datetime.now().strftime('log/payment_%d_%m_%Y.log'),
             'formatter': 'verbose'
         },
         'file_classes':{
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': datetime.now().strftime('log/classes_%H_%M_%d_%m_%Y.log'),
+            'filename': datetime.now().strftime('log/classes_%d_%m_%Y.log'),
             'formatter': 'verbose'
         }
     },
