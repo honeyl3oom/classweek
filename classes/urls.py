@@ -19,5 +19,6 @@ urlpatterns = patterns('',
     url(r'^([A-Za-z_]+)\/([A-Za-z_]+)\/(\d+)$', 'classes.views.get_classes_list_view', name='getClassesList'),
     url(r'^(\d+)\/(\d+)$', 'classes.views.getClassesDetail_view', name='getClassesDetail'),
     url(r'^(\d+)\/review$', 'classes.views.review_view', name='review'),
+    url(r'^(\d+)\/review\/(\d+)$', 'classes.views.review_view', name='review'),
     url(r'^(\d+)\/inquire$', 'classes.views.inquire_view', name='inquire'),
 )

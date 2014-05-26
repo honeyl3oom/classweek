@@ -407,8 +407,9 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
     return _http_json_response(None, classes_detail )
 
 @csrf_exempt
-def review_view(request, company_id):
-    reviews = Company.objects.get(id=company_id).get_company_reviews.all()
+def review_view(request, company_id, page_num=1):
+    page_num=int(page_num)
+    reviews = Company.objects.get(id=company_id).get_company_reviews.all()[(page_num-1)*10:page_num*10]
     data = []
     for review in reviews:
         data.append({
