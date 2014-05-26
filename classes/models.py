@@ -202,6 +202,13 @@ class Promotion(models.Model):
     total_maximum_count = models.IntegerField(null=False, default=0)
     daily_maximum_count = models.IntegerField(null=False, default=0)
 
+    def __unicode__(self):
+        return '(%r)Promotion : start_date[%r] end_date[%r]' \
+               % (self.id, self.start_date, self.end_date)
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
 class PromotionDetail(models.Model):
     promotion = models.ForeignKey(Promotion, related_name='get_promotion_details')
     purchase = models.ForeignKey('foradmin.Purchase')
