@@ -6,6 +6,7 @@ from django.db import transaction
 from django.db import IntegrityError
 
 from foradmin.models import ApiLog, UserSession
+import json
 
 def generate_session_id(num_bytes = 16):
     return str(base64.b64encode(M2Crypto.m2.rand_bytes(num_bytes)))
@@ -48,11 +49,8 @@ class ApiCallLogger(object):
         request.session['user_session_id'] = user_session_id
         request.session.set_expiry(60 * 60 * 24 * 10000)
 
-        if path_name is '/user/registration' or path_name is '/user/login':
-            if request_params.has_key('password'):
-                request_params.pop('password')
-            if request_params.has_key('password_confirm'):
-                request_params.pop('password_confirm')
+        if view_name is 'registration_view' or view_name is 'login_view':
+            request_params=  ''
 
         ApiLog.objects.create(
             user_session_id=user_session_id,
