@@ -343,7 +343,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
 
     times = []
     for i in range(len(weekday_express_by_string_list)):
-        times.append(WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i]].decode('utf-8') + " : " +
+        times.append(WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i].strip()].decode('utf-8') + " : " +
                      time.strftime('%p %I시 %M분', time.strptime(start_time_express_by_string_list[i], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전').decode('utf-8'))
 
     classes_detail.update({
@@ -358,7 +358,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
 
     current_weekday_position = 0
     for i in range( len(weekday_express_by_string_list ) ):
-        if today_weekday <= WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[i]]:
+        if today_weekday <= WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[i].strip()]:
             current_weekday_position = i
             break
 
@@ -492,7 +492,7 @@ def recommend_classes_view(request):
 
             times = []
             for i in range(len(weekday_express_by_string_list)):
-                weekday_express_by_korean = WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i]]
+                weekday_express_by_korean = WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i].strip()]
                 start_time_string_expressed_by_custom_style = time.strftime('%p %I시 %M분', time.strptime(start_time_list[i], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전').decode('utf-8')
                 times.append(weekday_express_by_korean.decode('utf-8') + " : " + start_time_string_expressed_by_custom_style)
 
