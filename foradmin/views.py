@@ -50,7 +50,7 @@ def before_payment_view(request):
         if promotion_resp is const.CODE_IN_PROMOTION:
             P_AMT = math.ceil(classes.price_of_month*promotion_percentage/100/1000.0)*1000
         else:
-            P_AMT = classes.priceOfMonth if day_or_month == 'month' else classes.priceOfDay
+            P_AMT = classes.price_of_month if day_or_month == 'month' else classes.price_of_one_day
 
         P_UNAME = request.user.username
         P_NOTI = {
