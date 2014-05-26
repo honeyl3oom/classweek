@@ -48,6 +48,12 @@ class ApiCallLogger(object):
         request.session['user_session_id'] = user_session_id
         request.session.set_expiry(60 * 60 * 24 * 10000)
 
+        if path_name is '/user/registration' or path_name is '/user/login':
+            if request_params.has_key('password'):
+                request_params.pop('password')
+            if request_params.has_key('password_confirm'):
+                request_params.pop('password_confirm')
+
         ApiLog.objects.create(
             user_session_id=user_session_id,
             path_name=path_name,
