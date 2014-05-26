@@ -807,7 +807,7 @@ def import_schedule_csv_file_view(request):
                 logger.error(unicode(row[1], 'euc-kr'), e)
 
             try:
-                company = Company.objects.get(name=unicode(row[2], 'euc-kr'))
+                company = Company.objects.get(name=unicode(row[2], 'euc-kr').strip())
             except Exception, e:
                 logger.error(unicode(row[2], 'euc-kr'))
                 logger.error(e)
