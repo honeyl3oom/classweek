@@ -213,6 +213,9 @@ def get_classes_list_view(request, category_name, subcategory_name, page_num='1'
                 times = []
 
                 for i in range(len(weekday_list_express_by_string)):
+                    if len(start_time_list[i])<=4:
+                        start_time_list[i] = start_time_list[i]+':00'
+                        
                     times.append(WEEKDAY_CONVERT_TO_KOREAN[weekday_list_express_by_string[i].strip()].decode('utf-8') + " : " +
                                  time.strftime('%p %I시 %M분', time.strptime(start_time_list[i], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전').decode('utf-8'))
 
