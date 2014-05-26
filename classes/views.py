@@ -302,7 +302,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
     # good_representing_reviews = company.get_company_reviews.filter(is_representing_reivew=True, score__gt=3).order_by('-score').all()[:3]
     good_representing_reviews = company.get_company_reviews.filter(score__gt=3).order_by('-score').all()[:3]
     # bad_representing_reviews = company.get_company_reviews.filter(is_representing_reivew=True, score__lte=3).order_by('score').all()[:3]
-    bad_representing_reviews = company.get_company_reviews.filter(score__lte=3).order_by('score').all()[:3]
+    bad_representing_reviews = company.get_company_reviews.filter(score__lte=3, score__gt=0).order_by('score').all()[:3]
 
     good_reviews = []
     for good_representing_review in good_representing_reviews:
