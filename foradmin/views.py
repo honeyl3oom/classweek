@@ -383,10 +383,19 @@ def payment_noti_view(request):
                 class_end_datetime=datetime.strptime(payment_item_info_json.get('class_end_datetime', ''),'%Y-%m-%d %H:%M:%S.%f'),
                 price=payment_item_info_json.get('price', 0)
             )
+
+            promotion_obj, promotion_resp, promotion_percentage = _check_promotion()
+
+            if promotion_obj is not None:
+                PromotionDetail.objects.create(promotion=promotion_obj, purchase=purchase)
+
             send_email('classweek:purchase',
-                   'username:\n' + user.username +
-                   '\nclasses_title:\n' + classes.title +
-                   '\nday_or_month:\n' + payment_item_info_json.get('day_or_month', '') )
+                       'username:\n' + user.username +
+                       '\nclasses_id:\n' + str(classes.id) +
+                       '\nclasses_title:\n' + classes.title +
+                       '\nuser_id:\n' + str(user.id) +
+                       '\nphone_number:\n' + user.profile.phonenumber +
+                       '\nday_or_month:\n' + payment_item_info_json.get('day_or_month', '') )
 
 
 
