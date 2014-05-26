@@ -170,7 +170,7 @@ def get_classes_list_view(request, category_name, subcategory_name, page_num='1'
             for schedule in schedules:
                 item_detail = item.copy()
 
-                weekday_list_express_by_string = schedule.weekday_list.split(',').replace(' ','')
+                weekday_list_express_by_string = schedule.weekday_list.replace(' ','').split(',')
 
                 # filter out only if there is any in 'weekday' param
                 is_excluded_by_weekday = False
@@ -338,7 +338,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
     })
 
     ### time list, duration ###
-    weekday_express_by_string_list = schedule.weekday_list.split(',').replace(' ','')
+    weekday_express_by_string_list = schedule.weekday_list.replace(' ','').split(',')
     start_time_express_by_string_list = schedule.start_time_list.split(',')
 
     times = []
@@ -485,7 +485,7 @@ def recommend_classes_view(request):
             classes_list_item_detail = classes_list_item.copy()
 
             # get weekday
-            weekday_express_by_string_list = schedule.weekday_list.split(',').replace(' ','')
+            weekday_express_by_string_list = schedule.weekday_list.replace(' ','').split(',')
 
             # get start time
             start_time_list = schedule.start_time_list.split(',')
