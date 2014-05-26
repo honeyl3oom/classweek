@@ -833,8 +833,8 @@ def import_schedule_csv_file_view(request):
             except Exception, e:
                 logger.error(unicode(row[0], 'euc-kr'))
                 logger.error(unicode(row[4], 'euc-kr'))
-                logger.error(sub_category)
-                logger.error(company)
+                logger.error(sub_category.id)
+                logger.error(company.id)
                 logger.error(e)
 
     return _http_json_response(None)
