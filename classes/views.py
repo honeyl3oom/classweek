@@ -170,13 +170,13 @@ def get_classes_list_view(request, category_name, subcategory_name, page_num='1'
             for schedule in schedules:
                 item_detail = item.copy()
 
-                weekday_list_express_by_string = schedule.weekday_list.split(',')
+                weekday_list_express_by_string = schedule.weekday_list.split(',').replace(' ','')
 
                 # filter out only if there is any in 'weekday' param
                 is_excluded_by_weekday = False
                 if weekday_filter is not None:
                     for i in range(len(weekday_list_express_by_string)):
-                        if not(str(weekday_filter).__contains__(str(WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_list_express_by_string[i].strip().strip()]))):
+                        if not(str(weekday_filter).__contains__(str(WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_list_express_by_string[i]]))):
                             is_excluded_by_weekday = True
                             break
                 if is_excluded_by_weekday:
@@ -216,7 +216,7 @@ def get_classes_list_view(request, category_name, subcategory_name, page_num='1'
                     if len(start_time_list[i])<=4:
                         start_time_list[i] = start_time_list[i]+':00'
 
-                    times.append(WEEKDAY_CONVERT_TO_KOREAN[weekday_list_express_by_string[i].strip()].decode('utf-8') + " : " +
+                    times.append(WEEKDAY_CONVERT_TO_KOREAN[weekday_list_express_by_string[i]].decode('utf-8') + " : " +
                                  time.strftime('%p %I시 %M분', time.strptime(start_time_list[i], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전').decode('utf-8'))
 
                 item_detail.update({
@@ -338,12 +338,12 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
     })
 
     ### time list, duration ###
-    weekday_express_by_string_list = schedule.weekday_list.split(',')
+    weekday_express_by_string_list = schedule.weekday_list.split(',').replace(' ','')
     start_time_express_by_string_list = schedule.start_time_list.split(',')
 
     times = []
     for i in range(len(weekday_express_by_string_list)):
-        times.append(WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i].strip()].decode('utf-8') + " : " +
+        times.append(WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i]].decode('utf-8') + " : " +
                      time.strftime('%p %I시 %M분', time.strptime(start_time_express_by_string_list[i], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전').decode('utf-8'))
 
     classes_detail.update({
@@ -358,7 +358,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
 
     current_weekday_position = 0
     for i in range( len(weekday_express_by_string_list ) ):
-        if today_weekday <= WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[i].strip()]:
+        if today_weekday <= WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_express_by_string_list[i]]:
             current_weekday_position = i
             break
 
@@ -485,14 +485,14 @@ def recommend_classes_view(request):
             classes_list_item_detail = classes_list_item.copy()
 
             # get weekday
-            weekday_express_by_string_list = schedule.weekday_list.split(',')
+            weekday_express_by_string_list = schedule.weekday_list.split(',').replace(' ','')
 
             # get start time
             start_time_list = schedule.start_time_list.split(',')
 
             times = []
             for i in range(len(weekday_express_by_string_list)):
-                weekday_express_by_korean = WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i].strip()]
+                weekday_express_by_korean = WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i]]
                 start_time_string_expressed_by_custom_style = time.strftime('%p %I시 %M분', time.strptime(start_time_list[i], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전').decode('utf-8')
                 times.append(weekday_express_by_korean.decode('utf-8') + " : " + start_time_string_expressed_by_custom_style)
 
