@@ -176,7 +176,7 @@ def get_classes_list_view(request, category_name, subcategory_name, page_num='1'
                 is_excluded_by_weekday = False
                 if weekday_filter is not None:
                     for i in range(len(weekday_list_express_by_string)):
-                        if not(str(weekday_filter).__contains__(str(WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_list_express_by_string[i]]))):
+                        if not(str(weekday_filter).__contains__(str(WEEKDAY_CONVERT_TO_NUMBER_OR_STRING[weekday_list_express_by_string[i].strip().strip()]))):
                             is_excluded_by_weekday = True
                             break
                 if is_excluded_by_weekday:
@@ -213,7 +213,7 @@ def get_classes_list_view(request, category_name, subcategory_name, page_num='1'
                 times = []
 
                 for i in range(len(weekday_list_express_by_string)):
-                    times.append(WEEKDAY_CONVERT_TO_KOREAN[weekday_list_express_by_string[i]].decode('utf-8') + " : " +
+                    times.append(WEEKDAY_CONVERT_TO_KOREAN[weekday_list_express_by_string[i].strip()].decode('utf-8') + " : " +
                                  time.strftime('%p %I시 %M분', time.strptime(start_time_list[i], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전').decode('utf-8'))
 
                 item_detail.update({
@@ -306,7 +306,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         good_reviews.append({
             'contents':good_representing_review.contents.replace('\r',''),
             'score':good_representing_review.score,
-            'datetime': good_representing_review.created.strftime('%p %I시 %M분').replace('AM', '오전').replace('PM', '오후').decode('utf-8')
+            'datetime': good_representing_review.created.strftime('%Y-%m-%d %p %I시 %M분').replace('AM', '오전').replace('PM', '오후').decode('utf-8')
         })
 
     bad_reviews = []
@@ -314,7 +314,7 @@ def getClassesDetail_view( request, classes_id, schedule_id ):
         bad_reviews.append({
             'contents': bad_representing_review.contents.replace('\r',''),
             'score': bad_representing_review.score,
-            'datetime': bad_representing_review.created.strftime('%p %I시 %M분').replace('AM', '오전').replace('PM', '오후').decode('utf-8')
+            'datetime': bad_representing_review.created.strftime('%Y-%m-%d %p %I시 %M분').replace('AM', '오전').replace('PM', '오후').decode('utf-8')
         })
 
     classes_detail.update({
@@ -415,7 +415,7 @@ def review_view(request, company_id, page_num=1):
         data.append({
             'contents':review.contents.replace('\r',''),
             'score':review.score,
-            'datetime': review.created.strftime('%p %I시 %M분').decode('utf-8')
+            'datetime': review.created.strftime('%Y-%m-%d %p %I시 %M분').replace('AM', '오전').replace('PM', '오후').decode('utf-8')
         })
 
     return _http_response_by_json(None, {
@@ -806,7 +806,8 @@ def import_schedule_csv_file_view(request):
             try:
                 company = Company.objects.get(name=unicode(row[2], 'euc-kr'))
             except Exception, e:
-                logger.error(unicode(row[2], 'euc-kr'), e)
+                logger.error(unicode(row[2], 'euc-kr'))
+                logger.error(e)
 
             try:
                 classes = Classes.objects.get(
