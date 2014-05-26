@@ -62,6 +62,12 @@ class CompanyImage(models.Model):
     company = models.ForeignKey(Company, related_name='get_company_images')
     image_url = models.TextField()
 
+    def __unicode__(self):
+        return '(%r)CompanyImage(%r) : %s' % (self.id, self.company.name, self.image_url)
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
 class Category(models.Model):
     name = models.TextField( unique=True )
 
