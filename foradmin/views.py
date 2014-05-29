@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
-from foradmin.models import Purchase, PaymentLog, LocationRequest, CategoryRequest
+from foradmin.models import Purchase, PaymentLog, QuitReasonRequest, LocationRequest, CategoryRequest
 from classes.models import Classes, Schedule, Promotion, PromotionDetail
 from classes.views import _check_promotion
 from classweek.const import *
@@ -441,7 +441,20 @@ def send_mail_test_view(request):
     return HttpResponse('ttt')
 
 @csrf_exempt
-def location_request_view(request, location_name):
+def survey_opinion_view(request):
+    opinion_code = request.POST.get('opinion_code')
+    try:
+        quit_reason_request = QuitReasonRequest.objects.get(quit_reason_code=opinion_code)
+        quit_reason_request.request_count = quit_reason_request.request_count+1
+        quit_reason_request.save()
+    except ObjectDoesNotExist:
+        QuitReasonRequest.objects.create(quit_reason_code=opinion_code, request_count=1)
+
+    return _http_response_by_json(None)
+
+@csrf_exempt
+def survey_location_view(request):
+    location_name = request.POST.get('location_name')
     try:
         location_request = LocationRequest.objects.get(location_name=location_name)
         location_request.request_count = location_request.request_count+1
@@ -452,12 +465,13 @@ def location_request_view(request, location_name):
     return _http_response_by_json(None)
 
 @csrf_exempt
-def category_request_view(request, category_name):
+def survey_category_view(request):
+    category_name = request.POST.get('category_name')
     try:
         category_request = CategoryRequest.objects.get(category_name=category_name)
         category_request.request_count = category_request.request_count+1
         category_request.save()
     except ObjectDoesNotExist:
-        CategoryRequest.objects.create(location_name=category_name, request_count=1)
+        CategoryRequest.objects.create(category_name=category_name, request_count=1)
 
     return _http_response_by_json(None)

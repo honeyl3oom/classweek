@@ -1,8 +1,9 @@
 from django.conf.urls import patterns, url
 
 urlpatterns = patterns('',
-    url(r'^location/([A-Za-z_]+)$', 'foradmin.views.location_request_view', name='location_request'),
-    url(r'^category/([A-Za-z_]+)$', 'foradmin.views.category_request_view', name='category_request'),
+    url(r'^survey/opinion$', 'foradmin.views.survey_opinion_view', name='survey_opinion'),
+    url(r'^survey/location$', 'foradmin.views.survey_location_view', name='survey_location'),
+    url(r'^survey/category$', 'foradmin.views.survey_category_view', name='survey_category'),
     url(r'^before_payment', 'foradmin.views.before_payment_view', name='before_payment'),
     url(r'^payment_startweb_test', 'foradmin.views.payment_startweb_test_view', name='payment_startweb_test'),
     url(r'^payment_next', 'foradmin.views.payment_next_view', name='payment_next'),
