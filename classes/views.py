@@ -451,7 +451,7 @@ def recommend_subcategory_view(request):
 
 @csrf_exempt
 def recommend_classes_view(request):
-    logger.info( 'def recommend_classes_view(request):' )
+    logger.info('def recommend_classes_view(request):')
     classes_pks = ClassesRecommend.objects.order_by('order_priority_number').values_list('classes', flat=True)
     schedule_pks = ClassesRecommend.objects.values_list('schedule', flat=True)
     classes = Classes.objects.filter(pk__in=classes_pks).select_related('get_schedules', 'company', ).all()

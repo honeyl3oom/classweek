@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.core.urlresolvers import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
-from foradmin.models import Purchase, PaymentLog
+from foradmin.models import Purchase, PaymentLog, LocationRequest, CategoryRequest
 from classes.models import Classes, Schedule, Promotion, PromotionDetail
 from classes.views import _check_promotion
 from classweek.const import *
@@ -21,6 +21,20 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
+def _http_response_by_json(error, json_={}):
+    if error is None:
+        json_.update({
+            'result': 'success'
+        })
+    else:
+        json_.update({
+            'result': 'fail',
+            'error_code': error,
+            'error_message': const.ERROR_CODE_AND_MESSAGE_DICT[error]
+        })
+
+    return HttpResponse(json.dumps(json_, ensure_ascii=False), content_type="application/json; charset=utf-8")
 
 # P_MID, P_AMT, P_UNAME, P_NOTI,
 # P_NEXT_URL, P_NOTI_URL, P_RETURN_URL, P_GOODS
@@ -425,3 +439,25 @@ def send_mail_test_view(request):
     send_email('test','aaaaatest content\ntttt', ['parkjuram@gmail.com', 'bsgunn.soma@gmail.com', 'continueing@gmail.com'])
 
     return HttpResponse('ttt')
+
+@csrf_exempt
+def location_request_view(request, location_name):
+    try:
+        location_request = LocationRequest.objects.get(location_name=location_name)
+        location_request.request_count = location_request.request_count+1
+        location_request.save()
+    except ObjectDoesNotExist:
+        LocationRequest.objects.create(location_name=location_name, request_count=1)
+
+    return _http_response_by_json(None)
+
+@csrf_exempt
+def category_request_view(request, category_name):
+    try:
+        category_request = CategoryRequest.objects.get(category_name=category_name)
+        category_request.request_count = category_request.request_count+1
+        category_request.save()
+    except ObjectDoesNotExist:
+        CategoryRequest.objects.create(location_name=category_name, request_count=1)
+
+    return _http_response_by_json(None)

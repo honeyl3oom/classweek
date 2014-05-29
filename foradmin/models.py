@@ -70,3 +70,36 @@ class Purchase(models.Model):
 
     def __unicode__(self):
         return 'Purchase: (payment_log)%r' % self.payment_log
+
+class QuitReasonRequest(models.Model):
+    quit_reason_code = models.IntegerField(null=False, default=0)
+    request_count = models.IntegerField(null=False, default=0)
+
+    def __unicode__(self):
+        return '(%r)QuitReasonRequest : quit_reason_code(%r) request_count(%r) ' \
+               % (self.id, self.quit_reason_code, self.request_count)
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
+class LocationRequest(models.Model):
+    location_name = models.TextField(primary_key=True)
+    request_count = models.IntegerField(null=False, default=0)
+
+    def __unicode__(self):
+        return '(%r)LocationRequest : location_name(%r) request_count(%r) ' \
+               % (self.id, self.location_name, self.request_count)
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
+
+class CategoryRequest(models.Model):
+    category_name = models.TextField(primary_key=True)
+    request_count = models.IntegerField(null=False, default=0)
+
+    def __unicode__(self):
+        return '(%r)CategoryRequest : location_name(%r) request_count(%r) ' \
+               % (self.id, self.location_name, self.request_count)
+
+    def __str__(self):
+        return unicode(self).encode('utf-8')
