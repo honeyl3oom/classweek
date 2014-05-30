@@ -451,58 +451,61 @@ def recommend_subcategory_view(request):
 
 @csrf_exempt
 def recommend_classes_view(request):
-    logger.info('def recommend_classes_view(request):')
-    classes_pks = ClassesRecommend.objects.order_by('order_priority_number').values_list('classes', flat=True)
-    schedule_pks = ClassesRecommend.objects.values_list('schedule', flat=True)
-    classes = Classes.objects.filter(pk__in=classes_pks).select_related('get_schedules', 'company', ).all()
+
+    logger.info('def recommend_classes_view(request): start')
+
+    classes_recommends = ClassesRecommend.objects.order_by('order_priority_number').all()
     classes_list = []
 
-    for classes_item in classes:
-        classes_list_item = {}
-        classes_list_item.update({
-            'id': classes_item.id,
-            'title': classes_item.title,
-            'company': classes_item.company.name,
-            'nearby_station': classes_item.company.nearby_station,
-            'count_of_month': classes_item.count_of_month,
-            'price_of_day': classes_item.price_of_one_day,
-            'original_price_of_month': classes_item.price_of_one_day*classes_item.count_of_month,
-            'discount_price_of_month': classes_item.price_of_month,
-            'image_url': 'http://' + request.get_host() + classes_item.company.thumbnail_image_url if len(classes_item.company.thumbnail_image_url)>0 else '',
-            'discount_rate': round(100 - classes_item.price_of_month*100.0/(classes_item.price_of_one_day*classes_item.count_of_month))
+    for classes_recommend in classes_recommends:
+        classes = classes_recommend.classes
+        schedule = classes_recommend.schedule
+
+        classes_ = {}
+        classes_.update({
+            'id': classes.id,
+            'title': classes.title,
+            'company': classes.company.name,
+            'nearby_station': classes.company.nearby_station,
+            'count_of_month': classes.count_of_month,
+            'price_of_day': classes.price_of_one_day,
+            'original_price_of_month': classes.price_of_one_day*classes.count_of_month,
+            'discount_price_of_month': classes.price_of_month,
+            'image_url': 'http://' + request.get_host() + classes.company.thumbnail_image_url if len(classes.company.thumbnail_image_url)>0 else '',
+            'discount_rate': round(100 - classes.price_of_month*100.0/(classes.price_of_one_day*classes.count_of_month))
         })
 
         promotion_obj, promotion_resp, promotion_percentage = _check_promotion()
         if promotion_resp is const.CODE_IN_PROMOTION:
-            classes_list_item.update({
-                'original_price_of_month': classes_item.price_of_month,
-                'discount_price_of_month': math.ceil(classes_item.price_of_month*promotion_percentage/100/1000.0)*1000,
+            classes_.update({
+                'original_price_of_month': classes.price_of_month,
+                'discount_price_of_month': math.ceil(classes.price_of_month*promotion_percentage/100/1000.0)*1000,
                 'discount_rate': promotion_percentage
             })
 
-        schedules = classes_item.get_schedules.filter(pk__in=schedule_pks).all()
-        for schedule in schedules:
-            classes_list_item_detail = classes_list_item.copy()
+        classes_list_item_detail = classes_.copy()
 
-            # get weekday
-            weekday_express_by_string_list = schedule.weekday_list.replace(' ','').split(',')
+        # get weekday
+        weekday_express_by_string_list = schedule.weekday_list.replace(' ','').split(',')
 
-            # get start time
-            start_time_list = schedule.start_time_list.split(',')
+        # get start time
+        start_time_list = schedule.start_time_list.split(',')
 
-            times = []
-            for i in range(len(weekday_express_by_string_list)):
-                weekday_express_by_korean = WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i]]
-                start_time_string_expressed_by_custom_style = time.strftime('%p %I시 %M분', time.strptime(start_time_list[i], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전').decode('utf-8')
-                times.append(weekday_express_by_korean.decode('utf-8') + " : " + start_time_string_expressed_by_custom_style)
+        times = []
+        for i in range(len(weekday_express_by_string_list)):
+            weekday_express_by_korean = WEEKDAY_CONVERT_TO_KOREAN[weekday_express_by_string_list[i]]
+            start_time_string_expressed_by_custom_style = time.strftime('%p %I시 %M분', time.strptime(start_time_list[i], '%H:%M:%S')).replace('PM', '오후').replace('AM', '오전').decode('utf-8')
+            times.append(weekday_express_by_korean.decode('utf-8') + " : " + start_time_string_expressed_by_custom_style)
 
-            classes_list_item_detail.update({
-                'times': times,
-                'duration': schedule.duration.strftime("%H시간%M분").decode('utf-8'),
-                'schedule_id': schedule.id
-            })
+        classes_list_item_detail.update({
+            'times': times,
+            'duration': schedule.duration.strftime("%H시간%M분").decode('utf-8'),
+            'schedule_id': schedule.id
+        })
 
-            classes_list.append(classes_list_item_detail)
+        classes_list.append(classes_list_item_detail)
+
+    logger.info('def recommend_classes_view(request): end')
 
     return _http_json_response(None, classes_list)
 
