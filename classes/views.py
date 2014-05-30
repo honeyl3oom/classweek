@@ -918,4 +918,4 @@ def scrap_company_review_in_naver_view(request):
 def landing_view(request):
     return render_to_response('landing.html',
                           {"foo": "bar"},
-                          3RequestContext(request))
+                          RequestContext(request))
