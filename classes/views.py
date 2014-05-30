@@ -3,6 +3,8 @@ import json
 from datetime import datetime, timedelta
 import time
 import calendar
+from django.shortcuts import render, render_to_response
+from django.template.context import RequestContext
 
 from classweek import const
 from classweek.const import ITEM_COUNT_IN_PAGE, \
@@ -911,3 +913,9 @@ def scrap_company_review_in_naver_view(request):
     scrap_company_review_in_naver('11641814')
 
     return HttpResponse('good')
+
+@csrf_exempt
+def landing_view(request):
+    return render_to_response('landing.html',
+                          {"foo": "bar"},
+                          RequestContext(request))

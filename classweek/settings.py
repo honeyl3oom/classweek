@@ -16,6 +16,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 CHARSET = 'utf-8'
 
+PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
+TEMPLATE_DIRS = (
+    PROJECT_PATH + '/templates/'
+)
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -183,6 +188,10 @@ TIME_ZONE = 'Asia/Seoul'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, '../static')
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
 
 AUTH_PROFILE_MODULE = 'user.UserProfile'
 

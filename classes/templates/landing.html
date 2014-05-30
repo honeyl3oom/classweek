@@ -1,0 +1,39 @@
+<html>
+{% load staticfiles %}
+    <head>
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <script src="{% static "js/jquery.rwdImageMaps.min.js" %}"></script>
+        <script type="text/javascript">
+        </script>
+        <style>
+            div {
+                width: 100%;
+            }
+            img[usemap] {
+                border: none;
+                height: auto;
+                max-width: 100%;
+                width: auto;
+            }
+        </style>
+    </head>
+	<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+        <img src = "{% static "web/tiny_new_bg.png" %}" usemap="#001">
+        <map name="001">
+            <area shape="rect" coords="1033,454,1203,510" href="https://play.google.com/store/apps/details?id=com.blackpigstudio.classweek" target="_blank" />
+            <area shape="rect" coords="1036,600,1103,631" href="https://www.facebook.com/Classweeks" target="_blank" />
+        </map>
+
+        <script type="text/javascript">
+
+            $(document).ready(function(e) {
+                $('img[usemap]').rwdImageMaps();
+
+                $('area').on('click', function() {
+                    alert($(this).attr('alt') + ' clicked');
+                });
+            });
+        </script>
+	</body>
+</html>

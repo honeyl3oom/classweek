@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
 
 urlpatterns = patterns('',
+    url(r'^landing$', 'classes.views.landing_view', name='landing'),
     url(r'^promotion$', 'classes.views.promotion_view', name='promotion'),
     url(r'^import/all', 'classes.views.import_all_view', name='import_all'),
     url(r'^import/category', 'classes.views.import_category_csv_file_view', name='import_category_csv_file'),

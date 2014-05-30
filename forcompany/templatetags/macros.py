@@ -17,7 +17,7 @@ Usage example:
 
 0) Save this file as <yourapp>/templatetags/macros.py
 
-1) In your template load the library:
+1) In your templates load the library:
     {% load macros %}
 
 2) Define a new macro called 'my_macro' that takes args and/or kwargs
@@ -44,13 +44,13 @@ Usage example:
     default_arg1 default_arg2 Default baz
 
 4) Alternatively save your macros in a separate file, e.g. "mymacro.html"
-    and load it to the current template with:
+    and load it to the current templates with:
 
         {% loadmacros "mymacros.html" %}
 
     Then use these loaded macros in as described above.
 
-Bear in mind that defined and loaded macros are local to each template
+Bear in mind that defined and loaded macros are local to each templates
 file and are not inherited through {% extends ... %} tags.
 """
 
@@ -64,7 +64,7 @@ register = template.Library()
 def _setup_macros_dict(parser):
     ## Metadata of each macro are stored in a new attribute
     ## of 'parser' class. That way we can access it later
-    ## in the template when processing 'usemacro' tags.
+    ## in the templates when processing 'usemacro' tags.
     try:
         ## Only try to access it to eventually trigger an exception
         parser._macros
@@ -107,7 +107,7 @@ def do_macro(parser, token):
 
     ## Metadata of each macro are stored in a new attribute
     ## of 'parser' class. That way we can access it later
-    ## in the template when processing 'usemacro' tags.
+    ## in the templates when processing 'usemacro' tags.
     _setup_macros_dict(parser)
     parser._macros[macro_name] = DefineMacroNode(macro_name, nodelist, args)
     return parser._macros[macro_name]
@@ -133,7 +133,7 @@ def do_loadmacros(parser, token):
     macros = t.nodelist.get_nodes_by_type(DefineMacroNode)
     ## Metadata of each macro are stored in a new attribute
     ## of 'parser' class. That way we can access it later
-    ## in the template when processing 'usemacro' tags.
+    ## in the templates when processing 'usemacro' tags.
     _setup_macros_dict(parser)
     for macro in macros:
         parser._macros[macro.name] = macro
