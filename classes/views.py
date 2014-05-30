@@ -13,6 +13,7 @@ from classweek.const import ITEM_COUNT_IN_PAGE, \
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.decorators.clickjacking import xframe_options_exempt
 
 from django.db import IntegrityError
 from classes.models import Category, Company, CompanyReview, CompanyImage,\
@@ -914,6 +915,7 @@ def scrap_company_review_in_naver_view(request):
 
     return HttpResponse('good')
 
+@xframe_options_exempt
 @csrf_exempt
 def landing_view(request):
     return render_to_response('landing.html',
