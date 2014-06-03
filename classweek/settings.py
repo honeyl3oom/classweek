@@ -8,8 +8,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
-from datetime import datetime
+import warnings
+warnings.filterwarnings(
+        'error', r"DateTimeField .* received a naive datetime",
+        RuntimeWarning, r'django\.db\.models\.fields')
 
+from datetime import datetime
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -52,6 +56,7 @@ INSTALLED_APPS = (
     'forcompany',
     'forcompany.templatetags',
     'foradmin',
+    'analysis',
     'csvimport',
 )
 

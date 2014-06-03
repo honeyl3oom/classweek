@@ -1,4 +1,12 @@
 # -*- coding: utf-8 -*-
+
+# Stdlib imports
+# Core django imports
+# Third-party app imports
+# Import from your apps
+
+
+
 import json
 from datetime import datetime, timedelta
 import time
@@ -14,6 +22,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.clickjacking import xframe_options_exempt
+from django.utils import timezone
 
 from django.db import IntegrityError
 from classes.models import Category, Company, CompanyReview, CompanyImage,\
@@ -21,7 +30,6 @@ from classes.models import Category, Company, CompanyReview, CompanyImage,\
     Promotion, PromotionDetail
 
 from datetime import datetime
-from time import strftime
 
 from foradmin.models import Purchase, ApiLog
 from classweek.common_method import send_email
@@ -906,7 +914,7 @@ def scrap_company_review_in_naver(object_id):
             source='naver',
             contents=comments[i]['contents'],
             score=float(comments[i]['object_score']),
-            created=datetime.strptime(comments[i]['registered_ymdt'][:19],"%Y-%m-%dT%H:%M:%S"))
+            created=timezone.make_aware(datetime.strptime(comments[i]['registered_ymdt'][:19],"%Y-%m-%dT%H:%M:%S"), timezone.pytz.timezone('Asia/Seoul')))
 #
 @csrf_exempt
 def scrap_company_review_in_naver_view(request):
