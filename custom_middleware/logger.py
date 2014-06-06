@@ -52,12 +52,13 @@ class ApiCallLogger(object):
         if view_name is 'registration_view' or view_name is 'login_view':
             request_params=  ''
 
-        ApiLog.objects.create(
-            user_session_id=user_session_id,
-            path_name=path_name,
-            view_name=view_name,
-            request_params=request_params
-        )
+        if not path_name.startswith('/analysis'):
+            ApiLog.objects.create(
+                user_session_id=user_session_id,
+                path_name=path_name,
+                view_name=view_name,
+                request_params=request_params
+            )
 
         return None
 
