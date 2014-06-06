@@ -28,5 +28,23 @@ def created_view(request):
 
         user_session_ids = list(map(lambda x: x['user_session_id'], api_logs))
 
-        return response.http_response_by_json(None, {'data':user_session_ids} )
+        return response.http_response_by_json(None, {'data': user_session_ids})
 
+@csrf_exempt
+def trace_view(request):
+    session_id = request.POST.get('session_id', None)
+    if session_id is None:
+        return response.http_response_by_json(const.CODE_ERROR_REQUEST_PARAMS_WRONG)
+
+    api_logs = ApiLog.objects.filter(user_session_id=session_id).order_by('created').all()
+
+    api_logs_ = []
+    for api_log in api_logs:
+        api_log_ = {
+            'path_name': api_log.path_name,
+            'request_params': api_log.request_params,
+            'created': api_log.created.strftime("%Y-%m-%d %H:%M:%S")
+        }
+        api_logs_.append(api_log_)
+
+    return response.http_response_by_json(None, {'data': api_logs_})

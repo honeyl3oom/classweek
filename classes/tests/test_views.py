@@ -1,4 +1,5 @@
 import json
+from django.db import transaction
 from django.test import TestCase
 from foradmin.tests.test_views import UserSessionTest
 

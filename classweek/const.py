@@ -48,7 +48,8 @@ RESPONSE_STR_FAIL = 'fail'
 CODE_ERROR_SUBCATEGORY_NAME_DOES_NOT_EXIST = 11
 
 ERROR_CODE_AND_MESSAGE_DICT = {
-    11: 'subcategory name does not exist'
+    11: 'subcategory name does not exist',
+    12: 'request params wrong'
 }
 
 CODE_IN_PROMOTION = 0
