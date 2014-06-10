@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+from django.conf import settings
+from pytz import timezone
+
+setting_time_zone = timezone(settings.TIME_ZONE)
 
 ITEM_COUNT_IN_PAGE = 10
 

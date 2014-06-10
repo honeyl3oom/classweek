@@ -11,7 +11,7 @@ class ApiLog(models.Model):
     path_name = models.TextField(null=False, blank=True, default='')
     view_name = models.TextField(null=False, blank=True, default='')
     request_params = models.TextField(null=False, blank=True, default='')
-    created = models.DateTimeField(auto_now_add=True, default=datetime.now)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return 'ApiLog : %r' % self.user_session_id
