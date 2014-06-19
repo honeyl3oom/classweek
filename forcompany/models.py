@@ -18,10 +18,10 @@ class CompanyMasterProfile(TimeStampedModel):
     user = models.OneToOneField(User, unique=True, related_name='master_profile')
     company_name = models.CharField(max_length=100, blank=True)
     local_number = models.CharField(max_length=20, blank=True)
-    phone_number = models.CharField(max_length=20, null=True, blank=True)
+    phone_number = models.CharField(max_length=20, blank=True)
     address = models.CharField(max_length=100, blank=True)
     nearby_station = models.CharField(max_length=30, blank=True)
-    refund_information = models.CharField(max_length=200, null=True, blank=True)
+    refund_information = models.CharField(max_length=200, blank=True)
 
     def get_absolute_url(self):
         return reverse('forcompany:index', args=[])

@@ -12,15 +12,15 @@ class CompanyMasterProfileForm(RegistrationForm):
                                    widget=forms.TextInput(attrs={'placeholder': '매치스튜디오'}),
                                    help_text='is company name')
 
-    local_number = forms.CharField(required=True)
+    local_number = forms.CharField(required=False)
 
-    phone_number = forms.CharField(required=True)
+    phone_number = forms.CharField(required=False)
 
-    address = forms.CharField(required=True)
+    address = forms.CharField(required=False)
 
-    nearby_station = forms.CharField()
+    nearby_station = forms.CharField(required=False)
 
-    refund_information = forms.CharField()
+    refund_information = forms.CharField(required=False)
 
 
     def __init__(self, *args, **kwargs):
