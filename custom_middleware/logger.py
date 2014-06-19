@@ -15,7 +15,6 @@ class ApiCallLogger(object):
     @staticmethod
     def process_view(request, view_func, view_args, view_kwargs):
 
-
         # create api log items
         path_name = request.path
         view_name = view_func.func_name

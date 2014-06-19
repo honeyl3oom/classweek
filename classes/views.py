@@ -915,6 +915,9 @@ def scrap_company_review_in_naver(object_id):
             contents=comments[i]['contents'],
             score=float(comments[i]['object_score']),
             created=timezone.make_aware(datetime.strptime(comments[i]['registered_ymdt'][:19],"%Y-%m-%dT%H:%M:%S"), timezone.pytz.timezone('Asia/Seoul')))
+
+    print company.name + ' naver reviews scrap start'
+    print company.name + ' naver reviews scrap finish : ' + str(total_count) + ' success !'
 #
 @csrf_exempt
 def scrap_company_review_in_naver_view(request):

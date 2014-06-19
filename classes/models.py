@@ -86,10 +86,10 @@ class SubCategory(models.Model):
     order_priority_number = models.IntegerField(null=False, default=0)
 
     def __str__(self):
-        return 'SubCategory : %s' % self.name
+        return unicode(self).encode('utf-8')
 
     def __unicode__(self):
-        return 'SubCategory : %s' % self.name
+        return self.name_kor
 
 class SubCategoryRecommend(models.Model):
     image_url = models.TextField(null=True)

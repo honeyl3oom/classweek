@@ -1,5 +1,5 @@
 from django.contrib import admin
-from classes.models import Company, CompanyReview, CompanyImage, Category, SubCategory, SubCategoryRecommend,\
+from .models import Company, CompanyReview, CompanyImage, Category, SubCategory, SubCategoryRecommend,\
     Classes, ClassesImage, ClassesInquire, Schedule, ClassesRecommend,\
     Promotion, PromotionDetail
 

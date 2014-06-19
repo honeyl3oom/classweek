@@ -21,9 +21,21 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 CHARSET = 'utf-8'
 
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
+
+from os.path import join, abspath, dirname
+here = lambda *dirs: join(abspath(dirname(__file__)), *dirs)
+T_BASE_DIR = here('..')
+root = lambda *dirs: join(abspath(T_BASE_DIR), *dirs)
+
 TEMPLATE_DIRS = (
-    PROJECT_PATH + '/templates/'
+    root('templates'),
 )
+
+ALLOWED_HOSTS = ['*']
+
+# TEMPLATE_DIRS = (
+#     PROJECT_PATH + '/templatesss/'
+# )
 
 
 # Quick-start development settings - unsuitable for production
@@ -46,6 +58,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -58,7 +71,13 @@ INSTALLED_APPS = (
     'foradmin',
     'analysis',
     'csvimport',
+    'bootstrap3',
+    'registration',
 )
+
+SITE_ID = 1
+
+ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -194,7 +213,7 @@ TIME_ZONE = 'Asia/Seoul'
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, '../static')
 
-AUTH_PROFILE_MODULE = 'user.UserProfile'
+# AUTH_PROFILE_MODULE = 'user.UserProfile'
 
 # @login_request
 LOGIN_URL = '/user/login'
@@ -206,4 +225,6 @@ EMAIL_HOST = 'smtp.mandrillapp.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'parkjuram@gmail.com'
 EMAIL_HOST_PASSWORD = '5OxPtrdEVEer03KbvS1wRQ'
+EMAIL_USE_TLS = False
+DEFAULT_FROM_EMAIL = 'classweek2014@gmail.com'
 # EMAIL_USE_TLS = True

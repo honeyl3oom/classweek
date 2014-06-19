@@ -1,70 +1,69 @@
+# -*- coding: utf8-*-
+
 from django.db import models
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
-class CompanyInfo(models.Model):
-    title = models.TextField()
-    position = models.TextField()
-    nearby_station = models.TextField()
-    description = models.TextField()
-    preparation_material = models.TextField()
-    facility = models.TextField()
+from registration.signals import user_registered
 
-    class1_count = models.TextField()
-    class1_price = models.TextField()
-    class2_count = models.TextField()
-    class2_price = models.TextField()
-    class3_count = models.TextField()
-    class3_price = models.TextField()
-    class4_count = models.TextField()
-    class4_price = models.TextField()
-    class5_count = models.TextField()
-    class5_price = models.TextField()
-    class6_count = models.TextField()
-    class6_price = models.TextField()
 
-    # teacher_image = models.ImageField(upload_to = 'pic_folder/')
-    # teacher_image = models.ImageField(upload_to = 'pic_folder/', default = '../static/no.jpg')
-    teacher_name = models.TextField()
-    teacher_career = models.TextField()
-
-    curriculum1_time = models.TextField()
-    curriculum1_preparation_material = models.TextField()
-    curriculum1_class_description = models.TextField()
-    curriculum1_class_detail_description = models.TextField()
-    curriculum2_time = models.TextField()
-    curriculum2_preparation_material = models.TextField()
-    curriculum2_class_description = models.TextField()
-    curriculum2_class_detail_description = models.TextField()
-    curriculum3_time = models.TextField()
-    curriculum3_preparation_material = models.TextField()
-    curriculum3_class_description = models.TextField()
-    curriculum3_class_detail_description = models.TextField()
-    curriculum4_time = models.TextField()
-    curriculum4_preparation_material = models.TextField()
-    curriculum4_class_description = models.TextField()
-    curriculum4_class_detail_description = models.TextField()
-    curriculum5_time = models.TextField()
-    curriculum5_preparation_material = models.TextField()
-    curriculum5_class_description = models.TextField()
-    curriculum5_class_detail_description = models.TextField()
-    curriculum6_time = models.TextField()
-    curriculum6_preparation_material = models.TextField()
-    curriculum6_class_description = models.TextField()
-    curriculum6_class_detail_description = models.TextField()
-    curriculum7_time = models.TextField()
-    curriculum7_preparation_material = models.TextField()
-    curriculum7_class_description = models.TextField()
-    curriculum7_class_detail_description = models.TextField()
-    curriculum8_time = models.TextField()
-    curriculum8_preparation_material = models.TextField()
-    curriculum8_class_description = models.TextField()
-    curriculum8_class_detail_description = models.TextField()
-
-    refund_info = models.TextField()
+class TimeStampedModel(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ('id',)
-        # unique_together = ('list', 'text' )
+        abstract = True
+
+class CompanyMasterProfile(TimeStampedModel):
+    user = models.OneToOneField(User, unique=True, related_name='master_profile')
+    company_name = models.CharField(max_length=100, blank=True)
+    local_number = models.CharField(max_length=20, blank=True)
+    phone_number = models.CharField(max_length=20, blank=True)
+    address = models.CharField(max_length=100, blank=True)
+    nearby_station = models.CharField(max_length=30, blank=True)
+    refund_information = models.CharField(max_length=200, blank=True)
+
+    def get_absolute_url(self):
+        return reverse('forcompany:index', args=[])
+
+    def __unicode__(self):
+        return '(%r)CompanyMasterProfile : username[%r]' \
+               % (self.id, self.user.username)
 
     def __str__(self):
-        return self.title
+        return unicode(self).encode('utf-8')
+
+class CompanyClasses(TimeStampedModel):
+    user = models.ForeignKey(User)
+    title = models.CharField(max_length=100, blank=True)
+    sub_category = models.ForeignKey('classes.SubCategory')
+    description = models.TextField(null=True)
+    PERSON_OR_GROUP_CHOICES = (
+        ('personal', '개인레슨'),
+        ('group', '그룹레슨'),
+    )
+    personal_or_group = models.CharField(max_length=10,
+                                         choices=PERSON_OR_GROUP_CHOICES,
+                                         default='personal') # personal or group
+    price_of_month = models.IntegerField(default=0)
+    preparation = models.TextField(blank=True)
+    curriculum_in_first_week = models.TextField(blank=True)
+    curriculum_in_second_week = models.TextField(blank=True)
+    curriculum_in_third_week = models.TextField(blank=True)
+    curriculum_in_fourth_week = models.TextField(blank=True)
+    curriculum_in_fifth_week = models.TextField(blank=True)
+
+    def get_absolute_url(self):
+        return reverse('forcompany:index', args=[])
+
+def user_registered_callback(sender, user, request, **kwargs):
+    profile = CompanyMasterProfile(user=user)
+    profile.company_name = request.POST['company_name']
+    profile.local_number = request.POST['local_number']
+    profile.phone_number = request.POST['phone_number']
+    profile.address = request.POST['address']
+    profile.nearby_station = request.POST['nearby_station']
+    profile.refund_information = request.POST['refund_information']
+    profile.save()
+
+user_registered.connect(user_registered_callback)
