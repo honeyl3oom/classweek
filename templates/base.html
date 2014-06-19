@@ -59,7 +59,7 @@
                             <p class="navbar-text">
                                 {{ user.username }}님 환영합니다.
                                 <a href="{% url 'auth_logout' %}">로그아웃</a>
-                                <a href="{% url "forcompany:company_master_profile_update" pk=user.master_profile.pk %}">개인정보수정</a>
+                                <a href="{% url "company_master_profile_update" pk=user.master_profile.pk %}">개인정보수정</a>
                             </p>
                         {% else %}
                             <a href="{% url 'auth_login' %}">로그인</a>
