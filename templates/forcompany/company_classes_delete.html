@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <form action="" method="post" class="form">
+        {% csrf_token %}
+{#        {% bootstrap_form form %}#}
+        <p>Are you sure you want to delete "{{ object }}"?</p>
+        <input class="btn btn-default" type="submit" value="삭제하기" />
+    </form>
+{% endblock %}

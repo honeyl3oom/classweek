@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <form action="" method="post" class="form">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <input class="btn btn-default" type="submit" value="수업만들기" />
+{#        <input type="hidden" name="next" value="{% url 'forcompany:index' %}" />#}
+{#    <p><a class="btn btn-default" href="{% url 'forcompany:company_classes_create' %}">수업추가하기</a></p>#}
+
+    </form>
+{% endblock %}
