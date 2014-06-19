@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+{% block title %}Sign in{% endblock title %}
+{% block stylesheets %}
+    {{ block.super }}
+{% endblock stylesheets %}
+{% block javascripts %}
+    {{ block.super }}
+{% endblock javascripts %}
+{% block content %}
+    <form action="/"
+        method="post" role="form" class="form-horizontal">
+        {% csrf_token %}
+{#        {% bootstrap_field user_form.username %}#}
+        {% bootstrap_form user_form layout='horizontal' %}
+    </form>
+{% endblock content %}
