@@ -6,12 +6,12 @@ from .views import IndexView, CompanyClassesCreateView, CompanyClassesUpdateView
 urlpatterns = patterns('',
     # url(r'^index$', 'forcompany.views.index_view', name='index'),
     url(
-        regex=r'^index/$',
+        regex=r'^index/',
         view=IndexView.as_view(),
         name='index'
     ),
     url(
-        regex=r'^company/profile/update/(?P<pk>\d+)/',
+        regex=r'^company/profile/update/(?P<pk>\d+)/$',
         view=CompanyMasterProfileUpdateView.as_view(),
         name='company_master_profile_update'
     ),
@@ -21,17 +21,17 @@ urlpatterns = patterns('',
         name='company_classes_create'
     ),
     url(
-        regex=r'^company/classes/delete/(?P<pk>\d+)/',
+        regex=r'^company/classes/delete/(?P<pk>\d+)/$',
         view=CompanyClassesDeleteView.as_view(),
         name='company_classes_delete'
     ),
     url(
-        regex=r'^company/classes/detail/(?P<pk>\d+)/',
+        regex=r'^company/classes/detail/(?P<pk>\d+)/$',
         view=CompanyClassesDetailView.as_view(),
         name='company_classes_detail'
     ),
     url(
-        regex=r'^company/classes/update/(?P<pk>\d+)/',
+        regex=r'^company/classes/update/(?P<pk>\d+)/$',
         view=CompanyClassesUpdateView.as_view(),
         name='company_classes_update'
     ),
