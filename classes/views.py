@@ -29,8 +29,6 @@ from classes.models import Category, Company, CompanyReview, CompanyImage,\
     SubCategory, Classes, ClassesInquire, Schedule, SubCategoryRecommend, ClassesRecommend,\
     Promotion, PromotionDetail
 
-from datetime import datetime
-
 from foradmin.models import Purchase, ApiLog
 from classweek.common_method import send_email
 import urllib, urllib2
@@ -84,7 +82,7 @@ def _http_response_by_json(error, json_={}):
     return HttpResponse(json.dumps(json_, ensure_ascii=False), content_type="application/json; charset=utf-8")
 
 def _check_promotion():
-    now_ = datetime.now()
+    now_ = timezone.now()
     promotions = Promotion.objects.filter( start_date__lte=now_, end_date__gte=now_, daily_start_time__lte=now_, daily_end_time__gte=now_).all()
 
     if len(promotions)>0:
@@ -526,7 +524,8 @@ def now_taking_view(request):
     now_taking_list = []
 
     if request.user.is_authenticated():
-        purchases = Purchase.objects.filter(user=request.user, class_end_datetime__gte=datetime.now()).all()
+
+        purchases = Purchase.objects.filter(user=request.user, class_end_datetime__gte=timezone.now()).all()
     else:
         return _http_json_response(None, now_taking_list)
 
@@ -585,7 +584,7 @@ def took_before_view(request):
 
 
     if request.user.is_authenticated():
-        purchase_list = Purchase.objects.filter(user=request.user, class_end_datetime__lt=datetime.now()).all()
+        purchase_list = Purchase.objects.filter(user=request.user, class_end_datetime__lt=timezone.now()).all()
     else:
         return _http_json_response(None, before_taking_list)
 

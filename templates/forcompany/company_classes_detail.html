@@ -14,11 +14,26 @@
             <p>{{ object.personal_or_group }}</p>
             <p> 한달 가격 : {{ object.price_of_month }}</p>
             <p>{{ object.preparation }}</p>
-            <p>{{ object.curriculum_in_first_week }}</p>
-            <p>{{ object.curriculum_in_second_week }}</p>
-            <p>{{ object.curriculum_in_third_week }}</p>
-            <p>{{ object.curriculum_in_fourth_week }}</p>
-            <p>{{ object.curriculum_in_fifth_week }}</p>
+        </div>
+    </div>
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+                        커리큘럼
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p>{{ object.curriculum_in_first_week }}</p>
+                    <p>{{ object.curriculum_in_second_week }}</p>
+                    <p>{{ object.curriculum_in_third_week }}</p>
+                    <p>{{ object.curriculum_in_fourth_week }}</p>
+                    <p>{{ object.curriculum_in_fifth_week }}</p>
+                </div>
+            </div>
         </div>
     </div>
 
